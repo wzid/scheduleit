@@ -1,2 +1,13 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+    import Select from '$lib/Select.svelte';
+
+    let options = {
+        food:['Cookies', 'Pizza', 'Burgers']
+    }
+</script>
+
+<div class="w-fit">
+    <Select title="Food" placeholder="Select your Food" options={options} />
+</div>
+
+
