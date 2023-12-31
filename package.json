@@ -25,13 +25,5 @@
 		"typescript": "^5.0.0",
 		"vite": "^4.4.2"
 	},
-	"type": "module",
-	"dependencies": {
-		"@internationalized/date": "^3.5.1",
-		"bits-ui": "^0.13.0",
-		"clsx": "^2.1.0",
-		"radix-icons-svelte": "^1.2.1",
-		"tailwind-merge": "^2.2.0",
-		"tailwind-variants": "^0.1.19"
-	}
+	"type": "module"
 }
