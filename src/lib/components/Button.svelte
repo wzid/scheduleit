@@ -1,9 +1,18 @@
 <script lang="ts">
 	export const onClick: () => void = () => {};
 	export const type: string | undefined = undefined;
-	export const className: string | undefined = undefined;
-
+	export let className: string | undefined = undefined;
+	// Variant is going to be used to index the variantClasses object
+	// must be defined
+	export let variant: 'primary' | 'secondary' | 'ghost' = 'primary';
 	import { cn } from '$lib/utils';
+
+	// switch between primary, secondary, and ghost buttons
+	const variantClasses = {
+		primary: 'bg-royalblue-500 hover:bg-royalblue-500/80 text-white',
+		secondary: 'bg-peach-200 hover:bg-peach-200/80 text-peach-900',
+		ghost: 'bg-transparent hover:bg-gray-100 text-gray-900',
+	};
 </script>
 
 <button
@@ -11,9 +20,8 @@
 	on:click={onClick}
 	class={cn(
 		className,
-		'inline-flex items-center justify-center shadow text-sm px-4 py-2 font-semibold',
-		'bg-royalblue-500 rounded-lg hover:bg-royalblue-500/80 transition-colors',
-		'focus:ring-2 focus:ring-royalblue-700 focus:ring-offset-2 focus:ring-offset-zinc-900'
+		'inline-flex items-center justify-center shadow text-sm px-4 py-2 font-semibold rounded-lg transition-colors',
+		variantClasses[variant],
 	)}
 >
 	<!-- This is the content inside of the button--->
