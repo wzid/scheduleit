@@ -10,7 +10,7 @@
 
 	const {
 		elements: { trigger, menu, option, group, groupLabel, label },
-		states: { selectedLabel, open },
+		states: { selectedLabel, open, selected: selectedOption },
 		helpers: { isSelected }
 	} = createSelect({
 		selected,
@@ -45,11 +45,11 @@
 			if (key === 'ArrowDown') {
 				const nextIndex = index + 1;
 				const nextOption = allOptions[nextIndex] || allOptions[0];
-				selected.set({ value: nextOption, label: nextOption });
+				selectedOption.set({ value: nextOption, label: nextOption });
 			} else if (key === 'ArrowUp') {
 				const prevIndex = index - 1;
 				const prevOption = allOptions[prevIndex] || allOptions[allOptions.length - 1];
-				selected.set({ value: prevOption, label: prevOption });
+				selectedOption.set({ value: prevOption, label: prevOption });
 			} else {
 				open.set(true);
 			}
