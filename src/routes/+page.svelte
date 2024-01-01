@@ -1,19 +1,20 @@
 <script lang="ts">
-	import Select from '$lib/Select.svelte';
+	import Select from '$lib/components/Select.svelte';
+	import Button from '$lib/components/Button.svelte';
 	import { get, writable } from 'svelte/store';
 
 	let options = {
 		food: ['Cookies', 'Pizza', 'Burgers']
 	};
 
-	const selected = writable({ label: 'Cookies', value: 'Cookies' });
+	const selected = writable({ label: '', value: '' });
 
 	function handleSubmit() {
 		console.log(get(selected));
 	}
 </script>
 
-<form class="w-fit" on:submit={handleSubmit}>
+<form class="w-fit flex flex-col gap-6" on:submit={handleSubmit}>
 	<Select title="Food" placeholder="Select your Food" {selected} {options} />
-	<button class="inline-flex items-center justify-center shadow text-sm px-4 py-2 font-semibold bg-glacier-500 rounded-lg hover:bg-glacier-500/80 transition-colors">Submit</button>
+	<Button>Submit</Button>
 </form>

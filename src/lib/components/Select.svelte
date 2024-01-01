@@ -25,10 +25,10 @@
 
 <div class="flex flex-col gap-1">
 	<!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
-	<label class="block text-glacier-200" use:melt={$label}>{title}</label>
+	<label class="block text-royalblue-300" use:melt={$label}>{title}</label>
 	<button
-		class="flex h-10 min-w-[220px] items-center justify-between rounded-lg bg-white px-3 py-2
-    text-glacier-700 shadow transition-opacity hover:opacity-90"
+		class="flex h-10 min-w-[220px] items-center justify-between rounded-lg bg-royalblue-50 px-3 py-2
+    text-royalblue-600 shadow transition-colors hover:bg-royalblue-100 focus:outline-none focus:ring-2"
 		type="button"
 		use:melt={$trigger}
 		on:m-keydown={(e) => {
@@ -77,9 +77,9 @@
 					{#each arr as item}
 						<div
 							class="relative cursor-pointer rounded-lg py-1 pl-8 pr-4 text-neutral-800
-                focus:z-10 focus:text-glacier-700
-              data-[highlighted]:bg-glacier-50 data-[selected]:bg-glacier-100
-              data-[highlighted]:text-glacier-900 data-[selected]:text-glacier-900"
+                focus:z-10 focus:text-royalblue-700
+              data-[highlighted]:bg-royalblue-50 data-[selected]:bg-royalblue-100
+              data-[highlighted]:text-royalblue-900 data-[selected]:text-royalblue-900"
 							use:melt={$option({ value: item, label: item })}
 						>
 							<div class="check {$isSelected(item) ? 'block' : 'hidden'}">
@@ -102,6 +102,6 @@
 		top: 50%;
 		z-index: theme(zIndex.20);
 		translate: 0 calc(-50% + 1px);
-		color: theme(colors.glacier.500);
+		color: theme(colors.royalblue.500);
 	}
 </style>
