@@ -1,7 +1,7 @@
 <script lang="ts">
 	export const onClick: () => void = () => {};
-	export const type: string | null = null;
-	export const className: string | null = null;
+	export const type: string | undefined = undefined;
+	export const className: string | undefined = undefined;
 
 	import { cn } from '$lib/utils';
 </script>
