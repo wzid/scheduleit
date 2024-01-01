@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createSelect, melt, type CreateSelectProps } from '@melt-ui/svelte';
 	import { Check, ChevronDown } from 'lucide-svelte';
+	import { fly } from 'svelte/transition';
 
 	// string array or object with groups
 	export let title: string;
@@ -64,6 +65,7 @@
 			class="z-10 flex max-h-[300px] flex-col
       overflow-y-auto rounded-lg bg-white p-1
       shadow focus:!ring-0"
+			transition:fly={{ duration: 150, y: -10 }}
 			use:melt={$menu}
 		>
 			{#each Object.entries(options) as [key, arr]}
