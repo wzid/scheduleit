@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-    body {
-        @apply bg-zinc-900 text-zinc-50;
-    }
+	body {
+		@apply bg-zinc-900 text-zinc-50;
+	}
 }

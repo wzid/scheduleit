@@ -4,7 +4,7 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				'royalblue': {
+				royalblue: {
 					50: '#eef4ff',
 					100: '#e1eafe',
 					200: '#c8d9fd',
