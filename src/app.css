@@ -6,4 +6,8 @@
     body {
         @apply bg-zinc-900 text-zinc-50;
     }
+
+    h1 {
+        @apply text-4xl font-bold;
+    }
 }
