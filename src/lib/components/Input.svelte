@@ -19,6 +19,6 @@
     {/if}
     <input bind:value={value} class={cn(
         sizes[size],
-        "bg-white rounded-lg p-1 pl-2 text-peach-700 placeholder:text-zinc-400",
-        "focus-visible:outline-none focus:ring-2 ring-peach-300")} id="input" type="text" placeholder={placeholder} />
+        "bg-zinc-800/80 rounded-lg p-1 pl-2 text-white placeholder:text-zinc-500 ",
+        "focus-visible:outline-none focus:ring-1  ring-peach-300")} id="input" type="text" placeholder={placeholder} />
 </div>
