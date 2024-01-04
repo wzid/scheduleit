@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Select, Button, Input, DateRangePicker }  from '$lib';
+	import { Select, Button, Input, Calendar, DateRangePicker }  from '$lib';
 	import { get, writable } from 'svelte/store';
 
 	let options = {
@@ -69,11 +69,25 @@
 
 <form class="w-fit flex flex-col gap-4" on:submit={handleSubmit}>
 	<Input bind:value={eventName} size="lg" placeholder="Type your event name here"/>
-	<DateRangePicker title="Dates Available" titlePosition="left" />
-	<div class="flex items-center gap-4">
-		<Select selected={fromTime} {options} maxHeight="100px" />
-		<p class="text-lg">to</p>
-		<Select selected={toTime} {options}  maxHeight="100px" />
+	<div class="flex gap-4">
+		<div>
+			<div class="pb-2">
+				<h3>Dates Available</h3>
+				<p class="text-sm text-zinc-500">What dates might work?</p>
+			</div>
+			<Calendar className="w-72" />
+		</div>
+		<div>
+			<div class="pb-2">
+				<h3>Time Range</h3>
+				<p class="text-sm text-zinc-500">What times might work?</p>
+			</div>
+			<div class="flex gap-2 items-center pb-4">
+				<Select selected={fromTime} {options} />
+				<p class="text-lg">to</p>
+				<Select selected={toTime} {options} />
+			</div>
+			<Button className="w-full" variant="secondary">Submit</Button>
+		</div>
 	</div>
-	<Button className="w-52" variant="secondary">Submit</Button>
 </form>

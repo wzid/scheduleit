@@ -3,5 +3,6 @@ import Button from './components/Button.svelte';
 import Input from './components/Input.svelte';
 import Select from './components/Select.svelte'
 import DateRangePicker from './components/DateRangePicker.svelte';
+import Calendar from './components/Calendar.svelte';
 
-export { Button, Input, Select, DateRangePicker };
+export { Button, Input, Select, DateRangePicker, Calendar };

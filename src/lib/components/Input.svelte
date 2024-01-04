@@ -2,6 +2,7 @@
     export let title: string | undefined = undefined;
     export let placeholder: string;
     export let value: string;
+    export let className : string | undefined = undefined;
 
     export let size: 'md' | 'lg' = 'md';
     
@@ -13,7 +14,7 @@
 
 </script>
 
-<div class="flex flex-col">
+<div class={cn("flex flex-col",className)}>
     {#if title}
         <label class="text-white pb-1" for="input">{title}</label>
     {/if}

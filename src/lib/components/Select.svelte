@@ -4,7 +4,6 @@
 	export let placeholder: string | undefined = undefined;
 	export let options: Record<string, string[]>;
 	export let selected: CreateSelectProps['selected'];
-	export let maxHeight: string = '300px';
 
 	import { createSelect, melt, type CreateSelectProps } from '@melt-ui/svelte';
 	import { Check, ChevronDown } from 'lucide-svelte';
@@ -32,7 +31,7 @@
 		<label class="block text-peach-400" use:melt={$label}>{title}</label>
 	{/if}
 	<button
-		class="flex h-10 min-w-[220px] items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2
+		class="flex h-10 min-w-[180px] items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2
     text-peach-200 shadow transition-colors hover:bg-zinc-700/60 focus:outline-none focus:ring-1 ring-peach-300"
 		type="button"
 		use:melt={$trigger}
