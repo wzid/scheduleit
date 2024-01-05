@@ -4,7 +4,7 @@
 </script>
 
 <div class="flex justify-center py-12">
-	<div class="w-3/4">
+	<div class="flex flex-col items-center">
 		<Header />
 		<slot />
 	</div>

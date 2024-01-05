@@ -33,7 +33,7 @@
 		<label class="block text-peach-400" use:melt={$label}>{title}</label>
 	{/if}
 	<button
-		class="flex h-10 min-w-[120px] items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2 text-peach-200 shadow transition-colors hover:bg-zinc-700/60 focus:outline-none focus:ring-1 ring-peach-300"
+		class="flex h-10 min-w-[130px] items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2 text-peach-200 shadow transition-colors hover:bg-zinc-700/60 focus:outline-none focus:ring-1 ring-peach-300"
 		type="button"
 		use:melt={$trigger}
 		on:m-keydown={(e) => {

@@ -28,7 +28,7 @@
 				<h3>Dates Available</h3>
 				<p class="text-sm text-zinc-500">What dates might work?</p>
 			</div>
-			<Calendar className="w-72" />
+			<Calendar className="w-80 md:w-72" />
 		</div>
 		<div>
 			<div class="pb-2">
@@ -36,9 +36,9 @@
 				<p class="text-sm text-zinc-500">What times might work?</p>
 			</div>
 			<div class="flex gap-2 items-center pb-4">
-				<Select selected={fromTime} options={timeOptions} />
+				<Select className="w-full" selected={fromTime} options={timeOptions} />
 				<p class="text-lg">to</p>
-				<Select selected={toTime} options={timeOptions} />
+				<Select className="w-full" selected={toTime} options={timeOptions} />
 			</div>
 			<div class="pb-2">
 				<h3>Time Zone</h3>
