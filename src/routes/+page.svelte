@@ -22,7 +22,7 @@
 
 <form class="w-fit flex flex-col gap-4" on:submit={handleSubmit}>
 	<Input bind:value={eventName} size="lg" placeholder="Type your event name here..." />
-	<div class="flex gap-4">
+	<div class="sm:flex gap-4 grid">
 		<div>
 			<div class="pb-2">
 				<h3>Dates Available</h3>

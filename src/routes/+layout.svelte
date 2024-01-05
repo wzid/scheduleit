@@ -3,7 +3,7 @@
 	import '../app.css';
 </script>
 
-<div class="flex justify-center pt-6">
+<div class="flex justify-center py-12">
 	<div class="w-3/4">
 		<Header />
 		<slot />
