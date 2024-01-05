@@ -31,19 +31,19 @@
 			<Calendar className="w-80 md:w-72" />
 		</div>
 		<div>
-			<div class="pb-2">
-				<h3>Time Range</h3>
-				<p class="text-sm text-zinc-500">What times might work?</p>
+			<div class="pb-4">
+				<div class="pb-2">
+					<h3>Time Range</h3>
+					<p class="text-sm text-zinc-500">What times might work?</p>
+				</div>
+				<div class="flex gap-2 items-center">
+					<Select className="w-full" selected={fromTime} options={timeOptions} />
+					<p class="text-lg">to</p>
+					<Select className="w-full" selected={toTime} options={timeOptions} />
+				</div>
 			</div>
-			<div class="flex gap-2 items-center pb-4">
-				<Select className="w-full" selected={fromTime} options={timeOptions} />
-				<p class="text-lg">to</p>
-				<Select className="w-full" selected={toTime} options={timeOptions} />
-			</div>
-			<div class="pb-2">
-				<h3>Time Zone</h3>
-			</div>
-			<div class="flex gap-2 items-center pb-4">
+			<div class="pb-4">
+				<h3 class="pb-2">Time Zone</h3>
 				<Select className="w-full" selected={selectedTz} options={tzOptions} />
 			</div>
 			<Button className="w-full" variant="secondary">Create Event</Button>

@@ -12,8 +12,8 @@
 
 <style lang="postcss">
 	:root {
-		--shadow: #fd793a;
-        --text-color: #71717a
+		--shadow: theme(colors.peach.400);
+        --text-color: theme(colors.zinc.500)
 	}
 
     .playful {
@@ -34,14 +34,14 @@
 	}
 
     .shine {
-        background-color: #71717a;
+        background-color: #a1a1aa;
         background-image: linear-gradient(
             -75deg,
             var(--text-color) 0,
             var(--text-color) 5%,
             rgba(255, 255, 255, 0.5) 5%,
             rgba(255, 255, 255, 0.5) 25%,
-            var(--text-color) 15%,
+            var(--text-color) 25%,
             var(--text-color) 100%
         );
         background-size: 200% 100%;

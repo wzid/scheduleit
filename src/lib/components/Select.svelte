@@ -33,7 +33,7 @@
 		<label class="block text-peach-400" use:melt={$label}>{title}</label>
 	{/if}
 	<button
-		class="flex h-10 min-w-[130px] items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2 text-peach-200 shadow transition-colors hover:bg-zinc-700/60 focus:outline-none focus:ring-1 ring-peach-300"
+		class="flex h-10 min-w-[150px] items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2 text-peach-200 shadow transition-colors hover:bg-zinc-700/60 focus:outline-none focus:ring-1 ring-peach-300"
 		type="button"
 		use:melt={$trigger}
 		on:m-keydown={(e) => {
@@ -66,35 +66,39 @@
 	</button>
 	{#if $open}
 		<div
-			class="z-10 flex flex-col overflow-y-auto rounded-lg bg-zinc-800 p-1 shadow focus:!ring-0 !max-h-[250px]"
+			class="z-10 !max-h-[250px] flex flex-col overflow-hidden rounded-lg"
 			transition:fly={{ duration: 150, y: -10 }}
 			use:melt={$menu}
 		>
-			{#each Object.entries(options) as [key, arr]}
-				<div use:melt={$group(key)}>
-					<div
-						class="py-1 pl-4 pr-4 font-semibold capitalize text-white"
-						use:melt={$groupLabel(key)}
-					>
-						{key}
-					</div>
-					{#each arr as item}
+			<div
+				class="flex flex-col max-h-full gap-0 overflow-y-auto fix-scrollbar bg-zinc-800 p-1 shadow focus:!ring-0"
+			>
+				{#each Object.entries(options) as [key, arr]}
+					<div use:melt={$group(key)}>
 						<div
-							class="relative cursor-pointer rounded-lg py-1 pl-7 pr-4 text-white whitespace-nowrap
+							class="py-1 pl-4 pr-4 font-semibold capitalize text-white"
+							use:melt={$groupLabel(key)}
+						>
+							{key}
+						</div>
+						{#each arr as item}
+							<div
+								class="relative cursor-pointer rounded-lg py-1 pl-7 pr-4 text-white whitespace-nowrap
                 focus:z-10 focus:text-peach-700
 				transition-colors ease-out duration-150
               hover:bg-zinc-700/60 data-[selected]:bg-peach-200
               hover:text-peach-200 data-[selected]:text-peach-900"
-							use:melt={$option({ value: item, label: item })}
-						>
-							<div class="check {$isSelected(item) ? 'block' : 'hidden'}">
-								<Check class="w-4 h-4" />
+								use:melt={$option({ value: item, label: item })}
+							>
+								<div class="check {$isSelected(item) ? 'block' : 'hidden'}">
+									<Check class="w-4 h-4" />
+								</div>
+								{item}
 							</div>
-							{item}
-						</div>
-					{/each}
-				</div>
-			{/each}
+						{/each}
+					</div>
+				{/each}
+			</div>
 		</div>
 	{/if}
 </div>
@@ -107,5 +111,33 @@
 		z-index: theme(zIndex.20);
 		translate: 0 calc(-50% + 1px);
 		color: theme(colors.peach.500);
+	}
+
+
+
+	.fix-scrollbar {
+		scrollbar-width: thin;
+		scrollbar-color: theme(colors.zinc.500) theme(colors.zinc.800);
+	}
+
+	.fix-scrollbar::-webkit-scrollbar-track {
+		border: orange 1;
+		border-radius: 10rem;
+	}
+
+	/* Works on Chrome, Edge, and Safari */
+	.fix-scrollbar::-webkit-scrollbar {
+		width: 0.5rem;
+		height: 0.5rem;
+	}
+
+	.fix-scrollbar::-webkit-scrollbar-track {
+		background: theme(colors.zinc.800);
+	}
+
+	.fix-scrollbar::-webkit-scrollbar-thumb {
+		background-color: theme(colors.zinc.500);
+		border: 1px solid theme(colors.zinc.800);
+		border-radius: 6px;
 	}
 </style>
