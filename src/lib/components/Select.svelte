@@ -62,7 +62,7 @@
 		aria-label="Food"
 	>
 		{$selectedLabel || placeholder}
-		<ChevronDown class="square-5" />
+		<ChevronDown class="w-5 h-5" />
 	</button>
 	{#if $open}
 		<div
@@ -80,7 +80,7 @@
 					</div>
 					{#each arr as item}
 						<div
-							class="relative cursor-pointer rounded-lg py-1 pl-9 pr-4 text-white
+							class="relative cursor-pointer rounded-lg py-1 pl-7 pr-4 text-white whitespace-nowrap
                 focus:z-10 focus:text-peach-700
 				transition-colors ease-out duration-150
               hover:bg-zinc-700/60 data-[selected]:bg-peach-200
@@ -88,9 +88,8 @@
 							use:melt={$option({ value: item, label: item })}
 						>
 							<div class="check {$isSelected(item) ? 'block' : 'hidden'}">
-								<Check class="square-4" />
+								<Check class="w-4 h-4" />
 							</div>
-
 							{item}
 						</div>
 					{/each}
