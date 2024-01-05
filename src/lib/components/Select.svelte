@@ -66,7 +66,7 @@
 	</button>
 	{#if $open}
 		<div
-			class="z-10 flex flex-col overflow-y-auto rounded-lg bg-zinc-800/90 p-1 shadow focus:!ring-0 !max-h-[250px]"
+			class="z-10 flex flex-col overflow-y-auto rounded-lg bg-zinc-800 p-1 shadow focus:!ring-0 !max-h-[250px]"
 			transition:fly={{ duration: 150, y: -10 }}
 			use:melt={$menu}
 		>

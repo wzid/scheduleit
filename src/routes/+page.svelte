@@ -46,7 +46,7 @@
 			<div class="flex gap-2 items-center pb-4">
 				<Select className="w-full" selected={selectedTz} options={tzOptions} />
 			</div>
-			<Button className="w-full" variant="secondary">Submit</Button>
+			<Button className="w-full" variant="secondary">Create Event</Button>
 		</div>
 	</div>
 </form>
