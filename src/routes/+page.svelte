@@ -3,11 +3,14 @@
 	import { TIMES } from '$lib/constants';
 	import { get, writable } from 'svelte/store';
 
-	let options = { times: TIMES };
+	let timeOptions = { times: TIMES };
+	let tzOptions = { 'Time Zone': Intl.supportedValuesOf('timeZone') };
+	const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-	// These are the default values of the select component
+	// Default component values
 	const fromTime = writable({ label: '12:00 AM', value: '12:00 AM' });
 	const toTime = writable({ label: '12:30 AM', value: '12:30 AM' });
+	const selectedTz = writable({ label: userTz, value: userTz });
 	let eventName = '';
 
 	function handleSubmit() {
@@ -33,9 +36,15 @@
 				<p class="text-sm text-zinc-500">What times might work?</p>
 			</div>
 			<div class="flex gap-2 items-center pb-4">
-				<Select selected={fromTime} {options} />
+				<Select selected={fromTime} options={timeOptions} />
 				<p class="text-lg">to</p>
-				<Select selected={toTime} {options} />
+				<Select selected={toTime} options={timeOptions} />
+			</div>
+			<div class="pb-2">
+				<h3>Time Zone</h3>
+			</div>
+			<div class="flex gap-2 items-center pb-4">
+				<Select className="w-full" selected={selectedTz} options={tzOptions} />
 			</div>
 			<Button className="w-full" variant="secondary">Submit</Button>
 		</div>
