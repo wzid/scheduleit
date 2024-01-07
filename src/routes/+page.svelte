@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { Button, Calendar, Combobox, DateRangePicker, Input, Select } from '$lib';
+  import { Button, Calendar, Combobox, Input, Select } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
   import { TIMES } from '$lib/constants';
   import { get, writable } from 'svelte/store';
+  import { stripDatesData } from '$lib/utils';
+
 
   let timeOptions = { times: TIMES };
   const tzOptions = Intl.supportedValuesOf('timeZone');
@@ -21,7 +23,7 @@
       fromTime: get(fromTime).value,
       toTime: get(toTime).value,
       timeZone: get(selectedTz).value,
-      dates: get(dates)
+      dates: stripDatesData(get(dates))
     };
     console.log('recv submit', data);
   }
