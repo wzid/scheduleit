@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { createCalendar, melt } from '@melt-ui/svelte';
+  import { createCalendar, melt, type CreateCalendarProps } from '@melt-ui/svelte';
   import { cn } from '$lib/utils';
   import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
   export let className: string | undefined = undefined;
+  export let value: CreateCalendarProps<true>['value'];
+
   const {
     elements: { calendar, heading, grid, cell, prevButton, nextButton },
     states: { months, headingValue, weekdays },
     helpers: { isDateDisabled, isDateUnavailable }
-  } = createCalendar({
-    multiple: true
-  });
+  } = createCalendar({ value, multiple: true });
 </script>
 
 <div use:melt={$calendar} class={cn(className)}>

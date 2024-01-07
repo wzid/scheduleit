@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button, Calendar, Combobox, DateRangePicker, Input, Select } from '$lib';
+  import type { CalendarValue } from '@melt-ui/svelte';
   import { TIMES } from '$lib/constants';
   import { get, writable } from 'svelte/store';
 
@@ -11,12 +12,18 @@
   const fromTime = writable({ label: '12:00 AM', value: '12:00 AM' });
   const toTime = writable({ label: '12:30 AM', value: '12:30 AM' });
   const selectedTz = writable({ label: userTz, value: userTz });
+  const dates = writable<CalendarValue<true>>([]);
   let eventName = '';
 
   function handleSubmit() {
-    console.log(get(fromTime));
-    console.log(get(toTime));
-    console.log(eventName);
+    const data = {
+      name: eventName,
+      fromTime: get(fromTime).value,
+      toTime: get(toTime).value,
+      timeZone: get(selectedTz).value,
+      dates: get(dates)
+    };
+    console.log('recv submit', data);
   }
 </script>
 
@@ -28,7 +35,7 @@
         <h3>Dates Available</h3>
         <p class="text-sm text-zinc-500">What dates might work?</p>
       </div>
-      <Calendar className="w-80 md:w-72" />
+      <Calendar className="w-80 md:w-72" value={dates} />
     </div>
     <div>
       <div class="pb-4">
