@@ -101,6 +101,10 @@
     @apply text-zinc-500;
   }
 
+  tbody td {
+    @apply py-0.5;
+  }
+
   th {
     @apply text-sm font-semibold;
 
@@ -114,7 +118,7 @@
   }
 
   [data-melt-calendar-cell] {
-    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 hover:bg-peach-400/20  focus:ring focus:ring-peach-400;
+    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 hover:bg-peach-400/20 focus:ring-2 focus:ring-peach-300/90;
   }
 
   [data-melt-calendar-cell][data-disabled] {
@@ -126,7 +130,7 @@
   }
 
   [data-melt-calendar-cell][data-selected] {
-    @apply bg-peach-300 text-zinc-900;
+    @apply bg-peach-200 text-peach-900 transition-colors;
   }
 
   [data-melt-calendar-cell][data-outside-visible-months] {
