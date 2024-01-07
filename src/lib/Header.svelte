@@ -1,12 +1,12 @@
 <!-- Not sure what to add here until we get further down in development-->
-<div class="pb-8">
+<div class="pb-8 text-center">
   <h1
-    class="w-fit bg-gradient-to-r from-peach-200 to-peach-300 bg-clip-text leading-none text-transparent"
+    class="bg-gradient-to-r from-peach-200 to-peach-300 bg-clip-text leading-none text-transparent"
   >
-    timeslot.one
+    timeslot
   </h1>
-  <div class="text-center text-sm text-zinc-500">
-    built by <a class="playful" target="_blank" href="https://github.com/wzid">cameron</a> and
+  <div class="text-sm text-zinc-500">
+    built by <a class="playful" target="_blank" href="https://github.com/wzid">cameron</a> &
     <a class="shine" target="_blank" href="https://github.com/aelew">andre</a>
   </div>
 </div>
@@ -52,6 +52,8 @@
   }
 
   .shine:hover {
+    font-weight: bold;
+    filter: brightness(1.25);
     background-position: -150% 0;
   }
 </style>
