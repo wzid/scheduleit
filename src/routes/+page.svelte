@@ -30,19 +30,19 @@
 
 <Meta title="Group Availability Tool" />
 
-<form class="flex w-fit flex-col gap-4" on:submit={handleSubmit}>
+<form on:submit={handleSubmit} class="space-y-4">
   <Input bind:value={eventName} size="lg" placeholder="Type your event name here..." />
-  <div class="grid gap-4 sm:flex">
-    <div>
-      <div class="pb-2">
+  <div class="flex flex-col gap-4 sm:flex-row">
+    <div class="space-y-2">
+      <div>
         <h3>Dates Available</h3>
         <p class="text-sm text-zinc-500">What dates might work?</p>
       </div>
       <Calendar className="w-80 md:w-72" value={dates} />
     </div>
-    <div>
-      <div class="pb-4">
-        <div class="pb-2">
+    <div class="space-y-4">
+      <div class="space-y-2">
+        <div>
           <h3>Time Range</h3>
           <p class="text-sm text-zinc-500">What times might work?</p>
         </div>
@@ -52,8 +52,8 @@
           <Select className="w-full" selected={toTime} options={timeOptions} />
         </div>
       </div>
-      <div class="pb-4">
-        <h3 class="pb-2">Time Zone</h3>
+      <div class="space-y-2">
+        <h3>Time Zone</h3>
         <Combobox selected={selectedTz} options={tzOptions} />
       </div>
       <Button className="w-full" variant="secondary">Create Event</Button>
