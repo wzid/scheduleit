@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, Calendar, Combobox, Input, Select } from '$lib';
+  import { Button, Calendar, Combobox, Input, Meta, Select } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
   import { TIMES } from '$lib/constants';
   import { get, writable } from 'svelte/store';
@@ -28,9 +28,7 @@
   }
 </script>
 
-<svelte:head>
-  <title>Find Timeslots</title>
-</svelte:head>
+<Meta title="Group Availability Tool" />
 
 <form class="flex w-fit flex-col gap-4" on:submit={handleSubmit}>
   <Input bind:value={eventName} size="lg" placeholder="Type your event name here..." />

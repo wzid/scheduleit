@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { CalendarDate } from '@internationalized/date';
   import { createDateRangePicker, melt } from '@melt-ui/svelte';
   import { cn } from '$lib/utils';
   import { Calendar, ChevronLeft, ChevronRight } from 'lucide-svelte';
