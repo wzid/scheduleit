@@ -5,7 +5,7 @@
 
 <Meta />
 
-<div class="flex justify-center py-12">
+<div class="flex justify-center py-6">
   <div class="flex flex-col items-center">
     <Header />
     <slot />
