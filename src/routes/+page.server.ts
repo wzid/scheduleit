@@ -4,9 +4,9 @@ import { fail } from '@sveltejs/kit';
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Please enter an event name.'),
-  fromTime: z.string().min(999),
-  toTime: z.string().min(999),
-  timeZone: z.string().min(999),
+  fromTime: z.string(),
+  toTime: z.string(),
+  timeZone: z.string(),
   dates: z
     .array(
       z.object({
