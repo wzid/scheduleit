@@ -5,7 +5,6 @@
   import { get, writable } from 'svelte/store';
   import { stripDatesData } from '$lib/utils';
 
-
   let timeOptions = { times: TIMES };
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
