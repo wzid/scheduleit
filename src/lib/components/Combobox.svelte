@@ -18,7 +18,7 @@
 
   $: filteredOptions = $touchedInput
     ? options.filter((o) => {
-        const normalizedInput = $inputValue.toLowerCase();
+        const normalizedInput = $inputValue.toLowerCase().trim().replaceAll(' ', '_');
         return o.toLowerCase().includes(normalizedInput);
       })
     : options;

@@ -7,8 +7,11 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export const stripDatesData = (dates: CalendarValue<true>) => {
-  let newDates = [];
+export const stripDateData = (dates: CalendarValue<true> | undefined) => {
+  const newDates: { day: number; month: number; year: number }[] = [];
+  if (!dates) {
+    return newDates;
+  }
   for (const date of dates) {
     newDates.push({
       day: date.day,
