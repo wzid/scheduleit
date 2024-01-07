@@ -118,7 +118,7 @@
   }
 
   [data-melt-calendar-cell] {
-    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 hover:bg-peach-400/20 focus:ring-2 focus:ring-peach-300/90;
+    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 transition-colors hover:bg-peach-400/20 focus:ring-2 focus:ring-peach-300/90;
   }
 
   [data-melt-calendar-cell][data-disabled] {
@@ -130,7 +130,7 @@
   }
 
   [data-melt-calendar-cell][data-selected] {
-    @apply bg-peach-200 text-peach-900 transition-colors;
+    @apply bg-peach-200 text-peach-900;
   }
 
   [data-melt-calendar-cell][data-outside-visible-months] {
