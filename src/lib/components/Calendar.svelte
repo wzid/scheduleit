@@ -10,7 +10,20 @@
     elements: { calendar, heading, grid, cell, prevButton, nextButton },
     states: { months, headingValue, weekdays },
     helpers: { isDateDisabled, isDateUnavailable }
-  } = createCalendar({ value, multiple: true });
+  } = createCalendar({
+    value,
+    multiple: true,
+    // disable days before the current day
+    isDateDisabled: (date) => {
+      const currentDate = new Date();
+      return (
+        date.year < currentDate.getFullYear() ||
+        (date.year === currentDate.getFullYear() &&
+          (date.month - 1 < currentDate.getMonth() ||
+            (date.month - 1 === currentDate.getMonth() && date.day < currentDate.getDate())))
+      );
+    }
+  });
 </script>
 
 <div use:melt={$calendar} class={cn(className)}>
