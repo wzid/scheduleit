@@ -3,7 +3,7 @@
   <h1
     class="bg-gradient-to-r from-peach-200 to-peach-300 bg-clip-text leading-none text-transparent"
   >
-    timeslot
+    <a href="/">timeslot</a>
   </h1>
   <div class="text-sm text-zinc-500">
     built by <a class="playful" target="_blank" href="https://github.com/wzid">cameron</a> &
