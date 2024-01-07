@@ -29,6 +29,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Find Timeslots</title>
+</svelte:head>
+
 <form class="flex w-fit flex-col gap-4" on:submit={handleSubmit}>
   <Input bind:value={eventName} size="lg" placeholder="Type your event name here..." />
   <div class="grid gap-4 sm:flex">
