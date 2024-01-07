@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Button, Calendar, DateRangePicker, Input, Select } from '$lib';
+  import { Button, Calendar, Combobox, DateRangePicker, Input, Select } from '$lib';
   import { TIMES } from '$lib/constants';
   import { get, writable } from 'svelte/store';
 
   let timeOptions = { times: TIMES };
-  let tzOptions = { 'Time Zone': Intl.supportedValuesOf('timeZone') };
+  const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // Default component values
@@ -44,7 +44,7 @@
       </div>
       <div class="pb-4">
         <h3 class="pb-2">Time Zone</h3>
-        <Select className="w-full" selected={selectedTz} options={tzOptions} />
+        <Combobox selected={selectedTz} options={tzOptions} />
       </div>
       <Button className="w-full" variant="secondary">Create Event</Button>
     </div>
