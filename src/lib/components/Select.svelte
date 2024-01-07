@@ -35,6 +35,7 @@
   <button
     class="flex h-10 min-w-[150px] items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2 text-peach-200 shadow ring-peach-300 transition-colors hover:bg-zinc-700/60 focus:outline-none focus:ring-1"
     type="button"
+    aria-label={title}
     use:melt={$trigger}
     on:m-keydown={(e) => {
       e.preventDefault(); // Cancel default builder behabiour
@@ -45,7 +46,7 @@
       if (!['ArrowDown', 'ArrowUp', 'Space', 'Enter'].includes(key)) return;
 
       const allOptions = Object.values(options).flat();
-      const index = allOptions.indexOf(`${$selectedLabel}`);
+      const index = allOptions.indexOf($selectedLabel);
 
       if (key === 'ArrowDown') {
         const nextIndex = index + 1;
@@ -59,7 +60,6 @@
         open.set(true);
       }
     }}
-    aria-label="Food"
   >
     {$selectedLabel || placeholder}
     <ChevronDown class="h-5 w-5" />
