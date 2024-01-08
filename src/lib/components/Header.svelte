@@ -13,7 +13,7 @@
 
 <style lang="postcss">
   :root {
-    --shadow: theme(colors.peach.400);
+    --shadow: theme(colors.peach.300);
     --text-color: theme(colors.zinc.500);
   }
 
