@@ -28,9 +28,10 @@ export const actions = {
 
     // 2024-01-07
 
-    await db.insert(events).values(form.data);
+    const result = await db.insert(events).values(form.data).returning({ id: events.id });
+
     // TODO: Redirect user to the event page
 
-    return { form };
+    return { form, eventId: result[0].id };
   }
 };
