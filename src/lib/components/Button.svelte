@@ -2,13 +2,13 @@
   import { cn, longpress } from '$lib/utils';
 
   export let onClick: () => void = () => {};
-  
+
   export let type: 'button' | 'submit' = 'button';
   export let className: string | undefined = undefined;
-  // Variant is going to be used to index the variantClasses object
-  // must be defined
-  export let variant: 'primary' | 'secondary' | 'ghost' | 'neutral' = 'primary';
   
+  // Must be one of the keys in variantClasses
+  export let variant: keyof typeof variantClasses = 'primary';
+
   // switch between primary, secondary, and ghost buttons
   const variantClasses = {
     primary: 'bg-royalblue-500 hover:bg-royalblue-500/80 text-white',
@@ -25,8 +25,6 @@
   };
 
   let duration = 300;
-  
-
 </script>
 
 <button
