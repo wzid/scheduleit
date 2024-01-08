@@ -28,13 +28,13 @@
 
 <div use:melt={$calendar} class={cn(className)}>
   <header>
-    <button use:melt={$prevButton}>
+    <button use:melt={$prevButton} type="button">
       <ChevronLeft size={24} />
     </button>
     <div use:melt={$heading}>
       {$headingValue}
     </div>
-    <button use:melt={$nextButton}>
+    <button use:melt={$nextButton} type="button">
       <ChevronRight size={24} />
     </button>
   </header>
