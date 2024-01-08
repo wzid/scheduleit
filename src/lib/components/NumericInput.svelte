@@ -15,7 +15,6 @@
 </script>
 
 <div class={cn('flex flex-col', className)}>
-    
   {#if title}
     <label class="pb-1 text-white" for="input">{title}</label>
   {/if}
@@ -23,9 +22,8 @@
     bind:value
     class={cn(
       sizes[size],
-      'rounded-lg bg-zinc-800/80 p-1 pl-2 text-white ring-peach-300 placeholder:text-zinc-500 focus:ring-1 focus-visible:outline-none'
+      'rounded-lg bg-zinc-800/80 p-1 text-center text-peach-200 shadow ring-peach-300 placeholder:text-zinc-500 focus:ring-1 focus-visible:outline-none'
     )}
-    id="input"
     type="number"
     {placeholder}
   />
