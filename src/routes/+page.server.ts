@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
-import { db } from '$lib/db/index.js';
-import { events } from '$lib/db/schema.js';
+import { db } from '$lib/db';
+import { events } from '$lib/db/schema';
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Please enter an event name.'),
