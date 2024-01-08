@@ -17,26 +17,27 @@ export const events = sqliteTable('events', {
 });
 
 export const eventRelations = relations(events, ({ many }) => ({
-  availabilities: many(availabilities)
+  users: many(users)
 }));
 
-// TODO: Finish writing the schema for a group member availability table
-export const availabilities = sqliteTable('availabilities', {
+export const users = sqliteTable('users', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => nanoid(6)),
   eventId: text('event_id')
     .notNull()
     .references(() => events.id),
-  // Add stuff here
+  name: text('name').notNull(),
+  password: text('password'),
+  availability: text('availability'),
   createdAt: integer('created_at')
     .notNull()
     .default(sql`(cast (unixepoch() as int))`)
 });
 
-export const availabilityRelations = relations(availabilities, ({ one }) => ({
+export const userRelations = relations(users, ({ one }) => ({
   event: one(events, {
-    fields: [availabilities.eventId],
+    fields: [users.eventId],
     references: [events.id]
   })
 }));
