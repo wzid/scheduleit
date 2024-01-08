@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Button, Calendar, Combobox, Input, Meta, Select } from '$lib';
+  import { Minus, Plus } from 'lucide-svelte';
+  import { Button, Calendar, Combobox, Input, Meta, Select, NumericInput } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
   import { TIMES } from '$lib/constants';
   import { convertDatesToISO } from '$lib/utils';
@@ -12,10 +13,8 @@
   const timeOptions = { times: TIMES };
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  let duration = { hours: 0, minutes: 30 };
 
-  // Default component values
-  const fromTime = writable({ label: '12:00 AM', value: '12:00 AM' });
-  const toTime = writable({ label: '12:30 AM', value: '12:30 AM' });
   const selectedTz = writable({ label: userTz, value: userTz });
   const dates = writable<CalendarValue<true>>([]);
 
@@ -30,10 +29,27 @@
     }
   });
 
-  fromTime.subscribe((option) => ($form.fromTime = option.value));
-  toTime.subscribe((option) => ($form.toTime = option.value));
   selectedTz.subscribe((option) => ($form.timeZone = option.value));
-  dates.subscribe((values) => ($form.dates = convertDatesToISO(values)));
+
+  const increment = () => {
+    duration.minutes += 1;
+    if (duration.minutes === 60) {
+      duration.minutes = 0;
+      duration.hours += 1;
+    }
+  }
+
+  const decrement = () => {
+    // We decrease the hours first, then the minutes if the hours are greater than 0
+    if (duration.hours > 0 && duration.minutes === 0) {
+      duration.hours -= 1;
+      duration.minutes = 59;
+    } else if (duration.minutes > 0) { 
+      // We decrease the minutes if they are greater than 0
+      duration.minutes -= 1;
+    }
+  }
+  
 
   // TODO: Ensure fromTime is before toTime
 </script>
@@ -46,37 +62,35 @@
     {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
   </div>
   <div class="flex flex-col gap-4 sm:flex-row">
-    <div class="space-y-2">
+    <div class="flex gap-4">
       <div>
-        <h3>Dates Available</h3>
-        <p class="text-sm text-zinc-500">What dates might work?</p>
-        {#if $errors.dates?._errors}<p class="invalid">{$errors.dates._errors[0]}</p>{/if}
-      </div>
-      <Calendar className="w-80 md:w-72" value={dates} />
-    </div>
-    <div class="space-y-4">
-      <div class="space-y-2">
-        <div>
-          <h3>Time Range</h3>
-          <p class="text-sm text-zinc-500">What times might work?</p>
+        <h3 class="pb-2">Duration</h3>
+        <div class="flex gap-4 items-center">
+          <Button className="h-10 w-10" contentType="icon" onClick={decrement} variant="neutral" >
+            <Minus size={20} strokeWidth={3} />
+          </Button>
+          <div class="flex gap-2 items-center">
+            <NumericInput size="lg" className="w-10" value={duration.hours} />
+            <p>h</p>
+            <NumericInput size="lg" className="w-10" value={duration.minutes} />
+            <p>m</p>
+          </div>
+          <Button className="h-10 w-10" contentType="icon" onClick={increment} variant="neutral" >
+            <Plus size={20} strokeWidth={3} />
+          </Button>
         </div>
-        <div class="flex items-center gap-2">
-          <Select className="w-full" selected={fromTime} options={timeOptions} />
-          <span>to</span>
-          <Select className="w-full" selected={toTime} options={timeOptions} />
-        </div>
-        {#if $errors.fromTime}<p class="invalid">{$errors.fromTime}</p>{/if}
-        {#if $errors.toTime}<p class="invalid">{$errors.toTime}</p>{/if}
       </div>
-      <div class="space-y-2">
-        <h3>Time Zone</h3>
+      <div>
+        <h3 class="pb-2">Time Zone</h3>
         <Combobox selected={selectedTz} options={tzOptions} />
         {#if $errors.timeZone}<p class="invalid">{$errors.timeZone}</p>{/if}
       </div>
-      <Button className="w-full" variant="secondary">Create Event</Button>
     </div>
   </div>
 </form>
 
-<!-- For debugging in dev -->
+
+<!-- For debugging in dev 
 <SuperDebug data={$form} />
+-->
+

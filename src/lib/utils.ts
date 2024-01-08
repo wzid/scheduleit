@@ -23,3 +23,31 @@ export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
   }
   return newDates;
 };
+
+export const longpress = (node: HTMLElement, duration: number) => {
+	let interval: any;
+
+	const handleMousedown = () => {
+		interval = setInterval(() => {
+			node.dispatchEvent(new CustomEvent('longpress'));
+		}, duration);
+	};
+
+	const handleMouseup = () => {
+		clearInterval(interval);
+	};
+
+	node.addEventListener('mousedown', handleMousedown);
+	node.addEventListener('mouseup', handleMouseup);
+
+	return {
+		update(newDuration: any) {
+			duration = newDuration;
+		},
+		destroy() {
+			clearInterval(interval);
+			node.removeEventListener('mousedown', handleMousedown);
+			node.removeEventListener('mouseup', handleMouseup);
+		}
+	};
+}
