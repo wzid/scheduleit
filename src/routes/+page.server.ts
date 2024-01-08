@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
 
@@ -20,18 +20,10 @@ export const load = async () => {
 export const actions = {
   default: async ({ request }) => {
     const form = await superValidate(request, schema);
-    console.log('POST', form);
-
     if (!form.valid) {
       return fail(400, { form });
     }
-
-    // 2024-01-07
-
     const result = await db.insert(events).values(form.data).returning({ id: events.id });
-
-    // TODO: Redirect user to the event page
-
     return { form, eventId: result[0].id };
   }
 };

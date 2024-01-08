@@ -7,6 +7,7 @@
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import type { PageData } from './$types';
+  import { goto } from '$app/navigation';
 
   const timeOptions = { times: TIMES };
   const tzOptions = Intl.supportedValuesOf('timeZone');
@@ -19,7 +20,15 @@
   const dates = writable<CalendarValue<true>>([]);
 
   export let data: PageData;
-  const { form, enhance, errors } = superForm(data.form, { dataType: 'json' });
+  const { form, enhance, errors } = superForm(data.form, {
+    dataType: 'json',
+    onResult: ({ result }) => {
+      if (result.type === 'success' && result.data) {
+        const eventId = result.data.eventId;
+        goto(`/event/${eventId}`);
+      }
+    }
+  });
 
   fromTime.subscribe((option) => ($form.fromTime = option.value));
   toTime.subscribe((option) => ($form.toTime = option.value));
