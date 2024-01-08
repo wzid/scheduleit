@@ -7,17 +7,19 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export const stripDateData = (dates: CalendarValue<true> | undefined) => {
-  const newDates: { day: number; month: number; year: number }[] = [];
+export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
+  const newDates: string[] = [];
   if (!dates) {
     return newDates;
   }
   for (const date of dates) {
-    newDates.push({
-      day: date.day,
-      month: date.month,
-      year: date.year
-    });
+    newDates.push(
+      date.year +
+        '-' +
+        date.month.toString().padStart(2, '0') +
+        '-' +
+        date.day.toString().padStart(2, '0')
+    );
   }
   return newDates;
 };

@@ -41,6 +41,7 @@
     "clsx": "^2.1.0",
     "drizzle-orm": "^0.29.3",
     "lucide-svelte": "^0.307.0",
+    "nanoid": "^5.0.4",
     "tailwind-merge": "^2.2.0"
   }
 }

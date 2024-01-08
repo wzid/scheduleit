@@ -2,7 +2,7 @@
   import { Button, Calendar, Combobox, Input, Meta, Select } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
   import { TIMES } from '$lib/constants';
-  import { stripDateData } from '$lib/utils';
+  import { convertDatesToISO } from '$lib/utils';
   import { writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -24,7 +24,7 @@
   fromTime.subscribe((option) => ($form.fromTime = option.value));
   toTime.subscribe((option) => ($form.toTime = option.value));
   selectedTz.subscribe((option) => ($form.timeZone = option.value));
-  dates.subscribe((values) => ($form.dates = stripDateData(values)));
+  dates.subscribe((values) => ($form.dates = convertDatesToISO(values)));
 
   // TODO: Ensure fromTime is before toTime
 </script>

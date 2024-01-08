@@ -1,9 +1,11 @@
 import { relations, sql } from 'drizzle-orm';
-import { index, integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { nanoid } from 'nanoid';
 
 export const events = sqliteTable('events', {
-  // TODO: Autogenerate ID
-  id: text('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid(6)),
   name: text('name').notNull(),
   fromTime: text('from_time').notNull(),
   toTime: text('to_time').notNull(),
@@ -20,8 +22,9 @@ export const eventRelations = relations(events, ({ many }) => ({
 
 // TODO: Finish writing the schema for a group member availability table
 export const availabilities = sqliteTable('availabilities', {
-  // TODO: Autogenerate ID
-  id: text('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid(6)),
   eventId: text('event_id')
     .notNull()
     .references(() => events.id),
