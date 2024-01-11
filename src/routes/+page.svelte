@@ -1,17 +1,8 @@
 <script lang="ts">
   import { CalendarPlus } from 'lucide-svelte';
-  import {
-    AvailabilitySelector,
-    Button,
-    Calendar,
-    Combobox,
-    Input,
-    Meta,
-    Select,
-    NumericInput
-  } from '$lib';
+  import { AvailabilitySelector, Button, Calendar, Combobox, Input, Meta, Select } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
-  import { convertDatesToISO, getTimeRangesFromDuration } from '$lib/utils';
+  import { convertDatesToISO } from '$lib/utils';
   import { writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -20,7 +11,6 @@
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  let duration = { hours: 0, minutes: 30 };
 
   const selectedDateType = writable({ label: 'Specific dates', value: 'Specific dates' });
   const selectedTz = writable({ label: userTz, value: userTz });
@@ -38,39 +28,6 @@
   });
 
   selectedTz.subscribe((option) => ($form.timeZone = option.value));
-
-  function increment() {
-    if (duration.hours >= 23 && duration.minutes >= 55) {
-      return;
-    }
-    duration.minutes += 5;
-    if (duration.minutes >= 60) {
-      duration.minutes = duration.minutes % 60;
-      duration.hours += 1;
-    }
-  }
-
-  function decrement() {
-    // We decrease the hours first, then the minutes if the hours are greater than 0
-    if (duration.hours > 0 && duration.minutes < 5) {
-      duration.hours -= 1;
-      duration.minutes = 60 - (5 - duration.minutes);
-    } else if (duration.minutes <= 5 && duration.hours === 0) {
-      return;
-    } else {
-      duration.minutes -= 5;
-    }
-  }
-
-  function fixTimeRange() {
-    if (duration.hours > 23) {
-      duration.hours = 23;
-    }
-    if (duration.minutes >= 60) {
-      duration.hours += Math.floor(duration.minutes / 60);
-      duration.minutes = duration.minutes % 60;
-    }
-  }
 </script>
 
 <Meta title="Group Availability Tool" />
@@ -109,9 +66,7 @@
     <div class="space-y-3.5 rounded-lg text-center shadow-sm">
       <h3>Monday, January 8, 2024</h3>
       <div class="flex max-h-60 flex-col gap-2 overflow-y-auto">
-        {#each getTimeRangesFromDuration(duration) as time}
-          <Button className="w-full" variant="neutral">{time.start} - {time.end}</Button>
-        {/each}
+        <Button className="w-full" variant="neutral">time.start - time.end</Button>
       </div>
       <!-- need to find a way to make this button stand out but not as much as the submit button -->
       <Button className="w-full" variant="neutral">Apply times to all selected dates</Button>
