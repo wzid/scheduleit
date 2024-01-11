@@ -9,6 +9,7 @@
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import type { PageData } from './$types';
   import { goto } from '$app/navigation';
+    import { min } from 'drizzle-orm';
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -49,6 +50,13 @@
     }
   }
 
+  function fixTimeRange() {
+    if (duration.minutes >= 60) {
+      duration.hours += Math.floor(duration.minutes / 60);
+      duration.minutes = duration.minutes % 60;
+    }
+  }
+
   // TODO: Ensure fromTime is before toTime
 </script>
 
@@ -71,7 +79,7 @@
         <div class="flex items-center gap-2">
           <NumericInput size="lg" className="w-10" bind:value={duration.hours} />
           <p>h</p>
-          <NumericInput size="lg" className="w-10" bind:value={duration.minutes} />
+          <NumericInput onDroppedFocus={fixTimeRange} size="lg" className="w-10" bind:value={duration.minutes} />
           <p>m</p>
         </div>
         <Button onClick={increment} className="h-10 w-10" contentType="icon" variant="neutral">
