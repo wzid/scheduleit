@@ -32,25 +32,29 @@
   selectedTz.subscribe((option) => ($form.timeZone = option.value));
 
   function increment() {
-    duration.minutes += 1;
-    if (duration.minutes === 60) {
-      duration.minutes = 0;
+    duration.minutes += 5;
+    if (duration.minutes >= 60) {
+      duration.minutes = duration.minutes % 60;
       duration.hours += 1;
     }
   }
 
   function decrement() {
     // We decrease the hours first, then the minutes if the hours are greater than 0
-    if (duration.hours > 0 && duration.minutes === 0) {
+    if (duration.hours > 0 && duration.minutes <= 5) {
       duration.hours -= 1;
-      duration.minutes = 59;
+      duration.minutes = 60 - (5 - duration.minutes);
     } else if (duration.minutes > 0) {
       // We decrease the minutes if they are greater than 0
-      duration.minutes -= 1;
+      duration.minutes = Math.max(5, duration.minutes - 5);
     }
   }
 
   function fixTimeRange() {
+    if (duration.hours > 23) {
+      duration.hours = 23;
+    }
+    
     if (duration.minutes >= 60) {
       duration.hours += Math.floor(duration.minutes / 60);
       duration.minutes = duration.minutes % 60;
