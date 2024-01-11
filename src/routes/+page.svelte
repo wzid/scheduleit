@@ -3,7 +3,7 @@
   import { Button, Calendar, Combobox, Input, Meta, Select, NumericInput } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
   import { TIMES } from '$lib/constants';
-  import { convertDatesToISO } from '$lib/utils';
+  import { convertDatesToISO, getTimeRangesFromDuration } from '$lib/utils';
   import { writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -30,15 +30,15 @@
 
   selectedTz.subscribe((option) => ($form.timeZone = option.value));
 
-  const increment = () => {
+  function increment() {
     duration.minutes += 1;
     if (duration.minutes === 60) {
       duration.minutes = 0;
       duration.hours += 1;
     }
-  };
+  }
 
-  const decrement = () => {
+  function decrement() {
     // We decrease the hours first, then the minutes if the hours are greater than 0
     if (duration.hours > 0 && duration.minutes === 0) {
       duration.hours -= 1;
@@ -47,7 +47,7 @@
       // We decrease the minutes if they are greater than 0
       duration.minutes -= 1;
     }
-  };
+  }
 
   // TODO: Ensure fromTime is before toTime
 </script>
@@ -99,8 +99,8 @@
       <h3>Monday, January 8, 2024</h3>
       <div class="flex max-h-60 flex-col gap-2 overflow-y-auto">
         <!-- TODO: Make these actually time slots, not just 30 minute intervals -->
-        {#each TIMES as time}
-          <Button className="w-full" variant="neutral">{time} - 0:00 PM</Button>
+        {#each getTimeRangesFromDuration(duration) as time}
+          <Button className="w-full" variant="neutral">{time.start} - {time.end}</Button>
         {/each}
         <!-- <Button className="w-full" variant="neutral">8:00 AM - 8:30 AM</Button> -->
       </div>
