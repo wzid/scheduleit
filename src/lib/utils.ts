@@ -16,10 +16,10 @@ export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
   for (const date of dates) {
     newDates.push(
       date.year +
-      '-' +
-      date.month.toString().padStart(2, '0') +
-      '-' +
-      date.day.toString().padStart(2, '0')
+        '-' +
+        date.month.toString().padStart(2, '0') +
+        '-' +
+        date.day.toString().padStart(2, '0')
     );
   }
   return newDates;
@@ -56,9 +56,8 @@ export function longpress(
   };
 }
 
-
-export const getTimeRangesFromDuration = (duration: { hours: number, minutes: number }) => {
-  let totalMinutes = duration.minutes +  duration.hours * 60;
+export const getTimeRangesFromDuration = (duration: { hours: number; minutes: number }) => {
+  let totalMinutes = duration.minutes + duration.hours * 60;
   if (totalMinutes == 0) {
     return [];
   }
@@ -74,9 +73,7 @@ export const getTimeRangesFromDuration = (duration: { hours: number, minutes: nu
     }
   }
   return ranges;
-}
-
-
+};
 
 function minutesToTime(minutes: number) {
   let hours = Math.floor(minutes / 60);
@@ -88,7 +85,8 @@ function minutesToTime(minutes: number) {
   }
 
   hours = hours % 12;
-  if (hours === 0) { // the start of the time period in a 12-hour clock
+  if (hours === 0) {
+    // the start of the time period in a 12-hour clock
     hours = 12;
   }
 
