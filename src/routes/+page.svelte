@@ -9,7 +9,7 @@
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import type { PageData } from './$types';
   import { goto } from '$app/navigation';
-    import { min } from 'drizzle-orm';
+  import { min } from 'drizzle-orm';
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -32,6 +32,9 @@
   selectedTz.subscribe((option) => ($form.timeZone = option.value));
 
   function increment() {
+    if (duration.hours >= 23 && duration.minutes >= 55) {
+      return;
+    }
     duration.minutes += 5;
     if (duration.minutes >= 60) {
       duration.minutes = duration.minutes % 60;
@@ -41,12 +44,13 @@
 
   function decrement() {
     // We decrease the hours first, then the minutes if the hours are greater than 0
-    if (duration.hours > 0 && duration.minutes <= 5) {
+    if (duration.hours > 0 && duration.minutes < 5) {
       duration.hours -= 1;
       duration.minutes = 60 - (5 - duration.minutes);
-    } else if (duration.minutes > 0) {
-      // We decrease the minutes if they are greater than 0
-      duration.minutes = Math.max(5, duration.minutes - 5);
+    } else if (duration.minutes <= 5 && duration.hours === 0) {
+        return;
+    } else {
+      duration.minutes -= 5;
     }
   }
 
@@ -54,7 +58,6 @@
     if (duration.hours > 23) {
       duration.hours = 23;
     }
-    
     if (duration.minutes >= 60) {
       duration.hours += Math.floor(duration.minutes / 60);
       duration.minutes = duration.minutes % 60;
@@ -81,9 +84,19 @@
           <Minus class="h-5 w-5" />
         </Button>
         <div class="flex items-center gap-2">
-          <NumericInput size="lg" className="w-10" bind:value={duration.hours} />
+          <NumericInput
+            onDroppedFocus={fixTimeRange}
+            size="lg"
+            className="w-10"
+            bind:value={duration.hours}
+          />
           <p>h</p>
-          <NumericInput onDroppedFocus={fixTimeRange} size="lg" className="w-10" bind:value={duration.minutes} />
+          <NumericInput
+            onDroppedFocus={fixTimeRange}
+            size="lg"
+            className="w-10"
+            bind:value={duration.minutes}
+          />
           <p>m</p>
         </div>
         <Button onClick={increment} className="h-10 w-10" contentType="icon" variant="neutral">
