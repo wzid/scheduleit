@@ -69,9 +69,9 @@
           <Minus class="h-5 w-5" />
         </Button>
         <div class="flex items-center gap-2">
-          <NumericInput size="lg" className="w-10" value={duration.hours} />
+          <NumericInput size="lg" className="w-10" bind:value={duration.hours} />
           <p>h</p>
-          <NumericInput size="lg" className="w-10" value={duration.minutes} />
+          <NumericInput size="lg" className="w-10" bind:value={duration.minutes} />
           <p>m</p>
         </div>
         <Button onClick={increment} className="h-10 w-10" contentType="icon" variant="neutral">

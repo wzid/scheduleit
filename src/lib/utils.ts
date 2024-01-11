@@ -59,6 +59,9 @@ export function longpress(
 
 export const getTimeRangesFromDuration = (duration: { hours: number, minutes: number }) => {
   let totalMinutes = duration.minutes +  duration.hours * 60;
+  if (totalMinutes == 0) {
+    return [];
+  }
 
   const ranges = [];
   // we want to get all the ranges of time that are possible with the given duration of a meeting
