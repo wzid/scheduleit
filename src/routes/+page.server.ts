@@ -9,6 +9,7 @@ const schema = z.object({
   fromTime: z.string(),
   toTime: z.string(),
   timeZone: z.string(),
+  customId: z.string(),
   dates: z.array(z.string()).min(1, 'Please select at least one date.')
 });
 
