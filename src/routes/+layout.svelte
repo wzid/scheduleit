@@ -1,13 +1,14 @@
 <script>
-  import { Header, Meta } from '$lib';
+  import { Header, Meta, Footer } from '$lib';
   import '../app.css';
 </script>
 
 <Meta />
 
-<div class="flex justify-center py-6">
-  <div class="flex flex-col items-center">
+<div class="flex justify-center py-6 h-screen">
+  <div class="flex flex-col items-center ">
     <Header />
     <slot />
+    <Footer />
   </div>
 </div>
