@@ -2,22 +2,46 @@
   import { TIMES } from '$lib/constants';
   import { cn } from '$lib/utils';
 
-  const SEGMENTS = 24;
+  
+  const HOURS = 24;
   const BLOCKS_PER_SEGMENT = 4;
+  
+  // create a map from index to a boolean if it is selected (initially all false)
+  const selectionMap = new Map<number, boolean>(
+    Array(HOURS * BLOCKS_PER_SEGMENT)
+      .fill(0)
+      .map((_, i) => [i, false])
+  );
+  
 
   let dragStartIdx = -1;
   let dragEndIdx = -1;
   let dragging = false;
+  let removing = false;
   let count = 0;
 
   const getBlockIdx = (i: number, j: number) => i * BLOCKS_PER_SEGMENT + j;
 
   const isBlockSelected = (i: number, j: number) => {
     const blockIdx = getBlockIdx(i, j);
-    return (
-      (dragStartIdx <= blockIdx && blockIdx <= dragEndIdx) ||
-      (dragEndIdx <= blockIdx && blockIdx <= dragStartIdx)
-    );
+
+    // I wouldnt simplify this, it's easier to read this way
+    if (dragging) {
+      let inDragRange: boolean =
+        (dragStartIdx <= blockIdx && blockIdx <= dragEndIdx) ||
+        (dragEndIdx <= blockIdx && blockIdx <= dragStartIdx);
+      if (removing) {
+        if (inDragRange) {
+          return false;
+        } else {
+          return selectionMap.get(blockIdx);
+        }
+      } else {
+        return inDragRange || selectionMap.get(blockIdx);
+      }
+    } else {
+      return selectionMap.get(blockIdx);
+    }
   };
 
   const fixSelection = () => {
@@ -31,6 +55,7 @@
   const handleDragStart = (i: number, j: number) => {
     dragging = true;
     dragStartIdx = getBlockIdx(i, j);
+    removing = selectionMap.get(dragStartIdx) ?? false;
     count++;
   };
 
@@ -45,6 +70,10 @@
     fixSelection();
     console.log('drag complete', dragStartIdx, 'to', dragEndIdx);
     dragging = false;
+    for (let i = dragStartIdx; i <= dragEndIdx; i++) {
+      selectionMap.set(i, !removing);
+    }
+    removing = false;
     count = 0;
   };
 </script>
@@ -58,8 +87,8 @@
     : `${TIMES[dragStartIdx]} - ${TIMES[(dragEndIdx + 1) % TIMES.length]}`}
 </h3>
 
-<div class="divide-y divide-transparent">
-  {#each Array(SEGMENTS) as _, i}
+<div class="divide-y divide-zinc-900">
+  {#each Array(HOURS) as _, i}
     <div>
       {#each Array(BLOCKS_PER_SEGMENT) as _, j}
         {#key count}
@@ -69,7 +98,7 @@
             on:mousedown={() => handleDragStart(i, j)}
             on:mouseover={() => handleDragOver(i, j)}
             class={cn(
-              'h-1 w-32 bg-zinc-800 transition-colors',
+              'h-[.4rem] w-32 bg-zinc-800/80 transition-colors duration-100',
               isBlockSelected(i, j) ? 'bg-peach-200' : 'hover:bg-zinc-700'
             )}
           />
