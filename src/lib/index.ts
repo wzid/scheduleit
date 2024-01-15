@@ -5,10 +5,12 @@ import Calendar from './components/Calendar.svelte';
 import Combobox from './components/Combobox.svelte';
 import DateRangePicker from './components/DateRangePicker.svelte';
 import Header from './components/Header.svelte';
+import Footer from './components/Footer.svelte';
 import Input from './components/Input.svelte';
 import Meta from './components/Meta.svelte';
 import Select from './components/Select.svelte';
 import NumericInput from './components/NumericInput.svelte';
+import TimeRangeSlider from './components/TimeRangeSlider.svelte';
 
 export {
   AvailabilitySelector,
@@ -17,8 +19,10 @@ export {
   Combobox,
   DateRangePicker,
   Header,
+  Footer,
   Input,
   Meta,
   Select,
-  NumericInput
+  NumericInput,
+  TimeRangeSlider,
 };
