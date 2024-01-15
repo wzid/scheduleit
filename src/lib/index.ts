@@ -9,6 +9,7 @@ import Input from './components/Input.svelte';
 import Meta from './components/Meta.svelte';
 import Select from './components/Select.svelte';
 import NumericInput from './components/NumericInput.svelte';
+import TimeRangeSlider from './components/TimeRangeSlider.svelte';
 
 export {
   AvailabilitySelector,
@@ -20,5 +21,6 @@ export {
   Input,
   Meta,
   Select,
-  NumericInput
+  NumericInput,
+  TimeRangeSlider
 };
