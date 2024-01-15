@@ -77,7 +77,7 @@
           <h2>Dates Available</h2>
           <p class="text-sm text-zinc-500">What dates might work?</p>
         </div>
-        <Calendar className="w-80" value={dates} />
+        <Calendar className="min-w-full w-72" value={dates} />
       </div>
     </div>
     <div class="flex w-full flex-col gap-4">
@@ -97,6 +97,11 @@
           <h2>{timeRangeValue[0]} - {timeRangeValue[1]}</h2>
         </div>
         <TimeRangeSlider value={timeRange} />
+        <div class="!mt-[3rem] space-y-1">
+          <h3>timeslot.one/</h3>
+          <Input bind:value={$form.customId} placeholder="Custom ID (optional)" />
+          <p class="text-zinc-500 text-sm">You can enter a custom id that will appear in the link of your event</p>
+        </div>
       </div>
     </div>
   </div>
