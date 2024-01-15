@@ -97,10 +97,12 @@
           <h2>{timeRangeValue[0]} - {timeRangeValue[1]}</h2>
         </div>
         <TimeRangeSlider value={timeRange} />
-        <div class="!mt-[3rem] space-y-1">
-          <h3>timeslot.one/</h3>
+        <div class="!mt-[3rem] space-y-2">
+          <div>
+            <h2>timeslot.one/</h2>
+            <p class="text-zinc-500 text-sm">A custom id that will appear in the link of your event</p>
+          </div>
           <Input bind:value={$form.customId} placeholder="Custom ID (optional)" />
-          <p class="text-zinc-500 text-sm">You can enter a custom id that will appear in the link of your event</p>
         </div>
       </div>
     </div>
