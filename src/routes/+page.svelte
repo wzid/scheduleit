@@ -55,7 +55,7 @@
   });
 </script>
 
-<Meta title="Group Availability Tool" />
+<Meta title="Plan a Meeting" />
 
 <form use:enhance method="POST" class="space-y-4">
   <!-- Event name -->
@@ -64,7 +64,7 @@
     {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
   </div>
   <!-- Date type and time zone -->
-  <div class="grid gap-4 sm:grid-cols-2">
+  <div class="grid gap-10 sm:grid-cols-2">
     <div class="space-y-2">
       <h2>Date Type</h2>
       <Select options={{ 'Date Type': dateTypeOptions }} selected={selectedDateType} />
@@ -75,7 +75,7 @@
       {#if $errors.timeZone}<p class="invalid">{$errors.timeZone}</p>{/if}
     </div>
   </div>
-  <div class="grid gap-4 sm:grid-cols-2">
+  <div class="grid gap-10 sm:grid-cols-2">
     <!-- Dates available -->
     <div class="space-y-2">
       <div>
@@ -83,7 +83,7 @@
         <p class="text-sm text-zinc-500">What dates might work?</p>
       </div>
       {#if $errors.dates?._errors}<p class="invalid">{$errors.dates._errors[0]}</p>{/if}
-      <Calendar className="min-w-full w-72" value={dates} />
+      <Calendar className="min-w-full " value={dates} />
     </div>
     <div class="space-y-2">
       <!-- Time range -->
@@ -106,6 +106,13 @@
         <Input bind:value={$form.id} placeholder="Your custom ID (optional)" />
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}
       </div>
+      <img
+        class="hidden sm:block"
+        alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
+        src="https://s6.imgcdn.dev/flXKK.png"
+        style="filter: invert(100%);"
+        width="275px"
+      />
     </div>
   </div>
   <!-- Submit -->
