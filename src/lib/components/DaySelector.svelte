@@ -8,10 +8,9 @@
   );
   let count = 0;
 
-  const boxClassNames: { [key: string]: string } = {
+  const boxClassNames: Record<string, string> = {
     M: 'rounded-bl-lg',
-    Su: 'rounded-br-lg',
-    default: ''
+    Su: 'rounded-br-lg'
   };
 
   const toggleDay = (day: string) => {
@@ -28,18 +27,18 @@
     {/each}
   </div>
   <div class="flex justify-between gap-1">
-    {#each daysOfWeek as day}
-      {#key count}
+    {#key count}
+      {#each daysOfWeek as day}
         <button
           type="button"
           on:click={() => toggleDay(day)}
           class={cn(
-            daysSelected.get(day) ? 'bg-peach-300' : '',
-            boxClassNames[day],
-            'h-10 w-full bg-zinc-700 transition-all hover:opacity-80'
+            'h-10 w-full transition-all hover:opacity-80',
+            daysSelected.get(day) ? 'bg-peach-300' : 'bg-zinc-700',
+            boxClassNames[day]
           )}
         />
-      {/key}
-    {/each}
+      {/each}
+    {/key}
   </div>
 </div>
