@@ -24,7 +24,6 @@
       sizes[size],
       'rounded-lg bg-zinc-800/80 p-1 pl-2 text-white ring-peach-300 placeholder:text-zinc-500 focus:ring-1 focus-visible:outline-none'
     )}
-    id="input"
     type="text"
     {placeholder}
   />
