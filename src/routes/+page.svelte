@@ -91,7 +91,7 @@
       <div class="space-y-2">
         <div>
           <h2>Custom ID</h2>
-          <p class="text-sm text-zinc-500">Example: https://timeslot.one/[customId]</p>
+          <p class="text-sm text-zinc-500">Example: timeslot.one/[customId]</p>
         </div>
         <Input bind:value={$form.id} placeholder="Your custom ID (optional)" />
       </div>
