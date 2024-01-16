@@ -1,6 +1,6 @@
 <script lang="ts">
   import { CalendarPlus } from 'lucide-svelte';
-  import { Button, Calendar, Combobox, Input, Meta, Select, TimeRangeSlider } from '$lib';
+  import { Button, Calendar, Combobox, Input, Meta, Select, TimeRangeSlider, DaySelector } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
   import { get, writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
@@ -19,6 +19,7 @@
   const timeRange = writable<number[]>([9, 17]);
 
   let timeRangeValue: string[] = [];
+  let dateTypeValue: string = 'specific';
 
   export let data: PageData;
   const { form, enhance, errors } = superForm(data.form, {
@@ -37,6 +38,7 @@
   selectedDateType.subscribe((option) => {
     const value = option.value === 'Specific dates' ? 'specific' : 'days_of_week';
     $form.dateType = value;
+    dateTypeValue = value;
   });
 
   timeRange.subscribe((range) => {
@@ -78,12 +80,20 @@
   <div class="grid gap-10 sm:grid-cols-2">
     <!-- Dates available -->
     <div class="space-y-2">
-      <div>
-        <h2>Dates Available</h2>
-        <p class="text-sm text-zinc-500">What dates might work?</p>
-      </div>
-      {#if $errors.dates?._errors}<p class="invalid">{$errors.dates._errors[0]}</p>{/if}
-      <Calendar className="min-w-full " value={dates} />
+      {#if dateTypeValue == 'specific'}
+        <div>
+          <h2>Dates Available</h2>
+          <p class="text-sm text-zinc-500">What dates might work?</p>
+        </div>
+        {#if $errors.dates?._errors}<p class="invalid">{$errors.dates._errors[0]}</p>{/if}
+        <Calendar className="min-w-full " value={dates} />
+      {:else}
+        <div>
+          <h2>Days Available</h2>
+          <p class="text-sm text-zinc-500">What days might work?</p>
+        </div>
+        <DaySelector />
+      {/if}
     </div>
     <div class="space-y-2">
       <!-- Time range -->
