@@ -119,7 +119,7 @@
       <img
         class="hidden sm:block"
         alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
-        src="https://s6.imgcdn.dev/flXKK.png"
+        src="https://s6.imgcdn.dev/flgOo.png"
         style="filter: invert(100%);"
         width="275px"
       />
