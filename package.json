@@ -16,8 +16,9 @@
   "devDependencies": {
     "@melt-ui/pp": "^0.3.0",
     "@melt-ui/svelte": "^0.70.0",
-    "@sveltejs/adapter-auto": "^2.1.1",
+    "@sveltejs/adapter-auto": "^3.1.0",
     "@sveltejs/kit": "^2.3.2",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "autoprefixer": "^10.4.16",
     "dotenv": "^16.3.1",
     "drizzle-kit": "^0.20.12",
@@ -32,7 +33,7 @@
     "tslib": "^2.6.2",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vite": "^4.5.1",
+    "vite": "^5.0.11",
     "zod": "^3.22.4"
   },
   "type": "module",
