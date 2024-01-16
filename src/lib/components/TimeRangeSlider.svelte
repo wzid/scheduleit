@@ -30,12 +30,8 @@
 </script>
 
 <div class="relative w-full rounded-xl bg-zinc-800/80 px-3">
-  <span
-    use:melt={$root}
-    class={cn(className, 'relative flex h-[20px] w-full min-w-[24rem] items-center')}
-  >
+  <span use:melt={$root} class={cn(className, 'relative flex h-[20px] w-full items-center')}>
     <span use:melt={$range} class="h-2 bg-peach-200" />
-
     {#each $ticks as tick, i}
       <span use:melt={tick} class="h-1 w-1 rounded-full bg-zinc-500 data-[bounded]:bg-peach-200" />
       {#if i % 3 == 0}

@@ -1,4 +1,4 @@
-<div class="pb-8 text-center">
+<header class="py-8 text-center">
   <h1
     class="bg-gradient-to-r from-peach-200 to-peach-300 bg-clip-text leading-none text-transparent"
   >
@@ -7,4 +7,4 @@
   <span class="text-sm italic leading-none text-zinc-500">
     find the time that works best for your team
   </span>
-</div>
+</header>

@@ -1,9 +1,9 @@
-<div class="mt-auto pb-2">
-  <div class="text-sm leading-none text-zinc-500">
+<footer class="mt-auto py-6">
+  <div class="text-center text-sm leading-none text-zinc-500">
     built by <a class="shine" target="_blank" href="https://github.com/wzid">cameron</a> &
     <a class="shine" target="_blank" href="https://github.com/aelew">andre</a>
   </div>
-</div>
+</footer>
 
 <style lang="postcss">
   :root {

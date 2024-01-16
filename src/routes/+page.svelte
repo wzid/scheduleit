@@ -50,50 +50,50 @@
 <form use:enhance method="POST" class="space-y-4">
   <!-- Event Name -->
   <div>
-    <Input bind:value={$form.name} size="lg" placeholder="Your event name" />
+    <Input bind:value={$form.name} size="lg" placeholder="Your event name..." />
     {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
   </div>
   <!-- Duration and Time Zone -->
-  <div class="flex w-full gap-4">
-    <div class="flex w-full flex-col gap-4">
-      <div class="space-y-2">
-        <h2>Date Type</h2>
-        <Select
-          options={{ 'Date Type': ['Specific dates', 'Days of the week'] }}
-          selected={selectedDateType}
-        />
-      </div>
-      <div class="space-y-2">
-        <div>
-          <h2>Dates Available</h2>
-          <p class="text-sm text-zinc-500">What dates might work?</p>
-        </div>
-        <Calendar className="min-w-full w-72" value={dates} />
-      </div>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="space-y-2">
+      <h2>Date Type</h2>
+      <Select
+        options={{ 'Date Type': ['Specific dates', 'Days of the week'] }}
+        selected={selectedDateType}
+      />
     </div>
-    <div class="flex w-full flex-col gap-4">
-      <div class="space-y-2">
-        <h2>Time Zone</h2>
-        <Combobox selected={selectedTz} options={tzOptions} />
-        {#if $errors.timeZone}<p class="invalid">{$errors.timeZone}</p>{/if}
+    <div class="space-y-2">
+      <h2>Time Zone</h2>
+      <Combobox selected={selectedTz} options={tzOptions} />
+      {#if $errors.timeZone}<p class="invalid">{$errors.timeZone}</p>{/if}
+    </div>
+  </div>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="space-y-2">
+      <div>
+        <h2>Dates Available</h2>
+        <p class="text-sm text-zinc-500">What dates might work?</p>
       </div>
-      <div class="space-y-2">
-        <!-- Time range -->
-        <div class="flex items-center justify-between pr-2">
-          <div>
+      <Calendar className="min-w-full w-72" value={dates} />
+    </div>
+    <div class="space-y-2">
+      <!-- Time range -->
+      <div class="mb-10 space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="space-y-2">
             <h2>Time Range</h2>
             <p class="text-sm text-zinc-500">What times might work?</p>
           </div>
           <span class="font-medium">{timeRangeValue[0]} - {timeRangeValue[1]}</span>
         </div>
         <TimeRangeSlider value={timeRange} />
-        <div class="!mt-[3rem] space-y-2">
-          <div>
-            <h2>Custom ID</h2>
-            <p class="text-sm text-zinc-500">Example: https://timeslot.one/[customId]</p>
-          </div>
-          <Input bind:value={$form.id} placeholder="Your custom ID (optional)" />
+      </div>
+      <div class="space-y-2">
+        <div>
+          <h2>Custom ID</h2>
+          <p class="text-sm text-zinc-500">Example: https://timeslot.one/[customId]</p>
         </div>
+        <Input bind:value={$form.id} placeholder="Your custom ID (optional)" />
       </div>
     </div>
   </div>
