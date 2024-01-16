@@ -66,7 +66,6 @@
   const handleDragStop = () => {
     if (!dragging) return;
     fixSelection();
-    console.log('drag complete', dragStartIdx, 'to', dragEndIdx);
     dragging = false;
     for (let i = dragStartIdx; i <= dragEndIdx; i++) {
       selectionMap.set(i, !removing);
