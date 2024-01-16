@@ -1,5 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils';
+  import { Check } from 'lucide-svelte';
 
   const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'Sa', 'Su'];
   // create a map from the day to the selected state
@@ -37,7 +38,9 @@
             daysSelected.get(day) ? 'bg-peach-300' : 'bg-zinc-700',
             boxClassNames[day]
           )}
-        />
+        >
+        <Check strokeWidth={3} class={cn("w-6 h-6 mx-auto",  daysSelected.get(day) ? 'block' : 'hidden')} />
+        </button>
       {/each}
     {/key}
   </div>
