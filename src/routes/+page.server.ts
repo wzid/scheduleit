@@ -5,11 +5,12 @@ import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
 
 const schema = z.object({
-  id: z.string(),
+  id: z.string().trim(),
   name: z.string().trim().min(1, 'Please enter an event name.'),
-  fromTime: z.string(),
-  toTime: z.string(),
+  dateType: z.enum(['specific', 'days_of_week']),
   timeZone: z.string(),
+  startTime: z.number().int().positive(),
+  endTime: z.number().int().positive(),
   dates: z.array(z.string()).min(1, 'Please select at least one date.')
 });
 
@@ -24,7 +25,14 @@ export const actions = {
     if (!form.valid) {
       return fail(400, { form });
     }
-    const result = await db.insert(events).values(form.data).returning({ id: events.id });
+
+    const { id: rawId, ...data } = form.data;
+
+    const result = await db
+      .insert(events)
+      .values({ id: rawId === '' ? undefined : rawId, ...data })
+      .returning({ id: events.id });
+
     return { form, eventId: result[0].id };
   }
 };

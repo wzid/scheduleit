@@ -2,15 +2,28 @@ import { relations, sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { nanoid } from 'nanoid';
 
+type DateType = 'specific' | 'days_of_week';
+
+type DaysOfTheWeek =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
+
 export const events = sqliteTable('events', {
   id: text('id')
     .primaryKey()
-    .$defaultFn(() => nanoid(6)),
+    .$defaultFn(() => nanoid(8)),
   name: text('name').notNull(),
-  fromTime: text('from_time').notNull(),
-  toTime: text('to_time').notNull(),
+  dateType: text('date_type').$type<DateType>().notNull(),
   timeZone: text('time_zone').notNull(),
-  dates: text('dates', { mode: 'json' }).$type<string[]>().notNull(),
+  startTime: integer('start_time').notNull(),
+  endTime: integer('end_time').notNull(),
+  dates: text('dates', { mode: 'json' }).$type<string[]>(),
+  days: text('days', { mode: 'json' }).$type<DaysOfTheWeek[]>(),
   createdAt: integer('created_at')
     .notNull()
     .default(sql`(cast (unixepoch() as int))`)

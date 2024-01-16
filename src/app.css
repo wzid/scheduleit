@@ -16,6 +16,6 @@
     @apply text-lg font-semibold;
   }
   .invalid {
-    @apply !mt-0 text-sm text-red-400;
+    @apply !mt-1 text-sm text-red-400;
   }
 }
