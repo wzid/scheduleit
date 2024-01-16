@@ -5,8 +5,8 @@
 
 <Meta />
 
-<div class="flex justify-center py-6 h-screen">
-  <div class="flex flex-col items-center ">
+<div class="flex h-screen justify-center py-6">
+  <div class="flex flex-col items-center">
     <Header />
     <slot />
     <Footer />

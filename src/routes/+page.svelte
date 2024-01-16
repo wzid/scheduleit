@@ -1,16 +1,7 @@
 <script lang="ts">
   import { CalendarPlus } from 'lucide-svelte';
-  import {
-    Button,
-    Calendar,
-    Combobox,
-    Input,
-    Meta,
-    Select,
-    TimeRangeSlider
-  } from '$lib';
+  import { Button, Calendar, Combobox, Input, Meta, Select, TimeRangeSlider } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
-  import { convertDatesToISO } from '$lib/utils';
   import { writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -25,7 +16,7 @@
   const dates = writable<CalendarValue<true>>([]);
 
   const timeRange = writable<number[]>([9, 17]);
-  
+
   let timeRangeValue: string[] = [];
 
   export let data: PageData;
@@ -47,8 +38,8 @@
     if (rangeStart === 0) rangeStart = 12;
     if (rangeEnd === 24) rangeEnd = 12;
 
-    const start = rangeStart > 12 ? (rangeStart - 12) + ' pm' : rangeStart + ' am';
-    const end = rangeEnd > 12 ? (rangeEnd - 12) + ' pm' : rangeEnd + ' am';
+    const start = rangeStart > 12 ? rangeStart - 12 + ' PM' : rangeStart + ' AM';
+    const end = rangeEnd > 12 ? rangeEnd - 12 + ' PM' : rangeEnd + ' AM';
 
     timeRangeValue = [start, end];
   });
@@ -59,7 +50,7 @@
 <form use:enhance method="POST" class="space-y-4">
   <!-- Event Name -->
   <div>
-    <Input bind:value={$form.name} size="lg" placeholder="Event Title" />
+    <Input bind:value={$form.name} size="lg" placeholder="Your event name" />
     {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
   </div>
   <!-- Duration and Time Zone -->
@@ -86,23 +77,22 @@
         <Combobox selected={selectedTz} options={tzOptions} />
         {#if $errors.timeZone}<p class="invalid">{$errors.timeZone}</p>{/if}
       </div>
-
       <div class="space-y-2">
         <!-- Time range -->
-        <div class="flex justify-between pr-2 items-center">
+        <div class="flex items-center justify-between pr-2">
           <div>
             <h2>Time Range</h2>
             <p class="text-sm text-zinc-500">What times might work?</p>
           </div>
-          <h2>{timeRangeValue[0]} - {timeRangeValue[1]}</h2>
+          <span class="font-medium">{timeRangeValue[0]} - {timeRangeValue[1]}</span>
         </div>
         <TimeRangeSlider value={timeRange} />
         <div class="!mt-[3rem] space-y-2">
           <div>
-            <h2>timeslot.one/</h2>
-            <p class="text-zinc-500 text-sm">A custom id that will appear in the link of your event</p>
+            <h2>Custom ID</h2>
+            <p class="text-sm text-zinc-500">Example: https://timeslot.one/[customId]</p>
           </div>
-          <Input bind:value={$form.customId} placeholder="Custom ID (optional)" />
+          <Input bind:value={$form.id} placeholder="Your custom ID (optional)" />
         </div>
       </div>
     </div>

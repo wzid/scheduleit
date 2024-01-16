@@ -2,17 +2,15 @@
   import { TIMES } from '$lib/constants';
   import { cn } from '$lib/utils';
 
-  
   const HOURS = 24;
   const BLOCKS_PER_SEGMENT = 4;
-  
+
   // create a map from index to a boolean if it is selected (initially all false)
   const selectionMap = new Map<number, boolean>(
     Array(HOURS * BLOCKS_PER_SEGMENT)
       .fill(0)
       .map((_, i) => [i, false])
   );
-  
 
   let dragStartIdx = -1;
   let dragEndIdx = -1;

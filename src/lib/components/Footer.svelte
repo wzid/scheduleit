@@ -1,31 +1,14 @@
 <div class="mt-auto pb-2">
-    <div class="text-sm leading-none text-zinc-500">
-      built by <a class="shine" target="_blank" href="https://github.com/wzid">cameron</a> &
-      <a class="shine" target="_blank" href="https://github.com/aelew">andre</a>
-    </div>
+  <div class="text-sm leading-none text-zinc-500">
+    built by <a class="shine" target="_blank" href="https://github.com/wzid">cameron</a> &
+    <a class="shine" target="_blank" href="https://github.com/aelew">andre</a>
+  </div>
 </div>
 
 <style lang="postcss">
   :root {
     --shadow: theme(colors.peach.300);
     --text-color: theme(colors.zinc.500);
-  }
-
-  .playful {
-    transition: all 0.25s ease-in-out;
-  }
-
-  .playful:hover {
-    font-weight: bold;
-    color: #fff;
-    text-shadow:
-      1.75px 1.75px var(--shadow),
-      1.5px 1.5px var(--shadow),
-      1.25px 1.25px var(--shadow),
-      1px 1px var(--shadow),
-      0.75px 0.75px var(--shadow),
-      0.5px 0.5px var(--shadow),
-      0.25px 0.25px var(--shadow);
   }
 
   .shine {

@@ -5,11 +5,11 @@ import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
 
 const schema = z.object({
+  id: z.string(),
   name: z.string().trim().min(1, 'Please enter an event name.'),
   fromTime: z.string(),
   toTime: z.string(),
   timeZone: z.string(),
-  customId: z.string(),
   dates: z.array(z.string()).min(1, 'Please select at least one date.')
 });
 

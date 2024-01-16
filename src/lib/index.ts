@@ -24,5 +24,5 @@ export {
   Meta,
   Select,
   NumericInput,
-  TimeRangeSlider,
+  TimeRangeSlider
 };
