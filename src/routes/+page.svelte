@@ -1,6 +1,15 @@
 <script lang="ts">
   import { CalendarPlus } from 'lucide-svelte';
-  import { Button, Calendar, Combobox, Input, Meta, Select, TimeRangeSlider, DaySelector } from '$lib';
+  import {
+    Button,
+    Calendar,
+    Combobox,
+    Input,
+    Meta,
+    Select,
+    TimeRangeSlider,
+    DaySelector
+  } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
   import { get, writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
@@ -79,7 +88,7 @@
   </div>
   <div class="grid gap-10 sm:grid-cols-2">
     <!-- Dates available -->
-    <div class="space-y-2">
+    <div class="flex flex-col gap-2 h-full">
       {#if dateTypeValue == 'specific'}
         <div>
           <h2>Dates Available</h2>
@@ -93,6 +102,13 @@
           <p class="text-sm text-zinc-500">What days might work?</p>
         </div>
         <DaySelector />
+          <img
+            class="hidden sm:block self-end mt-auto"
+            alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
+            src="https://s6.imgcdn.dev/floSg.png"
+            style="filter: invert(100%);"
+            width="215px"
+          />
       {/if}
     </div>
     <div class="space-y-2">
@@ -119,7 +135,7 @@
       <img
         class="hidden sm:block"
         alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
-        src="https://s6.imgcdn.dev/flgOo.png"
+        src="https://s6.imgcdn.dev/flJin.png"
         style="filter: invert(100%);"
         width="275px"
       />

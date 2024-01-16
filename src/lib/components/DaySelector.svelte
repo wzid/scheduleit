@@ -35,7 +35,7 @@
           on:click={() => toggleDay(day)}
           class={cn(
             'h-10 w-full transition-all hover:opacity-80',
-            daysSelected.get(day) ? 'bg-peach-300' : 'bg-zinc-700',
+            daysSelected.get(day) ? 'bg-peach-200' : 'bg-zinc-700',
             boxClassNames[day]
           )}
         >
