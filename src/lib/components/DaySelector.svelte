@@ -1,36 +1,43 @@
 <script lang="ts">
+  import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
   import { cn } from '$lib/utils';
   import { Check } from 'lucide-svelte';
+  import { get, type Writable } from 'svelte/store';
 
-  const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'Sa', 'Su'];
   // create a map from the day to the selected state
   const daysSelected: Map<Readonly<string>, boolean> = new Map(
-    daysOfWeek.map((day) => [day, false])
+    DAYS_OF_THE_WEEK.map((day) => [day, false])
   );
+
+  export let value: Writable<Day[]>;
   let dragStartIdx = -1;
   let dragEndIdx = -1;
   let dragging = false;
   let removing = false;
   let count = 0;
 
+  const values = get(value);
+  for (let i = 0; i < values.length; i++) {
+    daysSelected.set(values[i], true);
+  }
+
   const isBlockSelected = (i: number) => {
     if (dragging) {
       let inDragRange: boolean =
-        (dragStartIdx <= i && i <= dragEndIdx) ||
-        (dragEndIdx <= i && i <= dragStartIdx);
+        (dragStartIdx <= i && i <= dragEndIdx) || (dragEndIdx <= i && i <= dragStartIdx);
       if (removing) {
         if (inDragRange) {
           return false;
         } else {
-          return daysSelected.get(daysOfWeek[i]);
+          return daysSelected.get(DAYS_OF_THE_WEEK[i]);
         }
       } else {
-        return inDragRange || daysSelected.get(daysOfWeek[i]);
+        return inDragRange || daysSelected.get(DAYS_OF_THE_WEEK[i]);
       }
     } else {
-      return daysSelected.get(daysOfWeek[i]);
+      return daysSelected.get(DAYS_OF_THE_WEEK[i]);
     }
-  }
+  };
 
   const fixSelection = () => {
     if (dragEndIdx < dragStartIdx) {
@@ -43,7 +50,7 @@
   const handleDragStart = (i: number) => {
     dragging = true;
     dragStartIdx = i;
-    removing = daysSelected.get(daysOfWeek[i]) ?? false;
+    removing = daysSelected.get(DAYS_OF_THE_WEEK[i]) ?? false;
     count++;
   };
 
@@ -58,8 +65,18 @@
     fixSelection();
     dragging = false;
     for (let i = dragStartIdx; i <= dragEndIdx; i++) {
-      daysSelected.set(daysOfWeek[i], !removing);
+      daysSelected.set(DAYS_OF_THE_WEEK[i], !removing);
     }
+
+    const days: Day[] = [];
+    for (let i = 0; i < daysSelected.size; i++) {
+      const day = DAYS_OF_THE_WEEK[i];
+      if (daysSelected.get(day)) {
+        days.push(day);
+      }
+    }
+    value.set(days);
+
     removing = false;
     count = 0;
   };
@@ -68,27 +85,20 @@
     M: 'rounded-bl-lg',
     Su: 'rounded-br-lg'
   };
-
-  const toggleDay = (day: string) => {
-    daysSelected.set(day, !daysSelected.get(day));
-    console.log(daysSelected.get(day));
-    count++;
-  };
 </script>
 
 <svelte:body on:mouseup={handleDragStop} />
 
 <div class="rounded-lg bg-zinc-800/80">
   <div class="flex justify-between text-lg font-semibold">
-    {#each daysOfWeek as day}
+    {#each DAYS_OF_THE_WEEK as day}
       <span class="w-full text-center">{day}</span>
     {/each}
   </div>
   <div class="flex justify-between gap-1">
-      {#each daysOfWeek as day, i}
+    {#each DAYS_OF_THE_WEEK as day, i}
       {#key count}
-      <!-- figure out accessibility later -->
-      <!-- svelte-ignore a11y-no-static-element-interactions a11y-mouse-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions a11y-mouse-events-have-key-events -->
         <button
           type="button"
           on:mousedown={() => handleDragStart(i)}
@@ -104,7 +114,7 @@
             class={cn('mx-auto h-6 w-6 text-peach-900', isBlockSelected(i) ? 'block' : 'hidden')}
           />
         </button>
-        {/key}
-      {/each}
+      {/key}
+    {/each}
   </div>
 </div>

@@ -17,6 +17,7 @@
   import type { PageData } from './$types';
   import { goto } from '$app/navigation';
   import { convertDatesToISO } from '$lib/utils';
+  import type { Day } from '$lib/constants';
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -25,10 +26,11 @@
   const selectedDateType = writable({ label: dateTypeOptions[0], value: dateTypeOptions[0] });
   const selectedTz = writable({ label: userTz, value: userTz });
   const dates = writable<CalendarValue<true>>([]);
+  const days = writable<Day[]>([]);
   const timeRange = writable<number[]>([9, 17]);
 
   let timeRangeValue: string[] = [];
-  let dateTypeValue: string = 'specific';
+  let dateTypeValue: string = 'dates';
 
   export let data: PageData;
   const { form, enhance, errors } = superForm(data.form, {
@@ -36,16 +38,18 @@
     onResult: ({ result }) => {
       if (result.type === 'success' && result.data) {
         const eventId = result.data.eventId;
-        goto(`/event/${eventId}`);
+        goto(`/${eventId}`);
       }
     }
   });
 
   dates.subscribe((values) => ($form.dates = convertDatesToISO(values)));
+  days.subscribe((values) => ($form.days = values));
+
   selectedTz.subscribe((option) => ($form.timeZone = option.value));
 
   selectedDateType.subscribe((option) => {
-    const value = option.value === 'Specific dates' ? 'specific' : 'days_of_week';
+    const value = option.value === 'Specific dates' ? 'dates' : 'days';
     $form.dateType = value;
     dateTypeValue = value;
   });
@@ -89,19 +93,20 @@
   <div class="grid gap-10 sm:grid-cols-2">
     <!-- Dates available -->
     <div class="flex h-full flex-col gap-2">
-      {#if dateTypeValue == 'specific'}
+      {#if dateTypeValue == 'dates'}
         <div>
           <h2>Dates Available</h2>
           <p class="text-sm text-zinc-500">What dates might work?</p>
         </div>
-        {#if $errors.dates?._errors}<p class="invalid">{$errors.dates._errors[0]}</p>{/if}
-        <Calendar className="min-w-full " value={dates} />
+        {#if $errors._errors}<p class="invalid">{$errors._errors[0]}</p>{/if}
+        <Calendar className="w-full" value={dates} />
       {:else}
         <div>
           <h2>Days Available</h2>
           <p class="text-sm text-zinc-500">What days might work?</p>
         </div>
-        <DaySelector />
+        {#if $errors._errors}<p class="invalid">{$errors._errors[0]}</p>{/if}
+        <DaySelector value={days} />
         <img
           class="mt-auto hidden self-end invert-[100%] sm:block"
           alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"

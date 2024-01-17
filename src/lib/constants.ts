@@ -1,3 +1,7 @@
+export const DAYS_OF_THE_WEEK = ['M', 'T', 'W', 'Th', 'F', 'Sa', 'Su'] as const;
+
+export type Day = (typeof DAYS_OF_THE_WEEK)[number];
+
 export const TIMES = [
   '12:00 AM',
   '12:15 AM',

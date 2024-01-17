@@ -1,17 +1,9 @@
+import type { Day } from '$lib/constants';
 import { relations, sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { nanoid } from 'nanoid';
 
-type DateType = 'specific' | 'days_of_week';
-
-type DaysOfTheWeek =
-  | 'monday'
-  | 'tuesday'
-  | 'wednesday'
-  | 'thursday'
-  | 'friday'
-  | 'saturday'
-  | 'sunday';
+type DateType = 'dates' | 'days';
 
 export const events = sqliteTable('events', {
   id: text('id')
@@ -23,7 +15,7 @@ export const events = sqliteTable('events', {
   startTime: integer('start_time').notNull(),
   endTime: integer('end_time').notNull(),
   dates: text('dates', { mode: 'json' }).$type<string[]>(),
-  days: text('days', { mode: 'json' }).$type<DaysOfTheWeek[]>(),
+  days: text('days', { mode: 'json' }).$type<Day[]>(),
   createdAt: integer('created_at')
     .notNull()
     .default(sql`(cast (unixepoch() as int))`)
@@ -36,7 +28,7 @@ export const eventRelations = relations(events, ({ many }) => ({
 export const users = sqliteTable('users', {
   id: text('id')
     .primaryKey()
-    .$defaultFn(() => nanoid(6)),
+    .$defaultFn(() => nanoid(8)),
   eventId: text('event_id')
     .notNull()
     .references(() => events.id),
