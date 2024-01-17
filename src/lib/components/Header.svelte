@@ -1,6 +1,6 @@
 <header class="py-8 text-center">
   <h1
-    class="bg-gradient-to-r from-peach-200 to-peach-300 bg-clip-text leading-none text-transparent"
+    class="bg-gradient-to-r from-peach-100 to-peach-500 bg-clip-text leading-none text-transparent"
   >
     <a href="/">timeslot</a>
   </h1>
