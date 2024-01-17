@@ -88,7 +88,7 @@
   </div>
   <div class="grid gap-10 sm:grid-cols-2">
     <!-- Dates available -->
-    <div class="flex flex-col gap-2 h-full">
+    <div class="flex h-full flex-col gap-2">
       {#if dateTypeValue == 'specific'}
         <div>
           <h2>Dates Available</h2>
@@ -102,13 +102,12 @@
           <p class="text-sm text-zinc-500">What days might work?</p>
         </div>
         <DaySelector />
-          <img
-            class="hidden sm:block self-end mt-auto"
-            alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
-            src="https://s6.imgcdn.dev/floSg.png"
-            style="filter: invert(100%);"
-            width="215px"
-          />
+        <img
+          class="mt-auto hidden self-end invert-[100%] sm:block"
+          alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
+          src="https://s6.imgcdn.dev/floSg.png"
+          width="215"
+        />
       {/if}
     </div>
     <div class="space-y-2">
@@ -133,11 +132,10 @@
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}
       </div>
       <img
-        class="hidden sm:block"
+        class="!mt-4 hidden invert-[100%] sm:block"
         alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
         src="https://s6.imgcdn.dev/flJin.png"
-        style="filter: invert(100%);"
-        width="275px"
+        width="275"
       />
     </div>
   </div>
