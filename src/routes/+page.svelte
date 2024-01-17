@@ -11,11 +11,10 @@
     DaySelector
   } from '$lib';
   import type { CalendarValue } from '@melt-ui/svelte';
-  import { get, writable } from 'svelte/store';
+  import { writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import type { PageData } from './$types';
-  import { goto } from '$app/navigation';
   import { convertDatesToISO } from '$lib/utils';
   import type { Day } from '$lib/constants';
 
@@ -38,7 +37,7 @@
     onResult: ({ result }) => {
       if (result.type === 'success' && result.data) {
         const eventId = result.data.eventId;
-        goto(`/${eventId}`);
+        window.location.pathname = `/${eventId}`;
       }
     }
   });
