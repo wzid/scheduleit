@@ -19,7 +19,7 @@
     "@sveltejs/adapter-auto": "^3.1.0",
     "@sveltejs/kit": "^2.3.3",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
-    "autoprefixer": "^10.4.16",
+    "autoprefixer": "^10.4.17",
     "dotenv": "^16.3.1",
     "drizzle-kit": "^0.20.13",
     "postcss": "^8.4.33",
