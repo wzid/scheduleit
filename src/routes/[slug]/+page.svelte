@@ -4,7 +4,7 @@
   import { fly } from 'svelte/transition';
   import { error } from '@sveltejs/kit';
 
-  import { Button, Meta } from '$lib';
+  import { AvailabilitySelector, Button, Meta } from '$lib';
 
   export let data;
   const event = data.event;
@@ -44,11 +44,15 @@
   {/if}
 </div>
 
-<div class="mt-8">
+<div class="mt-8 flex flex-col gap-6 sm:flex-row sm:gap-12">
   <div>
     <h2>Respondents</h2>
     {#each users as user}
       <p>{user.name}</p>
     {/each}
+  </div>
+  <div>
+    <h2>Availability</h2>
+    <AvailabilitySelector />
   </div>
 </div>
