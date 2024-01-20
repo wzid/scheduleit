@@ -22,7 +22,7 @@
 
   const contentClasses = {
     text: 'px-4 py-2',
-    icon: 'p-2'
+    icon: 'h-fit p-1.5 !rounded-lg'
   };
 
   let duration = 200;

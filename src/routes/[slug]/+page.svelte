@@ -1,36 +1,86 @@
 <script lang="ts">
-  import { ClipboardCopy, Check, NotebookPen } from 'lucide-svelte';
+  import { ClipboardCopy, Check, NotebookPen, Plus } from 'lucide-svelte';
   import { writable } from 'svelte/store';
-  import { fly } from 'svelte/transition';
-  import { shadeGradient } from '$lib/utils'
-  import { error } from '@sveltejs/kit';
+  import { fly, fade } from 'svelte/transition';
+  import { shadeGradient } from '$lib/utils';
+  import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
 
-  import { AvailabilitySelector, Button, Meta } from '$lib';
+  import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
 
   export let data;
   const event = data.event;
   const users = data.users;
 
-  const shades = shadeGradient(users.length);
+  // each users has a bit string of availability that corresponds to the days of the week or dates
+  // we need to create a map of the days to the number of users that are available on that day
+  let dayUserCountMap: Map<Readonly<string>, number> = DAYS_OF_THE_WEEK.map((day) => [
+    day,
+    0
+  ]).reduce((map, [key, value]) => map.set(key, value), new Map());
 
+  if (event.dateType == 'days') {
+    // Iterate over the users array
+    users.forEach((user) => {
+      // For each user, iterate over their availability bit string
+      const avail = user.availability;
+      for (let i = 0; i < avail.length; i++) {
+        // if the user is available on that day, increment the count for that day
+        if (avail[i] == '1') {
+          const day = DAYS_OF_THE_WEEK[i];
+          // if the day is not in the map, set it to 1, otherwise increment it
+          dayUserCountMap.set(day, (dayUserCountMap.get(day) ?? 0) + 1);
+        }
+      }
+    });
+  }
+
+  const shades = shadeGradient(users.length);
+  let recording = false;
+  let enteringUser = false;
+  let username = '';
+  let open = false;
+  const recordedDays = writable<Day[]>([]);
   // create a store to track the tooltip state
-  const open = writable(false);
 
   async function copyLink() {
     await navigator.clipboard.writeText(`https://timeslot.one/${event.id}`);
-    open.set(true);
+    open = true;
     setTimeout(() => {
-      open.set(false);
+      open = false;
     }, 1000);
   }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key == 'Escape') {
+      enteringUser = false;
+      username = '';
+    }
+  };
+
+  async function addUser() {
+    if (!enteringUser) return;
+
+    // add a way for the user to know what they got wrong
+    if (!username) return;
+
+    if (event.dateType == 'days') {
+      recordedDays.set([]);
+    }
+
+    // update the user table in the database
+
+  }
+
 </script>
 
 <Meta title={event.name} />
 
+<svelte:body on:keydown={handleKeyDown} />
+
 <h1>{event.name}</h1>
 
-<div class="mt-4 space-x-2 w-fit">
-  <Button variant="secondary">
+<div class="mt-4 w-fit space-x-2">
+  <Button onClick={() => (enteringUser = true)} variant="secondary">
     <NotebookPen class="mr-2 h-5 w-5" />
     Record Time
   </Button>
@@ -39,10 +89,10 @@
       <ClipboardCopy class="mr-2 h-5 w-5" />
       Copy Link
     </Button>
-    {#if $open}
+    {#if open}
       <div
         transition:fly={{ duration: 200, y: -15 }}
-        class="absolute inline left-[.9rem] top-7 -z-10 mx-auto w-fit rounded-lg bg-zinc-700/70 shadow-lg"
+        class="absolute left-[.9rem] top-7 -z-10 mx-auto inline w-fit rounded-lg bg-zinc-700/70 shadow-lg"
       >
         <div class="flex items-center px-3 py-1 text-zinc-300">
           <span>Copied</span>
@@ -50,20 +100,35 @@
         </div>
       </div>
     {/if}
-
   </div>
 </div>
 
 <div class="mt-8 flex flex-col gap-6 sm:flex-row sm:gap-12">
   <div>
-    <span class="font-semibold text-2xl text-zinc-500">Respondents</span>
-    <div class="ml-2 text-xl">
+    <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
+    <div class="text-xl">
+      {#if enteringUser}
+        <div class="mt-1 relative z-10 flex items-center gap-4">
+          <Input
+            className="border border-peach-300 rounded-lg"
+            bind:value={username}
+            placeholder="Enter your name"
+          />
+          <Button onClick={addUser} variant="secondary" contentType="icon">
+            <Plus class="h-5 w-5" strokeWidth={3} />
+          </Button>
+        </div>
+        <div
+          transition:fade={{ duration: 100 }}
+          class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
+        ></div>
+      {/if}
       {#each users as user}
         <p>{user.name}</p>
       {/each}
     </div>
   </div>
-  <div class="flex flex-col w-full items-center">
+  <div class="flex w-full flex-col items-center">
     <!-- Shades for users -->
     <div class="flex items-center text-xl text-zinc-300">
       <p class="mr-4">0/{users.length}</p>
@@ -72,12 +137,20 @@
       {/each}
       <p class="ml-4">{users.length}/{users.length}</p>
     </div>
-    <div class="self-start mt-4 ml-12">
-      {#if event.dateType == 'days'}
-          <h1>days</h1>
-      {:else}
+
+    <!-- The actually stuff (yes, stuff) -->
+    {#if event.dateType == 'days'}
+      <div class="mt-8">
+        {#if recording}
+          <DaySelector value={recordedDays} />
+        {:else}
+          <DaySelectedViewer daysSelected={dayUserCountMap} {shades} />
+        {/if}
+      </div>
+    {:else}
+      <div>
         <h1>dates</h1>
-      {/if}
-    </div>
+      </div>
+    {/if}
   </div>
 </div>
