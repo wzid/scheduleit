@@ -34,7 +34,7 @@ export const users = sqliteTable('users', {
     .references(() => events.id),
   name: text('name').notNull(),
   password: text('password'),
-  availability: text('availability').notNull(),
+  availability: text('availability'),
   createdAt: integer('created_at')
     .notNull()
     .default(sql`(cast (unixepoch() as int))`)

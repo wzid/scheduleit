@@ -4,12 +4,41 @@
   import { fly, fade } from 'svelte/transition';
   import { shadeGradient } from '$lib/utils';
   import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
+  import { superForm } from 'sveltekit-superforms/client';
 
   import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
 
   export let data;
   const event = data.event;
-  const users = data.users;
+
+  const usersWritable = writable(data.users);
+  let users: typeof data.users = [];
+
+  usersWritable.subscribe((value) => (users = value));
+
+  const {
+    form: addUserForm,
+    enhance,
+    errors
+  } = superForm(data.addUserForm, {
+    dataType: 'json',
+    onResult: async (data) => {
+      if (data.result.type !== 'success') return;
+      enteringUser = false;
+      usersWritable.update((prev) => {
+        prev.push({
+          name: $addUserForm.name,
+          availability: null
+        });
+        return prev;
+      });
+      if (event.dateType == 'days') {
+        recordedDays.set([]);
+      }
+    }
+  });
+
+  $addUserForm.eventId = event.id;
 
   // each users has a bit string of availability that corresponds to the days of the week or dates
   // we need to create a map of the days to the number of users that are available on that day
@@ -21,11 +50,11 @@
   if (event.dateType == 'days') {
     // Iterate over the users array
     users.forEach((user) => {
+      if (!user.availability) return;
       // For each user, iterate over their availability bit string
-      const avail = user.availability;
-      for (let i = 0; i < avail.length; i++) {
+      for (let i = 0; i < user.availability.length; i++) {
         // if the user is available on that day, increment the count for that day
-        if (avail[i] == '1') {
+        if (user.availability[i] == '1') {
           const day = DAYS_OF_THE_WEEK[i];
           // if the day is not in the map, set it to 1, otherwise increment it
           dayUserCountMap.set(day, (dayUserCountMap.get(day) ?? 0) + 1);
@@ -37,7 +66,6 @@
   const shades = shadeGradient(users.length);
   let recording = false;
   let enteringUser = false;
-  let username = '';
   let open = false;
   const recordedDays = writable<Day[]>([]);
   // create a store to track the tooltip state
@@ -53,24 +81,8 @@
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key == 'Escape') {
       enteringUser = false;
-      username = '';
     }
   };
-
-  async function addUser() {
-    if (!enteringUser) return;
-
-    // add a way for the user to know what they got wrong
-    if (!username) return;
-
-    if (event.dateType == 'days') {
-      recordedDays.set([]);
-    }
-
-    // update the user table in the database
-
-  }
-
 </script>
 
 <Meta title={event.name} />
@@ -108,20 +120,23 @@
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     <div class="text-xl">
       {#if enteringUser}
-        <div class="mt-1 relative z-10 flex items-center gap-4">
-          <Input
-            className="border border-peach-300 rounded-lg"
-            bind:value={username}
-            placeholder="Enter your name"
-          />
-          <Button onClick={addUser} variant="secondary" contentType="icon">
-            <Plus class="h-5 w-5" strokeWidth={3} />
-          </Button>
+        <div class="relative z-10">
+          <form class="mt-1 flex items-center gap-4" method="POST" action="?/addUser" use:enhance>
+            <Input
+              className="border border-peach-300 rounded-lg"
+              placeholder="Enter your name"
+              bind:value={$addUserForm.name}
+            />
+            <Button variant="secondary" contentType="icon" type="submit">
+              <Plus class="h-5 w-5" strokeWidth={3} />
+            </Button>
+          </form>
+          {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
         </div>
         <div
           transition:fade={{ duration: 100 }}
           class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
-        ></div>
+        />
       {/if}
       {#each users as user}
         <p>{user.name}</p>
