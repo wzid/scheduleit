@@ -134,35 +134,40 @@
   </div>
 </div>
 
-<div class="mt-8 flex flex-col gap-6 sm:flex-row sm:gap-12">
+<div class="mt-8 flex flex-col-reverse gap-6 sm:flex-row sm:gap-12">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
-    <div class="text-xl">
-      {#if enteringUser}
-        <div class="relative z-10">
-          <form class="mt-1 flex items-center gap-4" method="POST" action="?/addUser" use:enhance>
-            <Input
-              className="border border-peach-300 rounded-lg"
-              placeholder="Enter your name"
-              bind:value={$addUserForm.name}
-            />
-            <Button variant="secondary" contentType="icon" type="submit">
-              <Plus class="h-5 w-5" strokeWidth={3} />
-            </Button>
-          </form>
-          {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
-        </div>
-        <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-        <div
-          transition:fade={{ duration: 100 }}
-          on:click={() => (enteringUser = false)}
-          class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
-        />
-      {/if}
+    {#if enteringUser}
+      <div class="relative z-10">
+        <form class="mt-1 flex items-center gap-4" method="POST" action="?/addUser" use:enhance>
+          <Input
+            className="border border-peach-300 rounded-lg"
+            placeholder="Enter your name"
+            bind:value={$addUserForm.name}
+          />
+          <Button variant="secondary" contentType="icon" type="submit">
+            <Plus class="h-5 w-5" strokeWidth={3} />
+          </Button>
+        </form>
+        {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
+      </div>
+      <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+      <div
+        transition:fade={{ duration: 100 }}
+        on:click={() => (enteringUser = false)}
+        class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
+      />
+    {/if}
+    <ul>
       {#each users as user}
-        <p>{user.name}</p>
+        <li class="flex items-center">
+          {user.name}
+          {#if user.availability}
+            <Check class="ml-2 h-4 w-4 text-green-500" strokeWidth={3} />
+          {/if}
+        </li>
       {/each}
-    </div>
+    </ul>
   </div>
   <div class="flex w-full flex-col items-center">
     <!-- Shades for users -->
