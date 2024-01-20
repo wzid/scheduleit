@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ClipboardCopy, Check, NotebookPen, Plus } from 'lucide-svelte';
-  import { writable } from 'svelte/store';
+  import { get, writable } from 'svelte/store';
   import { fly, fade } from 'svelte/transition';
   import { shadeGradient } from '$lib/utils';
   import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
@@ -84,6 +84,24 @@
       enteringUser = false;
     }
   };
+
+  const saveAvailability = () => {
+    const days = get(recordedDays);
+    const bitString = DAYS_OF_THE_WEEK.map((day) => (days.includes(day) ? '1' : '0')).join('');
+    fetch('/api/availability', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({
+        eventId: event.id,
+        userName: $addUserForm.name,
+        availability: bitString
+      })
+    }).then((res) => {
+      if (res.ok) {
+        recording = false;
+      }
+    });
+  };
 </script>
 
 <Meta title={event.name} />
@@ -158,9 +176,10 @@
 
     <!-- The actually stuff (yes, stuff) -->
     {#if event.dateType == 'days'}
-      <div class="mt-8">
+      <div class="mt-8 space-y-4">
         {#if recording}
           <DaySelector value={recordedDays} />
+          <Button onClick={saveAvailability} className="w-full">Apply changes</Button>
         {:else}
           <DaySelectedViewer daysSelected={dayUserCountMap} {shades} />
         {/if}
