@@ -24,7 +24,6 @@
     dataType: 'json',
     onResult: async (data) => {
       if (data.result.type !== 'success') return;
-      enteringUser = false;
       usersWritable.update((prev) => {
         prev.push({
           name: $addUserForm.name,
@@ -32,6 +31,8 @@
         });
         return prev;
       });
+      enteringUser = false;
+      recording = true;
       if (event.dateType == 'days') {
         recordedDays.set([]);
       }
@@ -133,8 +134,10 @@
           </form>
           {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
         </div>
+        <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
         <div
           transition:fade={{ duration: 100 }}
+          on:click={() => (enteringUser = false)}
           class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
         />
       {/if}
