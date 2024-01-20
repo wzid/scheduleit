@@ -104,7 +104,7 @@
           on:mousedown={() => handleDragStart(i)}
           on:mouseover={() => handleDragOver(i)}
           class={cn(
-            'h-10 w-full transition-colors duration-100 hover:opacity-80',
+            'h-10 w-10 shrink-0 transition-colors duration-100 hover:opacity-80',
             isBlockSelected(i) ? 'bg-peach-200' : 'bg-zinc-700',
             boxClassNames[day]
           )}
