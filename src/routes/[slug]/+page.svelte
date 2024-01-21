@@ -139,17 +139,27 @@
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if enteringUser}
       <div class="relative z-10">
-        <form class="mt-1 flex items-center gap-4" method="POST" action="?/addUser" use:enhance>
-          <Input
-            className="border border-peach-300 rounded-lg"
-            placeholder="Enter your name"
-            bind:value={$addUserForm.name}
-          />
+        <form class="mt-1 flex items-start gap-4" method="POST" action="?/addUser" use:enhance>
+          <div class="flex flex-col gap-2">
+            <Input
+              className="border border-peach-300 rounded-lg"
+              placeholder="Your name"
+              bind:value={$addUserForm.name}
+            />
+            <Input
+              bind:value={$addUserForm.password}
+              className="border border-peach-300 rounded-lg"
+              placeholder="Password (optional)"
+            />
+            <div class="invalid !mt-0 text-xs">
+              {#if $errors.name}<p>{$errors.name}</p>{/if}
+              {#if $errors.password}<p>{$errors.password}</p>{/if}
+            </div>
+          </div>
           <Button variant="secondary" contentType="icon" type="submit">
             <Plus class="h-5 w-5" strokeWidth={3} />
           </Button>
         </form>
-        {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
       </div>
       <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
       <div

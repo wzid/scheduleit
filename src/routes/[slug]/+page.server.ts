@@ -4,10 +4,12 @@ import { events, users } from '$lib/db/schema.js';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
+import { hash } from 'argon2';
 
 const addUserSchema = z.object({
   eventId: z.string(),
-  name: z.string().trim().min(1)
+  name: z.string().trim().min(1, { message: 'Name cannot be empty' }),
+  password: z.string().trim()
 });
 
 export async function load({ params }) {
@@ -36,7 +38,8 @@ export const actions = {
       return fail(400, { form });
     }
 
-    const { eventId, name } = form.data;
+    const { eventId, name, password } = form.data;
+    const hashedPassword = password.length ? await hash(password) : null;
 
     const existingUser = await db.query.users.findFirst({
       where: and(eq(users.eventId, eventId), eq(users.name, name))
@@ -45,7 +48,7 @@ export const actions = {
       return setError(form, 'name', 'This user already exists!');
     }
 
-    await db.insert(users).values({ eventId, name });
+    await db.insert(users).values({ eventId, name, password: hashedPassword });
     return { form };
   }
 };
