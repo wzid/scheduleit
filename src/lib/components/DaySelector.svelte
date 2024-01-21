@@ -17,10 +17,8 @@
   let count = 0;
 
   const updateDays = (days: Day[]) => {
-    daysSelected.clear();
-    for (let i = 0; i < days.length; i++) {
-      daysSelected.set(days[i], true);
-    }
+    daysSelected.forEach((_, key) => daysSelected.set(key, false));
+    days.forEach((day) => daysSelected.set(day, true));
     count++;
   };
 
