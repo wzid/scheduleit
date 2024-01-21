@@ -16,10 +16,16 @@
   let removing = false;
   let count = 0;
 
-  const values = get(value);
-  for (let i = 0; i < values.length; i++) {
-    daysSelected.set(values[i], true);
-  }
+  const updateDays = (days: Day[]) => {
+    daysSelected.clear();
+    for (let i = 0; i < days.length; i++) {
+      daysSelected.set(days[i], true);
+    }
+    count++;
+  };
+
+  updateDays(get(value));
+  value.subscribe(updateDays);
 
   const isBlockSelected = (i: number) => {
     if (dragging) {

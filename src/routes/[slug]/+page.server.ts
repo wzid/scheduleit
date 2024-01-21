@@ -22,6 +22,7 @@ export async function load({ params }) {
 
   const eventUsers = await db
     .select({
+      id: users.id,
       name: users.name,
       availability: users.availability
     })
@@ -48,7 +49,12 @@ export const actions = {
       return setError(form, 'name', 'This user already exists!');
     }
 
-    await db.insert(users).values({ eventId, name, password: hashedPassword });
-    return { form };
+    const result = await db
+      .insert(users)
+      .values({ eventId, name, password: hashedPassword })
+      .returning({ id: users.id })
+      .execute();
+
+    return { form, user: { id: result[0].id, name } };
   }
 };

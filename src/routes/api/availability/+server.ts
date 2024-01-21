@@ -5,13 +5,13 @@ import { and, eq } from 'drizzle-orm';
 
 // TODO: add password protection
 export async function POST({ request }) {
-  const { eventId, userName, availability } = await request.json();
-  if (!eventId || !userName || !availability) {
+  const { eventId, userId, availability } = await request.json();
+  if (!eventId || !userId || !availability) {
     return json({ success: false, error: 'Invalid parameters' }, { status: 400 });
   }
   await db
     .update(users)
     .set({ availability })
-    .where(and(eq(users.eventId, eventId), eq(users.name, userName)));
+    .where(and(eq(users.eventId, eventId), eq(users.id, userId)));
   return json({ success: true });
 }

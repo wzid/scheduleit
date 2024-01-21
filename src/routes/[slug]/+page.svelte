@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ClipboardCopy, Check, NotebookPen, Plus } from 'lucide-svelte';
+  import { ClipboardCopy, Check, NotebookPen, Plus, Pencil } from 'lucide-svelte';
   import { get, writable } from 'svelte/store';
   import { fly, fade } from 'svelte/transition';
   import { shadeGradient } from '$lib/utils';
@@ -7,6 +7,7 @@
   import { superForm } from 'sveltekit-superforms/client';
 
   import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
+  import { invalidateAll } from '$app/navigation';
 
   export let data;
   const event = data.event;
@@ -22,16 +23,18 @@
     errors
   } = superForm(data.addUserForm, {
     dataType: 'json',
-    onResult: async (data) => {
-      if (data.result.type !== 'success') return;
+    onResult: async ({ result }) => {
+      if (result.type !== 'success' || !result.data) return;
       usersWritable.update((prev) => {
         prev.push({
-          name: $addUserForm.name,
+          id: result.data!.user.id,
+          name: result.data!.user.name,
           availability: null
         });
         return prev;
       });
-      enteringUser = false;
+      activeUserId = result.data!.user.id;
+      focusUserInput = false;
       recording = true;
       if (event.dateType == 'days') {
         recordedDays.set([]);
@@ -65,11 +68,12 @@
   }
 
   const shades = shadeGradient(users.length);
-  let recording = false;
-  let enteringUser = false;
-  let open = false;
   const recordedDays = writable<Day[]>([]);
-  // create a store to track the tooltip state
+
+  let activeUserId: string | null = null;
+  let recording = false;
+  let focusUserInput = false;
+  let open = false;
 
   async function copyLink() {
     await navigator.clipboard.writeText(`https://timeslot.one/${event.id}`);
@@ -81,7 +85,7 @@
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key == 'Escape') {
-      enteringUser = false;
+      focusUserInput = false;
     }
   };
 
@@ -93,14 +97,32 @@
       method: 'POST',
       body: JSON.stringify({
         eventId: event.id,
-        userName: $addUserForm.name,
+        userId: activeUserId,
         availability: bitString
       })
     }).then((res) => {
       if (res.ok) {
         recording = false;
+        activeUserId = null;
+        location.reload();
       }
     });
+  };
+
+  const logIn = (userId: string) => {
+    console.log(userId);
+    // TODO: make an endpoint to check passwords
+    if (event.dateType == 'days') {
+      recordedDays.set(
+        (users
+          .find((user) => user.id == userId)
+          ?.availability?.split('')
+          .map((bit, i) => (bit == '1' ? DAYS_OF_THE_WEEK[i] : null))
+          .filter((day) => day != null) as Day[]) ?? []
+      );
+    }
+    activeUserId = userId;
+    recording = true;
   };
 </script>
 
@@ -111,7 +133,7 @@
 <h1>{event.name}</h1>
 
 <div class="mt-4 w-fit space-x-2">
-  <Button onClick={() => (enteringUser = true)} variant="secondary">
+  <Button onClick={() => (focusUserInput = true)} variant="secondary">
     <NotebookPen class="mr-2 h-5 w-5" />
     Record Time
   </Button>
@@ -137,7 +159,7 @@
 <div class="mt-8 flex flex-col-reverse gap-6 sm:flex-row sm:gap-12">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
-    {#if enteringUser}
+    {#if focusUserInput}
       <div class="relative z-10">
         <form class="mt-1 flex items-start gap-4" method="POST" action="?/addUser" use:enhance>
           <div class="flex flex-col gap-2">
@@ -164,17 +186,22 @@
       <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
       <div
         transition:fade={{ duration: 100 }}
-        on:click={() => (enteringUser = false)}
+        on:click={() => (focusUserInput = false)}
         class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
       />
     {/if}
     <ul>
       {#each users as user}
-        <li class="flex items-center">
+        <li class="flex items-center gap-2">
           {user.name}
-          {#if user.availability}
-            <Check class="ml-2 h-4 w-4 text-green-500" strokeWidth={3} />
-          {/if}
+          <div class="flex items-center gap-2">
+            <button on:click={() => logIn(user.id)}>
+              <Pencil class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80" />
+            </button>
+            {#if user.availability}
+              <Check class="h-4 w-4 text-green-500" strokeWidth={3} />
+            {/if}
+          </div>
         </li>
       {/each}
     </ul>
