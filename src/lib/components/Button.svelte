@@ -14,6 +14,7 @@
   const variantClasses = {
     primary: 'bg-royalblue-500 hover:bg-royalblue-500/80 text-white',
     secondary: 'bg-peach-200 hover:bg-peach-200/80 text-peach-900',
+    red: 'bg-red-500 hover:bg-red-500/80 text-white',
     neutral: 'bg-zinc-700/70 hover:bg-zinc-700/50 text-zinc-300',
     ghost: 'bg-transparent hover:bg-zinc-800/80 text-gray-100'
   };

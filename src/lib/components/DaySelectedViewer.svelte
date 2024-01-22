@@ -1,8 +1,9 @@
 <script lang="ts">
   import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
   import { cn } from '$lib/utils';
+  import type { User } from '$lib/constants';
 
-  export let daysSelected: Map<Readonly<string>, number>;
+  export let daysSelected: Map<Readonly<string>, Array<User>>;
   export let shades: string[];
 
   const boxClassNames: Record<string, string> = {
@@ -21,7 +22,7 @@
     {#each DAYS_OF_THE_WEEK as day, i}
       <!-- svelte-ignore a11y-no-static-element-interactions a11y-mouse-events-have-key-events -->
       <div
-        style="background-color: {shades[daysSelected.get(day) ?? 0]};"
+        style="background-color: {shades[daysSelected.get(day)?.length ?? 0]};"
         class={cn('h-10 w-10', boxClassNames[day])}
       ></div>
     {/each}

@@ -100,3 +100,9 @@ export const TIMES = [
   '11:30 PM',
   '11:45 PM'
 ];
+
+export type User = {
+  id: string,
+  name: string,
+  availability: string | null,
+}

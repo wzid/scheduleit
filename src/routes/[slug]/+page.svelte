@@ -5,6 +5,7 @@
   import { shadeGradient } from '$lib/utils';
   import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
   import { superForm } from 'sveltekit-superforms/client';
+  import type { User } from '$lib/constants';
 
   import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
 
@@ -12,7 +13,7 @@
   const event = data.event;
 
   const usersWritable = writable(data.users);
-  let users: typeof data.users = [];
+  let users: Array<User> = [];
 
   usersWritable.subscribe((value) => (users = value));
 
@@ -45,9 +46,9 @@
 
   // each users has a bit string of availability that corresponds to the days of the week or dates
   // we need to create a map of the days to the number of users that are available on that day
-  let dayUserCountMap: Map<Readonly<string>, number> = DAYS_OF_THE_WEEK.map((day) => [
+  let dayUserCountMap: Map<Readonly<string>, Array<User>> = DAYS_OF_THE_WEEK.map((day) => [
     day,
-    0
+    []
   ]).reduce((map, [key, value]) => map.set(key, value), new Map());
 
   if (event.dateType == 'days') {
@@ -60,7 +61,8 @@
         if (user.availability[i] == '1') {
           const day = DAYS_OF_THE_WEEK[i];
           // if the day is not in the map, set it to 1, otherwise increment it
-          dayUserCountMap.set(day, (dayUserCountMap.get(day) ?? 0) + 1);
+          const arr = dayUserCountMap.get(day) ?? [];
+          dayUserCountMap.set(day, arr.concat([user]));
         }
       }
     });
@@ -110,6 +112,11 @@
       }
     });
   };
+
+  const cancel = () => {
+    recording = false;
+    activeUserId = null;
+  }
 
   const logIn = async (userId: string, password?: string) => {
     const res = await fetch('/api/login', {
@@ -243,7 +250,10 @@
       <div class="mt-8 space-y-4">
         {#if recording}
           <DaySelector value={recordedDays} />
-          <Button onClick={saveAvailability} className="w-full">Apply changes</Button>
+          <div class="w-full flex gap-2">
+            <Button onClick={saveAvailability} className="w-3/4">Apply changes</Button>
+            <Button onClick={cancel} variant="red" >Cancel</Button>
+          </div>
         {:else}
           <DaySelectedViewer daysSelected={dayUserCountMap} {shades} />
         {/if}
