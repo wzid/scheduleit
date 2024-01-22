@@ -7,7 +7,6 @@
   import { superForm } from 'sveltekit-superforms/client';
 
   import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
-  import { invalidateAll } from '$app/navigation';
 
   export let data;
   const event = data.event;
