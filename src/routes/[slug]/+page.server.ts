@@ -1,6 +1,6 @@
 import { error, fail } from '@sveltejs/kit';
 import { db } from '$lib/db';
-import { events, users } from '$lib/db/schema.js';
+import { events, users } from '$lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';

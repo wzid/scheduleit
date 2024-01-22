@@ -20,7 +20,10 @@
   <div class="flex justify-between gap-1">
     {#each DAYS_OF_THE_WEEK as day, i}
       <!-- svelte-ignore a11y-no-static-element-interactions a11y-mouse-events-have-key-events -->
-      <div style="background-color: {shades[daysSelected.get(day) ?? 0]};" class={cn('h-10 w-10', boxClassNames[day])}></div>
+      <div
+        style="background-color: {shades[daysSelected.get(day) ?? 0]};"
+        class={cn('h-10 w-10', boxClassNames[day])}
+      ></div>
     {/each}
   </div>
 </div>

@@ -70,6 +70,8 @@
   const recordedDays = writable<Day[]>([]);
 
   let activeUserId: string | null = null;
+  let activeUserPassword: string | null = null;
+
   let recording = false;
   let focusUserInput = false;
   let open = false;
@@ -97,7 +99,8 @@
       body: JSON.stringify({
         eventId: event.id,
         userId: activeUserId,
-        availability: bitString
+        availability: bitString,
+        password: activeUserPassword
       })
     }).then((res) => {
       if (res.ok) {
@@ -108,9 +111,28 @@
     });
   };
 
-  const logIn = (userId: string) => {
-    console.log(userId);
-    // TODO: make an endpoint to check passwords
+  const logIn = async (userId: string, password?: string) => {
+    const res = await fetch('/api/login', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({
+        userId,
+        password
+      })
+    });
+    if (!res.ok) {
+      if (res.status === 401) {
+        const answer = prompt(
+          (password ? 'Invalid password. ' : '') + 'Enter your password to continue.'
+        );
+        if (answer) {
+          logIn(userId, answer);
+        }
+      } else {
+        alert('Uh oh! Something went wrong.');
+      }
+      return;
+    }
     if (event.dateType == 'days') {
       recordedDays.set(
         (users
@@ -121,6 +143,7 @@
       );
     }
     activeUserId = userId;
+    activeUserPassword = password ?? null;
     recording = true;
   };
 </script>

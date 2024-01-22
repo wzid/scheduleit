@@ -6,7 +6,7 @@
 
   export let options: string[];
   export let selected: CreateComboboxProps<string>['selected'];
-  export let className: string = ''
+  export let className: string = '';
 
   const {
     elements: { menu, input, option },
@@ -26,7 +26,7 @@
     : options;
 </script>
 
-<div class={cn(className, "flex flex-col gap-1")}>
+<div class={cn(className, 'flex flex-col gap-1')}>
   <div class="relative w-full">
     <input
       class="flex h-10 w-full items-center justify-between rounded-lg bg-zinc-800/80 px-3 py-2 text-peach-200 shadow ring-peach-300 transition-colors placeholder:text-zinc-500 hover:bg-zinc-700/60 focus:outline-none focus:ring-1"
