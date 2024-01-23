@@ -116,7 +116,7 @@
   const cancel = () => {
     recording = false;
     activeUserId = null;
-  }
+  };
 
   const logIn = async (userId: string, password?: string) => {
     const res = await fetch('/api/login', {
@@ -224,11 +224,35 @@
         <li class="flex items-center gap-2">
           {user.name}
           <div class="flex items-center gap-2">
-            <button on:click={() => logIn(user.id)}>
-              <Pencil class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80" />
-            </button>
+            <div class="group relative">
+              <button on:click={() => logIn(user.id)}>
+                <Pencil
+                  class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80"
+                />
+              </button>
+              <div
+                class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
+              >
+                <div
+                  class="animate-in fade-in slide-in-from-bottom-2 rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg"
+                >
+                  Edit availability
+                </div>
+              </div>
+            </div>
             {#if user.availability}
-              <Check class="h-4 w-4 text-green-500" strokeWidth={3} />
+              <div class="group relative">
+                <Check class="h-4 w-4 text-green-500" strokeWidth={3} />
+                <div
+                  class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
+                >
+                  <div
+                    class="animate-in fade-in slide-in-from-bottom-2 rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg"
+                  >
+                    Availability recorded
+                  </div>
+                </div>
+              </div>
             {/if}
           </div>
         </li>
@@ -250,9 +274,9 @@
       <div class="mt-8 space-y-4">
         {#if recording}
           <DaySelector value={recordedDays} />
-          <div class="w-full flex gap-2">
+          <div class="flex w-full gap-2">
             <Button onClick={saveAvailability} className="w-3/4">Apply changes</Button>
-            <Button onClick={cancel} variant="red" >Cancel</Button>
+            <Button onClick={cancel} variant="red">Cancel</Button>
           </div>
         {:else}
           <DaySelectedViewer daysSelected={dayUserCountMap} {shades} />
