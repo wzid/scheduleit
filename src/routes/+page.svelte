@@ -38,6 +38,10 @@
       if (result.type === 'success' && result.data) {
         const eventId = result.data.eventId;
         window.location.pathname = `/${eventId}`;
+      } else if (result.type === 'failure' && result.data) {
+        alert(result.data.error);
+      } else if (result.type === 'error') {
+        alert('An unexpected error occurred:', result.error.toString());
       }
     }
   });

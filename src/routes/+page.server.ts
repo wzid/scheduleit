@@ -4,6 +4,7 @@ import { fail } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
 import { DAYS_OF_THE_WEEK } from '$lib/constants';
+import { eq } from 'drizzle-orm';
 
 const schema = z
   .object({
@@ -35,6 +36,13 @@ export const actions = {
     }
 
     const { id: rawId, ...data } = form.data;
+    const id = rawId === '' ? undefined : rawId;
+    if (id) {
+      const existingEvent = await db.query.events.findFirst({ where: eq(events.id, id) });
+      if (existingEvent) {
+        return fail(400, { form, error: 'That custom ID is already taken!' });
+      }
+    }
 
     if (data.dateType === 'days') {
       data.dates = [];
@@ -44,7 +52,7 @@ export const actions = {
 
     const result = await db
       .insert(events)
-      .values({ id: rawId === '' ? undefined : rawId, ...data })
+      .values({ id, ...data })
       .returning({ id: events.id });
 
     return { form, eventId: result[0].id };
