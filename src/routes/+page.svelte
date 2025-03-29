@@ -28,10 +28,14 @@
   const days = writable<Day[]>([]);
   const timeRange = writable<number[]>([9, 17]);
 
-  let timeRangeValue: string[] = [];
-  let dateTypeValue: string = 'dates';
+  let timeRangeValue: string[] = $state([]);
+  let dateTypeValue: string = $state('dates');
 
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
   const { form, enhance, errors } = superForm(data.form, {
     dataType: 'json',
     onResult: ({ result }) => {
@@ -41,7 +45,7 @@
       } else if (result.type === 'failure' && result.data) {
         alert(result.data.error);
       } else if (result.type === 'error') {
-        alert('An unexpected error occurred:', result.error.toString());
+        alert('An unexpected error occurred: ' + result.error.toString());
       }
     }
   });

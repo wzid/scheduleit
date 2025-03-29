@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
+import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
@@ -24,13 +25,13 @@ const schema = z
     message: 'Please select at least one day.'
   });
 export const load = async () => {
-  const form = await superValidate(schema);
+  const form = await superValidate(zod(schema));
   return { form };
 };
 
 export const actions = {
-  default: async ({ request }) => {
-    const form = await superValidate(request, schema);
+  default: async ({ request }: { request: Request }) => {
+    const form = await superValidate(request, zod(schema));
     if (!form.valid) {
       return fail(400, { form });
     }

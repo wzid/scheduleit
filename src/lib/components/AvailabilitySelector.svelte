@@ -12,11 +12,11 @@
       .map((_, i) => [i, false])
   );
 
-  let dragStartIdx = -1;
-  let dragEndIdx = -1;
+  let dragStartIdx = $state(-1);
+  let dragEndIdx = $state(-1);
   let dragging = false;
   let removing = false;
-  let count = 0;
+  let count = $state(0);
 
   const getBlockIdx = (i: number, j: number) => i * BLOCKS_PER_SEGMENT + j;
 
@@ -75,7 +75,7 @@
   };
 </script>
 
-<svelte:body on:mouseup={handleDragStop} />
+<svelte:body onmouseup={handleDragStop} />
 
 <h3>
   selected:
@@ -90,15 +90,15 @@
       {#each Array(BLOCKS_PER_SEGMENT) as _, j}
         {#key count}
           <!-- figure out accessibility later -->
-          <!-- svelte-ignore a11y-no-static-element-interactions a11y-mouse-events-have-key-events -->
+          <!-- svelte-ignore a11y_no_static_element_interactions, a11y_mouse_events_have_key_events -->
           <div
-            on:mousedown={() => handleDragStart(i, j)}
-            on:mouseover={() => handleDragOver(i, j)}
+            onmousedown={() => handleDragStart(i, j)}
+            onmouseover={() => handleDragOver(i, j)}
             class={cn(
               'h-[.4rem] w-32 bg-zinc-800/80 transition-colors duration-100',
               isBlockSelected(i, j) ? 'bg-peach-200' : 'hover:bg-zinc-700'
             )}
-          />
+></div>
         {/key}
       {/each}
     </div>

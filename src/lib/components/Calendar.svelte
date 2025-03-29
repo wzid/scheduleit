@@ -3,8 +3,12 @@
   import { cn } from '$lib/utils';
   import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
-  export let className: string | undefined = undefined;
-  export let value: CreateCalendarProps<true>['value'];
+  interface Props {
+    className?: string | undefined;
+    value: CreateCalendarProps<true>['value'];
+  }
+
+  let { className = undefined, value }: Props = $props();
 
   const {
     elements: { calendar, heading, grid, cell, prevButton, nextButton },

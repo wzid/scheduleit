@@ -9,15 +9,19 @@
     DAYS_OF_THE_WEEK.map((day) => [day, false])
   );
 
-  export let value: Writable<Day[]>;
+  interface Props {
+    value: Writable<Day[]>;
+  }
+
+  let { value }: Props = $props();
   let dragStartIdx = -1;
-  let dragEndIdx = -1;
+  let dragEndIdx = $state(-1);
   let lastDragOverIdx = -1;
 
   let dragging = false;
   let removing = false;
-  let touching = false;
-  let count = 0;
+  let touching = $state(false);
+  let count = $state(0);
 
   const updateDays = (days: Day[]) => {
     daysSelected.forEach((_, key) => daysSelected.set(key, false));
@@ -96,7 +100,7 @@
 </script>
 
 <svelte:body
-  on:mouseup={() => {
+  onmouseup={() => {
     if (touching) return;
     handleDragStop();
   }}
@@ -111,18 +115,18 @@
   <div class="flex justify-between gap-1">
     {#key count}
       {#each DAYS_OF_THE_WEEK as day, i}
-        <!-- svelte-ignore a11y-no-static-element-interactions a11y-mouse-events-have-key-events -->
+        <!-- svelte-ignore a11y_no_static_element_interactions, a11y_mouse_events_have_key_events -->
         <button
           type="button"
-          on:mousedown={() => {
+          onmousedown={() => {
             if (touching) return;
             handleDragStart(i);
           }}
-          on:mouseover={() => {
+          onmouseover={() => {
             if (touching) return;
             handleDragOver(i);
           }}
-          on:touchstart={() => {
+          ontouchstart={() => {
             touching = true;
             handleDragStart(i);
             dragEndIdx = i;

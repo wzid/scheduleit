@@ -9,11 +9,11 @@
 
   import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
 
-  export let data;
+  let { data } = $props();
   const event = data.event;
 
   const usersWritable = writable(data.users);
-  let users: Array<User> = [];
+  let users: Array<User> = $state([]);
 
   usersWritable.subscribe((value) => (users = value));
 
@@ -74,9 +74,9 @@
   let activeUserId: string | null = null;
   let activeUserPassword: string | null = null;
 
-  let recording = false;
-  let focusUserInput = false;
-  let open = false;
+  let recording = $state(false);
+  let focusUserInput = $state(false);
+  let open = $state(false);
 
   async function copyLink() {
     await navigator.clipboard.writeText(`https://timeslot.one/${event.id}`);
@@ -157,7 +157,7 @@
 
 <Meta title={event.name} />
 
-<svelte:body on:keydown={handleKeyDown} />
+<svelte:body onkeydown={handleKeyDown} />
 
 <h1>{event.name}</h1>
 
@@ -212,12 +212,12 @@
           </Button>
         </form>
       </div>
-      <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
       <div
         transition:fade={{ duration: 100 }}
-        on:click={() => (focusUserInput = false)}
+        onclick={() => (focusUserInput = false)}
         class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
-      />
+></div>
     {/if}
     <ul>
       {#each users as user}
@@ -225,7 +225,7 @@
           {user.name}
           <div class="flex items-center gap-2">
             <div class="group relative">
-              <button on:click={() => logIn(user.id)}>
+              <button onclick={() => logIn(user.id)}>
                 <Pencil
                   class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80"
                 />

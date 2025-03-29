@@ -4,6 +4,7 @@ import { events, users } from '$lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
+import { zod } from 'sveltekit-superforms/adapters';
 import { hash } from 'argon2';
 
 const addUserSchema = z.object({
@@ -12,8 +13,8 @@ const addUserSchema = z.object({
   password: z.string().trim()
 });
 
-export async function load({ params }) {
-  const addUserForm = await superValidate(addUserSchema);
+export async function load({ params }: { params: { slug: string } }) {
+  const addUserForm = await superValidate(zod(addUserSchema));
   const result = await db.select().from(events).where(eq(events.id, params.slug));
 
   if (!result || result.length === 0 || !result[0]) {
@@ -33,8 +34,8 @@ export async function load({ params }) {
 }
 
 export const actions = {
-  addUser: async ({ request }) => {
-    const form = await superValidate(request, addUserSchema);
+  addUser: async ({ request }: { request: Request }) => {
+    const form = await superValidate(request, zod(addUserSchema));
     if (!form.valid) {
       return fail(400, { form });
     }

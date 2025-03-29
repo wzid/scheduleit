@@ -1,12 +1,22 @@
 <script lang="ts">
   import { cn } from '$lib/utils';
 
-  export let title: string | undefined = undefined;
-  export let placeholder: string;
-  export let value: string;
-  export let className: string | undefined = undefined;
 
-  export let size: 'md' | 'lg' = 'md';
+  interface Props {
+    title?: string | undefined;
+    placeholder: string;
+    value: string;
+    className?: string | undefined;
+    size?: 'md' | 'lg';
+  }
+
+  let {
+    title = undefined,
+    placeholder,
+    value = $bindable(),
+    className = undefined,
+    size = 'md'
+  }: Props = $props();
 
   let sizes = {
     md: 'text-base',
