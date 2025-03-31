@@ -5,7 +5,5 @@ This website is powered by Svelte, Tailwind CSS 3, and Bun. To develop, run:
 
 ```
 $ bun i
-$ bun run --bun dev
+$ bun run dev
 ```
-
-The reason we use the `--bun` flag is to force vite to use bun rather than node.
