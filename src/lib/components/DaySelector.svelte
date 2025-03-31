@@ -100,7 +100,7 @@
   }}
 />
 
-<div class="rounded-lg bg-zinc-800 overflow-hidden">
+<div class="overflow-hidden rounded-lg bg-zinc-800">
   {#key count}
     <div class="flex flex-wrap">
       {#each DAYS_OF_THE_WEEK as day, i}
@@ -122,31 +122,32 @@
             handleDragStop();
           }}
           class={cn(
-            'relative flex flex-col items-center justify-center w-[14.28%] py-3 transition-all duration-150',
-            isBlockSelected(i) 
-              ? 'bg-peach-200' 
-              : 'bg-zinc-800 hover:bg-zinc-700'
+            'relative flex w-[14.28%] flex-col items-center justify-center py-3 transition-all duration-150',
+            isBlockSelected(i) ? 'bg-peach-200' : 'bg-zinc-800 hover:bg-zinc-700'
           )}
         >
-          <span class={cn(
-            'font-semibold mb-1',
-            isBlockSelected(i) ? 'text-peach-900' : 'text-zinc-400'
-          )}>
+          <span
+            class={cn(
+              'mb-1 font-semibold',
+              isBlockSelected(i) ? 'text-peach-900' : 'text-zinc-400'
+            )}
+          >
             {day}
           </span>
-          <div class={cn(
-            'w-2 h-2 rounded-full transition-all duration-150',
-            isBlockSelected(i) 
-              ? 'bg-peach-900 scale-100' 
-              : 'bg-zinc-600 scale-75 opacity-50'
-          )}></div>
-          <div class={cn(
-            'absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-150',
-            isBlockSelected(i) ? 'bg-peach-300' : 'bg-transparent'
-          )}></div>
+          <div
+            class={cn(
+              'h-2 w-2 rounded-full transition-all duration-150',
+              isBlockSelected(i) ? 'scale-100 bg-peach-900' : 'scale-75 bg-zinc-600 opacity-50'
+            )}
+          ></div>
+          <div
+            class={cn(
+              'absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-150',
+              isBlockSelected(i) ? 'bg-peach-300' : 'bg-transparent'
+            )}
+          ></div>
         </button>
       {/each}
     </div>
   {/key}
 </div>
-

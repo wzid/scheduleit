@@ -47,7 +47,7 @@
     aria-label={title}
     use:melt={$trigger}
     onm-keydown={(e) => {
-      // Doing the onm-keydown event is the account for the fact that melt-ui 
+      // Doing the onm-keydown event is the account for the fact that melt-ui
       // uses a custom event on svelte 4 (i believe)
       e.preventDefault(); // Cancel default builder behabiour
       e.detail.originalEvent.preventDefault(); // Cancel page scroll
