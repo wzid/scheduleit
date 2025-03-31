@@ -1,13 +1,23 @@
 <script lang="ts">
   import { cn } from '$lib/utils';
 
-  export let onDroppedFocus: () => void = () => {};
-  export let title: string | undefined = undefined;
-  export let placeholder: string | undefined = undefined;
-  export let value: number;
-  export let className: string | undefined = undefined;
+  interface Props {
+    onDroppedFocus?: () => void;
+    title?: string | undefined;
+    placeholder?: string | undefined;
+    value: number;
+    className?: string | undefined;
+    size?: 'md' | 'lg';
+  }
 
-  export let size: 'md' | 'lg' = 'md';
+  let {
+    onDroppedFocus = () => {},
+    title = undefined,
+    placeholder = undefined,
+    value = $bindable(),
+    className = undefined,
+    size = 'md'
+  }: Props = $props();
 
   let sizes = {
     md: 'text-base',
@@ -20,7 +30,7 @@
     <label class="pb-1 text-white" for="input">{title}</label>
   {/if}
   <input
-    on:focusout={onDroppedFocus}
+    onfocusout={onDroppedFocus}
     bind:value
     class={cn(
       sizes[size],

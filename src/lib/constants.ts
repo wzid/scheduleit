@@ -102,7 +102,7 @@ export const TIMES = [
 ];
 
 export type User = {
-  id: string,
-  name: string,
-  availability: string | null,
-}
+  id: string;
+  name: string;
+  availability: string | null;
+};

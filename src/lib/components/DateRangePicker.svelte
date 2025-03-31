@@ -4,9 +4,13 @@
   import { Calendar, ChevronLeft, ChevronRight } from 'lucide-svelte';
   import { fade } from 'svelte/transition';
 
-  export let title: string | undefined = undefined;
-  export let titlePosition: 'top' | 'left' = 'top';
-  export let className: string | undefined = undefined;
+  interface Props {
+    title?: string | undefined;
+    titlePosition?: 'top' | 'left';
+    className?: string | undefined;
+  }
+
+  let { title = undefined, titlePosition = 'top', className = undefined }: Props = $props();
 
   const {
     elements: {
@@ -151,7 +155,7 @@
   }
 
   [data-melt-calendar-cell] {
-    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 hover:bg-peach-400/20  focus:ring focus:ring-peach-400;
+    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 hover:bg-peach-400/20 focus:ring focus:ring-peach-400;
   }
 
   [data-melt-calendar-cell][data-highlighted] {

@@ -4,13 +4,22 @@
   import { Check, ChevronDown } from 'lucide-svelte';
   import { fly } from 'svelte/transition';
 
-  // string array or object with groups
-  export let title: string | undefined = undefined;
-  export let placeholder: string | undefined = undefined;
-  export let className: string | undefined = undefined;
+  interface Props {
+    // string array or object with groups
+    title?: string | undefined;
+    placeholder?: string | undefined;
+    className?: string | undefined;
+    options: Record<string, string[]>;
+    selected: CreateSelectProps['selected'];
+  }
 
-  export let options: Record<string, string[]>;
-  export let selected: CreateSelectProps['selected'];
+  let {
+    title = undefined,
+    placeholder = undefined,
+    className = undefined,
+    options,
+    selected
+  }: Props = $props();
 
   const {
     elements: { trigger, menu, option, group, groupLabel, label },
@@ -28,7 +37,7 @@
 </script>
 
 <div class={cn('flex flex-col gap-1', className)}>
-  <!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
+  <!-- svelte-ignore a11y_label_has_associated_control - $label contains the 'for' attribute -->
   {#if title}
     <label class="block text-peach-400" use:melt={$label}>{title}</label>
   {/if}
@@ -37,7 +46,7 @@
     type="button"
     aria-label={title}
     use:melt={$trigger}
-    on:m-keydown={(e) => {
+    onm-keydown={(e) => {
       e.preventDefault(); // Cancel default builder behabiour
       e.detail.originalEvent.preventDefault(); // Cancel page scroll
 

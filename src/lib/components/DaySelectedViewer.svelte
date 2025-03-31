@@ -3,8 +3,12 @@
   import { cn } from '$lib/utils';
   import type { User } from '$lib/constants';
 
-  export let daysSelected: Map<Readonly<string>, Array<User>>;
-  export let shades: string[];
+  interface Props {
+    daysSelected: Map<Readonly<string>, Array<User>>;
+    shades: string[];
+  }
+
+  let { daysSelected, shades }: Props = $props();
 
   const boxClassNames: Record<string, string> = {
     M: 'rounded-bl-lg',
@@ -24,12 +28,12 @@
         <div
           style="background-color: {shades[daysSelected.get(day)?.length ?? 0]};"
           class={cn('h-10 w-10', boxClassNames[day])}
-        />
+        ></div>
         <div
           class="pointer-events-none absolute left-1/2 top-12 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
         >
           <div
-            class="animate-in fade-in slide-in-from-bottom-2 rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg"
+            class="rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg animate-in fade-in slide-in-from-bottom-2"
           >
             <strong>
               Available: <span class="font-normal">{daysSelected.get(day)?.length ?? 0}</span>

@@ -1,12 +1,18 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { createCombobox, melt, type CreateComboboxProps } from '@melt-ui/svelte';
   import { Check, ChevronDown, ChevronUp } from 'lucide-svelte';
   import { fly } from 'svelte/transition';
   import { cn } from '$lib/utils';
 
-  export let options: string[];
-  export let selected: CreateComboboxProps<string>['selected'];
-  export let className: string = '';
+  interface Props {
+    options: string[];
+    selected: CreateComboboxProps<string>['selected'];
+    className?: string;
+  }
+
+  let { options, selected, className = '' }: Props = $props();
 
   const {
     elements: { menu, input, option },
@@ -14,16 +20,20 @@
     helpers: { isSelected }
   } = createCombobox<string>({ selected, forceVisible: true });
 
-  $: if (!$open) {
-    $inputValue = $selectedOption?.value ?? '';
-  }
+  run(() => {
+    if (!$open) {
+      $inputValue = $selectedOption?.value ?? '';
+    }
+  });
 
-  $: filteredOptions = $touchedInput
-    ? options.filter((o) => {
-        const normalizedInput = $inputValue.toLowerCase().trim().replaceAll(' ', '_');
-        return o.toLowerCase().includes(normalizedInput);
-      })
-    : options;
+  let filteredOptions = $derived(
+    $touchedInput
+      ? options.filter((o) => {
+          const normalizedInput = $inputValue.toLowerCase().trim().replaceAll(' ', '_');
+          return o.toLowerCase().includes(normalizedInput);
+        })
+      : options
+  );
 </script>
 
 <div class={cn(className, 'flex flex-col gap-1')}>
@@ -48,7 +58,7 @@
     transition:fly={{ duration: 150, y: -5 }}
     use:melt={$menu}
   >
-    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <div class="flex max-h-full flex-col gap-0 overflow-y-auto bg-zinc-800 px-2 py-2" tabindex="0">
       {#each filteredOptions as item, index (index)}
         <li
