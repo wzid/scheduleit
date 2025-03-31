@@ -129,7 +129,7 @@
           )}
         >
           <span class={cn(
-            ' font-semibold mb-1',
+            'font-semibold mb-1',
             isBlockSelected(i) ? 'text-peach-900' : 'text-zinc-400'
           )}>
             {day}
