@@ -4,8 +4,6 @@
   import { Check, ChevronDown } from 'lucide-svelte';
   import { fly } from 'svelte/transition';
 
-  
-
   interface Props {
     // string array or object with groups
     title?: string | undefined;

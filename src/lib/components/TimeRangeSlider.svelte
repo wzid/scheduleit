@@ -37,10 +37,8 @@
   <span use:melt={$root} class={cn(className, 'relative flex h-[20px] w-full items-center')}>
     <span use:melt={$range} class="h-2 bg-peach-200"></span>
     {#each $ticks as tick, i}
-      <span
-        use:melt={tick}
-        class="h-1 w-1 rounded-full bg-zinc-500 data-[bounded]:bg-peach-700/75"
-></span>
+      <span use:melt={tick} class="h-1 w-1 rounded-full bg-zinc-500 data-[bounded]:bg-peach-700/75"
+      ></span>
       {#if i % 3 == 0}
         {#if i == 0}
           <span use:melt={tick} class="!-left-[.4rem] top-6 text-zinc-500"> 12 </span>
@@ -61,7 +59,7 @@
       <span
         use:melt={thumb}
         class="h-5 w-5 rounded-full bg-peach-200 shadow focus:ring-4 focus:!ring-black/40"
-></span>
+      ></span>
     {/each}
   </span>
 </div>

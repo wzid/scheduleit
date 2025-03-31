@@ -155,7 +155,7 @@
   }
 
   [data-melt-calendar-cell] {
-    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 hover:bg-peach-400/20  focus:ring focus:ring-peach-400;
+    @apply flex h-6 w-6 cursor-pointer select-none items-center justify-center rounded-lg p-4 hover:bg-peach-400/20 focus:ring focus:ring-peach-400;
   }
 
   [data-melt-calendar-cell][data-highlighted] {

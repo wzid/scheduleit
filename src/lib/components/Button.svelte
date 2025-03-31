@@ -2,10 +2,6 @@
   import { cn, longpress } from '$lib/utils';
   import type { HTMLButtonAttributes } from 'svelte/elements';
 
-
-
-  
-
   // switch between primary, secondary, and ghost buttons
   const variantClasses = {
     primary: 'bg-royalblue-500 hover:bg-royalblue-500/80 text-white',

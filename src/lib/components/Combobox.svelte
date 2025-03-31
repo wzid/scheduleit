@@ -26,12 +26,14 @@
     }
   });
 
-  let filteredOptions = $derived($touchedInput
-    ? options.filter((o) => {
-        const normalizedInput = $inputValue.toLowerCase().trim().replaceAll(' ', '_');
-        return o.toLowerCase().includes(normalizedInput);
-      })
-    : options);
+  let filteredOptions = $derived(
+    $touchedInput
+      ? options.filter((o) => {
+          const normalizedInput = $inputValue.toLowerCase().trim().replaceAll(' ', '_');
+          return o.toLowerCase().includes(normalizedInput);
+        })
+      : options
+  );
 </script>
 
 <div class={cn(className, 'flex flex-col gap-1')}>

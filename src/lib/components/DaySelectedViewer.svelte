@@ -28,12 +28,12 @@
         <div
           style="background-color: {shades[daysSelected.get(day)?.length ?? 0]};"
           class={cn('h-10 w-10', boxClassNames[day])}
-></div>
+        ></div>
         <div
           class="pointer-events-none absolute left-1/2 top-12 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
         >
           <div
-            class="animate-in fade-in slide-in-from-bottom-2 rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg"
+            class="rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg animate-in fade-in slide-in-from-bottom-2"
           >
             <strong>
               Available: <span class="font-normal">{daysSelected.get(day)?.length ?? 0}</span>

@@ -98,7 +98,7 @@
               'h-[.4rem] w-32 bg-zinc-800/80 transition-colors duration-100',
               isBlockSelected(i, j) ? 'bg-peach-200' : 'hover:bg-zinc-700'
             )}
-></div>
+          ></div>
         {/key}
       {/each}
     </div>

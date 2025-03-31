@@ -217,7 +217,7 @@
         transition:fade={{ duration: 100 }}
         onclick={() => (focusUserInput = false)}
         class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
-></div>
+      ></div>
     {/if}
     <ul>
       {#each users as user}
@@ -234,7 +234,7 @@
                 class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
               >
                 <div
-                  class="animate-in fade-in slide-in-from-bottom-2 rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg"
+                  class="rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg animate-in fade-in slide-in-from-bottom-2"
                 >
                   Edit availability
                 </div>
@@ -247,7 +247,7 @@
                   class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
                 >
                   <div
-                    class="animate-in fade-in slide-in-from-bottom-2 rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg"
+                    class="rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg animate-in fade-in slide-in-from-bottom-2"
                   >
                     Availability recorded
                   </div>

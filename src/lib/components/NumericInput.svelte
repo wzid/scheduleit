@@ -1,7 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils';
 
-
   interface Props {
     onDroppedFocus?: () => void;
     title?: string | undefined;
