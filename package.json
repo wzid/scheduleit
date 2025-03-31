@@ -21,7 +21,7 @@
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "autoprefixer": "^10.4.17",
     "dotenv": "^16.4.4",
-    "drizzle-kit": "^0.20.14",
+    "drizzle-kit": "^0.30.6",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "prettier-plugin-svelte": "^3.2.1",
