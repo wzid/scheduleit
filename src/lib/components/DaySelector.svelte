@@ -1,7 +1,6 @@
 <script lang="ts">
   import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
   import { cn } from '$lib/utils';
-  import { Check } from 'lucide-svelte';
   import { get, type Writable } from 'svelte/store';
 
   // create a map from the day to the selected state
@@ -92,11 +91,6 @@
 
     removing = false;
   };
-
-  const boxClassNames: Record<string, string> = {
-    M: 'rounded-bl-lg',
-    Su: 'rounded-br-lg'
-  };
 </script>
 
 <svelte:body
@@ -106,14 +100,9 @@
   }}
 />
 
-<div class="rounded-lg bg-zinc-800/80">
-  <div class="flex justify-between text-lg font-semibold">
-    {#each DAYS_OF_THE_WEEK as day}
-      <span class="w-full text-center">{day}</span>
-    {/each}
-  </div>
-  <div class="flex justify-between gap-1">
-    {#key count}
+<div class="rounded-lg bg-zinc-800 overflow-hidden">
+  {#key count}
+    <div class="flex flex-wrap">
       {#each DAYS_OF_THE_WEEK as day, i}
         <!-- svelte-ignore a11y_no_static_element_interactions, a11y_mouse_events_have_key_events -->
         <button
@@ -133,17 +122,31 @@
             handleDragStop();
           }}
           class={cn(
-            'h-10 w-10 shrink-0 transition-colors duration-100 hover:opacity-80',
-            isBlockSelected(i) ? 'bg-peach-200' : 'bg-zinc-700',
-            boxClassNames[day]
+            'relative flex flex-col items-center justify-center w-[14.28%] py-3 transition-all duration-150',
+            isBlockSelected(i) 
+              ? 'bg-peach-200' 
+              : 'bg-zinc-800 hover:bg-zinc-700'
           )}
         >
-          <Check
-            strokeWidth={3}
-            class={cn('mx-auto h-6 w-6 text-peach-900', isBlockSelected(i) ? 'block' : 'hidden')}
-          />
+          <span class={cn(
+            ' font-semibold mb-1',
+            isBlockSelected(i) ? 'text-peach-900' : 'text-zinc-400'
+          )}>
+            {day}
+          </span>
+          <div class={cn(
+            'w-2 h-2 rounded-full transition-all duration-150',
+            isBlockSelected(i) 
+              ? 'bg-peach-900 scale-100' 
+              : 'bg-zinc-600 scale-75 opacity-50'
+          )}></div>
+          <div class={cn(
+            'absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-150',
+            isBlockSelected(i) ? 'bg-peach-300' : 'bg-transparent'
+          )}></div>
         </button>
       {/each}
-    {/key}
-  </div>
+    </div>
+  {/key}
 </div>
+
