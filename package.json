@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "typecheck": "tsc --noEmit",
     "lint": "prettier --check .",
     "format": "prettier --write .",
     "db:push": "drizzle-kit push:sqlite",
@@ -39,7 +40,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@libsql/client": "^0.5.0",
+    "@libsql/client": "^0.15.1",
     "argon2": "^0.41.1",
     "clsx": "^2.1.0",
     "drizzle-orm": "^0.41.0",
