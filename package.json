@@ -14,7 +14,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
-    "@melt-ui/pp": "^0.3.0",
+    "@melt-ui/pp": "^0.3.2",
     "@melt-ui/svelte": "^0.74.1",
     "@sveltejs/adapter-auto": "^3.1.1",
     "@sveltejs/kit": "^2.5.0",
