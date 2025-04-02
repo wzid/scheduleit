@@ -44,7 +44,7 @@
     "argon2": "^0.41.1",
     "clsx": "^2.1.0",
     "drizzle-orm": "^0.41.0",
-    "lucide-svelte": "^0.485.0",
+    "lucide-svelte": "^0.487.0",
     "nanoid": "^5.0.5",
     "tailwind-merge": "^3.0.2"
   }
