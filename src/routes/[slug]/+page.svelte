@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { ClipboardCopy, Check, NotebookPen, Plus, Pencil } from 'lucide-svelte';
+  import ClipboardCopyIcon from '@lucide/svelte/icons/clipboard-copy';
+  import CheckIcon from '@lucide/svelte/icons/check';
+  import NotebookPenIcon from '@lucide/svelte/icons/notebook-pen';
+  import PlusIcon from '@lucide/svelte/icons/plus';
+  import PencilIcon from '@lucide/svelte/icons/pencil';
   import { get, writable } from 'svelte/store';
   import { fly, fade } from 'svelte/transition';
   import { shadeGradient } from '$lib/utils';
@@ -163,12 +167,12 @@
 
 <div class="mt-4 w-fit space-x-2">
   <Button onClick={() => (focusUserInput = true)} variant="secondary">
-    <NotebookPen class="mr-2 h-5 w-5" />
+    <NotebookPenIcon class="mr-2 h-5 w-5" />
     Record Time
   </Button>
   <div class="relative inline">
     <Button onClick={copyLink} variant="neutral">
-      <ClipboardCopy class="mr-2 h-5 w-5" />
+      <ClipboardCopyIcon class="mr-2 h-5 w-5" />
       Copy Link
     </Button>
     {#if open}
@@ -178,7 +182,7 @@
       >
         <div class="flex items-center px-3 py-1 text-zinc-300">
           <span>Copied</span>
-          <Check class="ml-2 h-4 w-4" strokeWidth={3} />
+          <CheckIcon class="ml-2 h-4 w-4" strokeWidth={3} />
         </div>
       </div>
     {/if}
@@ -208,7 +212,7 @@
             </div>
           </div>
           <Button variant="secondary" contentType="icon" type="submit">
-            <Plus class="h-5 w-5" strokeWidth={3} />
+            <PlusIcon class="h-5 w-5" strokeWidth={3} />
           </Button>
         </form>
       </div>
@@ -226,7 +230,7 @@
           <div class="flex items-center gap-2">
             <div class="group relative">
               <button onclick={() => logIn(user.id)}>
-                <Pencil
+                <PencilIcon
                   class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80"
                 />
               </button>
@@ -242,7 +246,7 @@
             </div>
             {#if user.availability}
               <div class="group relative">
-                <Check class="h-4 w-4 text-green-500" strokeWidth={3} />
+                <CheckIcon class="h-4 w-4 text-green-500" strokeWidth={3} />
                 <div
                   class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
                 >

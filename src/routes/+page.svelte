@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CalendarPlus } from 'lucide-svelte';
+  import CalendarPlusIcon from '@lucide/svelte/icons/calendar-plus';
   import {
     Button,
     Calendar,
@@ -153,7 +153,7 @@
   </div>
   <!-- Submit -->
   <Button className="w-full" variant="secondary" type="submit">
-    <CalendarPlus class="mr-1.5 h-4 w-4" /> Create event
+    <CalendarPlusIcon class="mr-1.5 h-4 w-4" /> Create event
   </Button>
 </form>
 
