@@ -27,15 +27,14 @@
     days
   }: Props = $props();
 
+  const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
+
   // Store for selected time slots
   // Format will be a 2D array: [dayIndex][timeIndex]
-  const selectedSlots = writable<boolean[][]>(
-    days.map(() => Array(endTime - startTime + 1).fill(false))
-  );
+  const selectedSlots = writable<boolean[][]>(days.map(() => Array(numberOfTimeSlots).fill(false)));
 
   // Initialize from active user's availability if it exists
   $effect(() => {
-    console.log({ activeUserId, recording });
     if (activeUserId && recording) {
       // Find the active user and set their availability
       const activeUser = users.find((user) => user.id === activeUserId);
@@ -43,33 +42,36 @@
         const dayAvailabilities = activeUser.availability.split(',');
         const newSelectedSlots = days.map((_, dayIndex) => {
           const dayAvailability = dayAvailabilities[dayIndex] || '';
-          return Array(endTime - startTime + 1)
+          return Array(numberOfTimeSlots)
             .fill(false)
             .map((_, timeIndex) => {
               return dayAvailability[timeIndex] === '1';
             });
         });
-        console.log(newSelectedSlots);
         selectedSlots.set(newSelectedSlots);
       } else {
         // Reset to all false if no availability
-        selectedSlots.set(days.map(() => Array(endTime - startTime + 1).fill(false)));
+        selectedSlots.set(days.map(() => Array(numberOfTimeSlots).fill(false)));
       }
     }
   });
 
   // Convert 24h time to display format (12h with am/pm)
-  function formatTime(hour: number): string {
+  function formatTime(time: string): string {
+    const [hour, minute] = time.split(':').map(Number);
     const period = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour % 12 === 0 ? 12 : hour % 12;
-    return `${displayHour} ${period}`;
+    return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
   }
 
   // Generate time slots between start and end time
-  function generateTimeSlots(start: number, end: number): number[] {
+  function generateTimeSlots(start: number, end: number): string[] {
     const slots = [];
-    for (let i = start; i <= end; i++) {
-      slots.push(i);
+    for (let hour = start; hour <= end; hour++) {
+      for (let quarter = 0; quarter < 4; quarter++) {
+        const minutes = quarter * 15;
+        slots.push(`${hour}:${minutes.toString().padStart(2, '0')}`);
+      }
     }
     return slots;
   }
@@ -115,6 +117,12 @@
     return availabilityArray.join(',');
   }
 
+  function getShade(dayIndex: number, timeIndex: number): string {
+    const usersForSlot = getUsersForSlot(dayIndex, timeIndex);
+    const userCount = usersForSlot.length;
+    return shades[userCount] || '#fff'; 
+  }
+
   // Function to handle save (to be passed to the parent component)
   function handleSave() {
     // Set the availability string in a way your API can access it
@@ -131,7 +139,6 @@
 
 <div class="w-full max-w-2xl">
   <div class="mb-4 flex items-center justify-between">
-    <h3 class="text-xl font-medium text-zinc-300">Select your availability</h3>
     {#if recording}
       <div class="flex gap-2">
         <Button onClick={cancel} variant="neutral">Cancel</Button>
@@ -141,48 +148,37 @@
   </div>
 
   <!-- Day labels -->
-  <div class="grid" style="grid-template-columns: 60px repeat({days.length}, 1fr);">
-    <div class="text-center"></div>
+  <div class="flex w-full items-center justify-between px-10 ml-7">
     <!-- Empty cell for time labels -->
     {#each days as day, i}
       <div class="text-center text-sm font-medium text-zinc-400">{day}</div>
     {/each}
   </div>
 
-  <!-- Time slots and availability grid -->
-  <div class="grid" style="grid-template-columns: 60px repeat({days.length}, 1fr); gap: 2px;">
-    {#each timeSlots as time, timeIndex}
-      <div class="flex items-center justify-end pr-2 text-xs text-zinc-500">
-        {formatTime(time)}
-      </div>
+  <div class="flex">
 
-      {#if recording}
-        {#each days as day, dayIndex}
-          <!-- svelte-ignore a11y_click_events_have_key_events -->
-          <!-- svelte-ignore a11y_no_static_element_interactions -->
-          <div
-            class={cn(
-              'flex h-8 cursor-pointer items-center justify-center rounded-md transition-colors duration-150 hover:brightness-125',
-              isSlotSelected(dayIndex, timeIndex) ? 'bg-peach-700' : 'bg-zinc-800'
-            )}
-            onclick={() => toggleTimeSlot(dayIndex, timeIndex)}
-          ></div>
-        {/each}
-      {:else}
-        {#each days as day, dayIndex}
-          <div
-            class="flex h-8 items-center justify-center rounded-md transition-colors duration-150"
-            style="background-color: {shades[getUsersForSlot(dayIndex, timeIndex).length]};"
-          >
-            {#if getUsersForSlot(dayIndex, timeIndex).length > 0}
-              <span class="text-xs font-medium text-white">
-                {getUsersForSlot(dayIndex, timeIndex).length}/{users.length}
-              </span>
-            {/if}
+    <!-- Time slots -->
+    <div class="flex flex-col justify-start w-20">
+      {#each timeSlots as time, i}
+        {#if i % 4 === 0}
+          <div class="text-center text-xs text-zinc-400 h-8 leading-none">
+            {formatTime(time)}
           </div>
+        {/if}
+      {/each}
+    </div>
+
+    <!-- Actual Grid -->
+    <div
+      class="grid w-full"
+      style="grid-template-columns: repeat({days.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
+    >
+    {#each timeSlots as time, timeIndex}
+      {#each days as day, dayIndex}
+          <div class="h-2 text-xs" style="background-color: {getShade(dayIndex, timeIndex)};"></div>
         {/each}
-      {/if}
-    {/each}
+      {/each}
+    </div>
   </div>
 
   {#if recording}
