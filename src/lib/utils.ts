@@ -138,7 +138,8 @@ export function shadeGradient(shades: number) {
     .map((v, i) => i / shades || 0);
   // convert shade levels to colors
   return levels.map((x) => {
-    if (x === 0) return '#E0E0E0';
+    // this is the background color of the selector
+    if (x === 0) return '#27272a'; // zinc-800
     if (x < 0.33) return lerpColor('#ffe8d5', '#ffa872', progress(0, 0.33, x));
     if (x < 0.69) return lerpColor('#ffa872', '#fd793a', progress(0.33, 0.69, x));
     if (x < 0.82) return lerpColor('#fd793a', '#ea4c20', progress(0.69, 0.82, x));

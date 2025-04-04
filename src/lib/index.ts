@@ -13,6 +13,7 @@ import NumericInput from './components/NumericInput.svelte';
 import TimeRangeSlider from './components/TimeRangeSlider.svelte';
 import DaySelector from './components/DaySelector.svelte';
 import DaySelectedViewer from './components/DaySelectedViewer.svelte';
+import DayTimeRange from './components/DayTimeRange.svelte';
 
 export {
   AvailabilitySelector,
@@ -28,5 +29,6 @@ export {
   NumericInput,
   TimeRangeSlider,
   DaySelector,
-  DaySelectedViewer
+  DaySelectedViewer,
+  DayTimeRange
 };
