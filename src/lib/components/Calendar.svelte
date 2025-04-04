@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createCalendar, melt, type CreateCalendarProps } from '@melt-ui/svelte';
   import { cn } from '$lib/utils';
-  import { ChevronLeft, ChevronRight } from 'lucide-svelte';
+  import { ChevronLeft, ChevronRight } from '@lucide/svelte';
 
   interface Props {
     className?: string | undefined;

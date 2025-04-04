@@ -2,7 +2,7 @@
   import { run } from 'svelte/legacy';
 
   import { createCombobox, melt, type CreateComboboxProps } from '@melt-ui/svelte';
-  import { Check, ChevronDown, ChevronUp } from 'lucide-svelte';
+  import { Check, ChevronDown, ChevronUp } from '@lucide/svelte';
   import { fly } from 'svelte/transition';
   import { cn } from '$lib/utils';
 

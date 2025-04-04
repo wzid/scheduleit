@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CalendarPlus } from 'lucide-svelte';
+  import { CalendarPlus } from '@lucide/svelte';
   import {
     Button,
     Calendar,

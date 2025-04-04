@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createSelect, melt, type CreateSelectProps } from '@melt-ui/svelte';
   import { cn } from '$lib/utils';
-  import { Check, ChevronDown } from 'lucide-svelte';
+  import { Check, ChevronDown } from '@lucide/svelte';
   import { fly } from 'svelte/transition';
 
   interface Props {

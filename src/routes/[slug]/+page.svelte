@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ClipboardCopy, Check, NotebookPen, Plus, Pencil } from 'lucide-svelte';
+  import { ClipboardCopy, Check, NotebookPen, Plus, Pencil } from '@lucide/svelte';
   import { get, writable } from 'svelte/store';
   import { fly, fade } from 'svelte/transition';
   import { shadeGradient } from '$lib/utils';
