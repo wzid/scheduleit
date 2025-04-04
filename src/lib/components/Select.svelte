@@ -1,7 +1,8 @@
 <script lang="ts">
   import { createSelect, melt, type CreateSelectProps } from '@melt-ui/svelte';
   import { cn } from '$lib/utils';
-  import { Check, ChevronDown } from '@lucide/svelte';
+  import CheckIcon from '@lucide/svelte/icons/check';
+  import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
   import { fly } from 'svelte/transition';
 
   interface Props {
@@ -73,7 +74,7 @@
     }}
   >
     {$selectedLabel || placeholder}
-    <ChevronDown class="h-5 w-5" />
+    <ChevronDownIcon class="h-5 w-5" />
   </button>
   {#if $open}
     <div
@@ -98,7 +99,7 @@
                 use:melt={$option({ value: item, label: item })}
               >
                 <div class="check {$isSelected(item) ? 'block' : 'hidden'}">
-                  <Check class="h-4 w-4" />
+                  <CheckIcon class="h-4 w-4" />
                 </div>
                 {item}
               </div>

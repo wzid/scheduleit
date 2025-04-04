@@ -1,7 +1,8 @@
 <script lang="ts">
   import { createCalendar, melt, type CreateCalendarProps } from '@melt-ui/svelte';
   import { cn } from '$lib/utils';
-  import { ChevronLeft, ChevronRight } from '@lucide/svelte';
+  import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
+  import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 
   interface Props {
     className?: string | undefined;
@@ -33,13 +34,13 @@
 <div use:melt={$calendar} class={cn(className)}>
   <header>
     <button use:melt={$prevButton} type="button">
-      <ChevronLeft size={24} />
+      <ChevronLeftIcon size={24} />
     </button>
     <div use:melt={$heading}>
       {$headingValue}
     </div>
     <button use:melt={$nextButton} type="button">
-      <ChevronRight size={24} />
+      <ChevronRightIcon size={24} />
     </button>
   </header>
   <div>

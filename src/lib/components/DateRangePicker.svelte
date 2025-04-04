@@ -1,7 +1,9 @@
 <script lang="ts">
   import { createDateRangePicker, melt } from '@melt-ui/svelte';
   import { cn } from '$lib/utils';
-  import { Calendar, ChevronLeft, ChevronRight } from '@lucide/svelte';
+  import CalendarIcon from '@lucide/svelte/icons/calendar';
+  import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
+  import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
   import { fade } from 'svelte/transition';
 
   interface Props {
@@ -61,7 +63,7 @@
         use:melt={$trigger}
         class="rounded-md bg-peach-300 p-1 text-zinc-900 transition-all hover:bg-peach-300/80"
       >
-        <Calendar size={16} />
+        <CalendarIcon size={16} />
       </button>
     </div>
   </div>
@@ -75,13 +77,13 @@
     <div use:melt={$calendar} class="w-full rounded-lg bg-zinc-800/90 p-3 text-white shadow-sm">
       <header class="flex items-center justify-between pb-2">
         <button use:melt={$prevButton} class="pagnation-button">
-          <ChevronLeft size={24} />
+          <ChevronLeftIcon size={24} />
         </button>
         <div use:melt={$heading} class="font-semibold">
           {$headingValue}
         </div>
         <button use:melt={$nextButton} class="pagnation-button">
-          <ChevronRight size={24} />
+          <ChevronRightIcon size={24} />
         </button>
       </header>
       <div class="flex items-center gap-6">

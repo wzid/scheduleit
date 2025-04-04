@@ -2,7 +2,9 @@
   import { run } from 'svelte/legacy';
 
   import { createCombobox, melt, type CreateComboboxProps } from '@melt-ui/svelte';
-  import { Check, ChevronDown, ChevronUp } from '@lucide/svelte';
+  import CheckIcon from '@lucide/svelte/icons/check';
+  import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
+  import ChevronUpIcon from '@lucide/svelte/icons/chevron-up';
   import { fly } from 'svelte/transition';
   import { cn } from '$lib/utils';
 
@@ -45,9 +47,9 @@
     />
     <div class="absolute right-3 top-1/2 z-10 -translate-y-1/2 text-peach-200">
       {#if $open}
-        <ChevronUp class="h-5 w-5" />
+        <ChevronUpIcon class="h-5 w-5" />
       {:else}
-        <ChevronDown class="h-5 w-5" />
+        <ChevronDownIcon class="h-5 w-5" />
       {/if}
     </div>
   </div>
@@ -66,7 +68,7 @@
           use:melt={$option({ value: item })}
         >
           <div class="check {$isSelected(item) ? 'block' : 'hidden'}">
-            <Check class="h-4 w-4" />
+            <CheckIcon class="h-4 w-4" />
           </div>
           {item}
         </li>
