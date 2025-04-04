@@ -35,7 +35,7 @@
 
   // Initialize from active user's availability if it exists
   $effect(() => {
-    console.log(activeUserId, recording);
+    console.log({ activeUserId, recording });
     if (activeUserId && recording) {
       // Find the active user and set their availability
       const activeUser = users.find((user) => user.id === activeUserId);
@@ -90,7 +90,7 @@
 
   // Check if a time slot is selected
   function isSlotSelected(dayIndex: number, timeIndex: number): boolean {
-    return get(selectedSlots)[dayIndex][timeIndex];
+    return $selectedSlots[dayIndex][timeIndex];
   }
 
   // Get users available for a specific time slot
@@ -162,12 +162,11 @@
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div
             class={cn(
-              'flex h-8 items-center justify-center rounded-md transition-colors duration-150 cursor-pointer hover:brightness-125',
+              'flex h-8 cursor-pointer items-center justify-center rounded-md transition-colors duration-150 hover:brightness-125',
               isSlotSelected(dayIndex, timeIndex) ? 'bg-peach-700' : 'bg-zinc-800'
             )}
             onclick={() => toggleTimeSlot(dayIndex, timeIndex)}
-          >
-          </div>
+          ></div>
         {/each}
       {:else}
         {#each days as day, dayIndex}
