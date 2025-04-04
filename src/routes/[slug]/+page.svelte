@@ -10,11 +10,13 @@
   import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
   import { superForm } from 'sveltekit-superforms/client';
   import type { User } from '$lib/constants';
+  import { DayTimeRange } from '$lib';
 
   import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
 
   let { data } = $props();
   const event = data.event;
+  
 
   const usersWritable = writable(data.users);
   let users: Array<User> = $state([]);
@@ -57,7 +59,7 @@
 
   if (event.dateType == 'days') {
     // Iterate over the users array
-    users.forEach((user) => {
+    $usersWritable.forEach((user) => {
       if (!user.availability) return;
       // For each user, iterate over their availability bit string
       for (let i = 0; i < user.availability.length; i++) {
@@ -72,10 +74,10 @@
     });
   }
 
-  const shades = shadeGradient(users.length);
+  const shades = shadeGradient($usersWritable.length);
   const recordedDays = writable<Day[]>([]);
 
-  let activeUserId: string | null = null;
+  let activeUserId = $state<string | null>(null);
   let activeUserPassword: string | null = null;
 
   let recording = $state(false);
@@ -275,17 +277,16 @@
 
     <!-- The actually stuff (yes, stuff) -->
     {#if event.dateType == 'days'}
-      <div class="mt-8 space-y-4">
-        {#if recording}
-          <DaySelector value={recordedDays} />
-          <div class="flex w-full gap-2">
-            <Button onClick={saveAvailability} className="w-3/4">Apply changes</Button>
-            <Button onClick={cancel} variant="red">Cancel</Button>
-          </div>
-        {:else}
-          <DaySelectedViewer daysSelected={dayUserCountMap} {shades} />
-        {/if}
-      </div>
+      <DayTimeRange
+        {users}
+        {recording}
+        {saveAvailability}
+        {cancel}
+        startTime={event.startTime}
+        endTime={event.endTime}
+        {activeUserId}
+        days={event.days ?? []}
+      />
     {:else}
       <div>
         <h1>dates</h1>
