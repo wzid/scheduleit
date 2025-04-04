@@ -267,10 +267,10 @@
   </div>
   <div class="flex w-full flex-col items-center">
     <!-- Shades for users -->
-    <div class="flex items-center text-xl text-zinc-300">
+    <div class="flex items-center pl-20 text-lg text-zinc-300">
       <p class="mr-4">0/{users.length}</p>
       {#each shades as shade}
-        <div style="background: {shade};" class="size-8"></div>
+        <div style="background: {shade};" class="size-6"></div>
       {/each}
       <p class="ml-4">{users.length}/{users.length}</p>
     </div>

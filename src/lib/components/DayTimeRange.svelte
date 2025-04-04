@@ -120,7 +120,7 @@
   function getShade(dayIndex: number, timeIndex: number): string {
     const usersForSlot = getUsersForSlot(dayIndex, timeIndex);
     const userCount = usersForSlot.length;
-    return shades[userCount] || '#fff'; 
+    return shades[userCount] || '#fff';
   }
 
   // Function to handle save (to be passed to the parent component)
@@ -137,7 +137,7 @@
   }
 </script>
 
-<div class="w-full max-w-2xl">
+<div class="flex flex-col items-center w-fit max-w-2xl">
   <div class="mb-4 flex items-center justify-between">
     {#if recording}
       <div class="flex gap-2">
@@ -148,20 +148,20 @@
   </div>
 
   <!-- Day labels -->
-  <div class="flex w-full items-center justify-between px-10 ml-7">
+  <div class="flex w-full pl-20">
     <!-- Empty cell for time labels -->
     {#each days as day, i}
-      <div class="text-center text-sm font-medium text-zinc-400">{day}</div>
+      <div class="text-center text-sm font-medium text-zinc-400 w-20">{day}</div>
     {/each}
   </div>
 
   <div class="flex">
-
     <!-- Time slots -->
-    <div class="flex flex-col justify-start w-20">
+    <div class="flex w-20 flex-col justify-start">
       {#each timeSlots as time, i}
         {#if i % 4 === 0}
-          <div class="text-center text-xs text-zinc-400 h-8 leading-none">
+          <!-- 36px = 9px * 4 slots -->
+          <div class="h-[36px] text-center text-xs leading-none text-zinc-400">
             {formatTime(time)}
           </div>
         {/if}
@@ -170,12 +170,23 @@
 
     <!-- Actual Grid -->
     <div
-      class="grid w-full"
+      class="grid gap-x-[1px]"
       style="grid-template-columns: repeat({days.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
     >
-    {#each timeSlots as time, timeIndex}
-      {#each days as day, dayIndex}
-          <div class="h-2 text-xs" style="background-color: {getShade(dayIndex, timeIndex)};"></div>
+      {#each timeSlots as time, timeIndex}
+        {#each days as day, dayIndex}
+          <div
+            class={cn(
+              'w-20 h-[9px] text-xs',
+              timeIndex != 0 &&
+                (timeIndex % 4 == 0
+                  ? 'border-t border-zinc-600'
+                  : timeIndex % 2 == 0
+                    ? 'border-t border-dotted border-zinc-600'
+                    : '')
+            )}
+            style="background-color: {getShade(dayIndex, timeIndex)};"
+          ></div>
         {/each}
       {/each}
     </div>
