@@ -12,7 +12,7 @@
   import type { User } from '$lib/constants';
   import { DayTimeRange } from '$lib';
 
-  import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
+  import { Button, Meta, Input } from '$lib';
 
   let { data } = $props();
   const event = data.event;
