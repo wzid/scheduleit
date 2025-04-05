@@ -168,12 +168,12 @@
 <div class="mt-4 w-fit space-x-2">
   <Button onClick={() => (focusUserInput = true)} variant="secondary">
     <NotebookPenIcon class="mr-2 h-5 w-5" />
-    Record Time
+    Record availability
   </Button>
   <div class="relative inline">
     <Button onClick={copyLink} variant="neutral">
       <ClipboardCopyIcon class="mr-2 h-5 w-5" />
-      Copy Link
+      Copy link
     </Button>
     {#if open}
       <div
