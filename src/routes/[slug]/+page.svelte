@@ -29,18 +29,23 @@
   } = superForm(data.addUserForm, {
     dataType: 'json',
     onResult: async ({ result }) => {
-      if (result.type !== 'success' || !result.data) return;
+      if (result.type !== 'success' || !result.data) {
+        return;
+      }
+
       usersWritable.update((prev) => {
-        prev.push({
-          id: result.data!.user.id,
-          name: result.data!.user.name,
-          availability: null
-        });
+        if (!result.data) {
+          throw new Error('Failed to add user');
+        }
+
+        prev.push({ ...result.data.user, availability: null });
         return prev;
       });
+
       activeUserId = result.data!.user.id;
       focusUserInput = false;
       recording = true;
+
       if (event.dateType == 'days') {
         recordedDays.set([]);
       }
@@ -121,40 +126,55 @@
     activeUserId = null;
   };
 
-  const logIn = async (userId: string, password?: string) => {
-    const res = await fetch('/api/login', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-      body: JSON.stringify({
-        userId,
-        password
-      })
-    });
-    if (!res.ok) {
-      if (res.status === 401) {
-        const answer = prompt(
-          (password ? 'Invalid password. ' : '') + 'Enter your password to continue.'
-        );
-        if (answer) {
-          logIn(userId, answer);
-        }
-      } else {
-        alert('Uh oh! Something went wrong.');
-      }
-      return;
-    }
+  const handlePostLogIn = (user: User, password?: string) => {
     if (event.dateType == 'days') {
       recordedDays.set(
         (users
-          .find((user) => user.id == userId)
+          .find((u) => u.id == user.id)
           ?.availability?.split('')
           .map((bit, i) => (bit == '1' ? DAYS_OF_THE_WEEK[i] : null))
           .filter((day) => day != null) as Day[]) ?? []
       );
     }
-    activeUserId = userId;
+
+    activeUserId = user.id;
     activeUserPassword = password ?? null;
     recording = true;
+  };
+
+  const logIn = async (user: User, password?: string) => {
+    if (!user.hasPassword) {
+      handlePostLogIn(user, password);
+      return;
+    }
+
+    const response = await fetch('/api/login', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({
+        userId: user.id,
+        password
+      })
+    });
+
+    if (response.status === 401) {
+      const answer = prompt(
+        password
+          ? 'Invalid password. Enter your password to continue.'
+          : 'Enter your password to continue.'
+      );
+      if (answer) {
+        logIn(user, answer);
+      }
+      return;
+    }
+
+    if (!response.ok) {
+      alert('Uh oh! Something went wrong.');
+      return;
+    }
+
+    handlePostLogIn(user, password);
   };
 </script>
 
@@ -228,7 +248,7 @@
           {user.name}
           <div class="flex items-center gap-2">
             <div class="group relative">
-              <button onclick={() => logIn(user.id)}>
+              <button onclick={() => logIn(user)}>
                 <PencilIcon
                   class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80"
                 />

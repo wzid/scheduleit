@@ -105,4 +105,5 @@ export type User = {
   id: string;
   name: string;
   availability: string | null;
+  hasPassword: 0 | 1;
 };
