@@ -98,16 +98,14 @@
     }
   };
 
-  const saveAvailability = () => {
-    const days = get(recordedDays);
-    const bitString = DAYS_OF_THE_WEEK.map((day) => (days.includes(day) ? '1' : '0')).join('');
+  const saveAvailability = (availabilityString: string) => {
     fetch('/api/availability', {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       body: JSON.stringify({
         eventId: event.id,
         userId: activeUserId,
-        availability: bitString,
+        availability: availabilityString,
         password: activeUserPassword
       })
     }).then((res) => {

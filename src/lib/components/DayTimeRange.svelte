@@ -8,7 +8,7 @@
   interface Props {
     users: Array<User>;
     recording: boolean;
-    saveAvailability: () => void;
+    saveAvailability: (availabilityString: string) => void;
     cancel: () => void;
     startTime: number;
     endTime: number;
@@ -132,10 +132,10 @@
 
     // You would set this somewhere your API call can access it
     // For example, you might store it in a variable that's in scope for your API call
-    console.log('Saving availability:', availabilityString);
+    // console.log('Saving availability:', availabilityString);
 
     // Call the parent's saveAvailability function
-    saveAvailability();
+    saveAvailability(availabilityString);
   }
 </script>
 
@@ -187,6 +187,8 @@
       {#each timeSlots as time, timeIndex}
         {#each days as day, dayIndex}
           {#if recording}
+            <!-- svelte-ignore a11y_click_events_have_key_events -->
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
             <div
               class={cn(
                 isSlotSelected(dayIndex, timeIndex) ? 'bg-peach-400' : 'bg-zinc-700/70',
@@ -198,6 +200,7 @@
                       ? 'border-t border-dotted border-zinc-600'
                       : '')
               )}
+              onclick={() => toggleTimeSlot(dayIndex, timeIndex)}
             ></div>
           {:else}
             <div

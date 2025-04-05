@@ -138,6 +138,6 @@ export function shadeGradient(shades: number) {
     .map((_, i) => i / shades || 0);
   // convert shade levels to colors
   return levels.map((x) => {
-    return lerpColor('#333338', '#ffa872', x); // zinc-700/70 to red-900
+    return lerpColor('#333338', '#fd793a', x); // zinc-700/70 to red-900
   });
 }
