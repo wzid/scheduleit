@@ -132,7 +132,7 @@
   let dragStartTimeIndex = -1;
   let dragStartSnapshot: boolean[][] = [];
 
-  function handleDragStart(e: MouseEvent, dayIndex: number, timeIndex: number) {
+  function handleDragStart(e: Event, dayIndex: number, timeIndex: number) {
     if (!recording) {
       return;
     }
@@ -185,6 +185,39 @@
     );
   }
 
+  function handleTouchMove(e: TouchEvent) {
+    if (!dragging) {
+      return;
+    }
+
+    // prevent scrolling and other touch behaviors
+    e.preventDefault();
+    e.stopPropagation();
+
+    const touch = e.touches[0];
+
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!element) {
+      return;
+    }
+
+    const dayIndex = parseInt(element.getAttribute('data-day-index') || '-1');
+    const timeIndex = parseInt(element.getAttribute('data-time-index') || '-1');
+
+    if (dayIndex === -1 || timeIndex === -1) {
+      return;
+    }
+
+    handleDragOver(dayIndex, timeIndex);
+  }
+
+  function handleTouchStart(e: TouchEvent, dayIndex: number, timeIndex: number) {
+    // prevent any default touch behaviors
+    e.preventDefault();
+    e.stopPropagation();
+    handleDragStart(e, dayIndex, timeIndex);
+  }
+
   function handleDragStop() {
     if (!dragging) {
       return;
@@ -209,9 +242,14 @@
   }
 </script>
 
-<svelte:window on:mouseup={handleDragStop} />
+<svelte:window
+  onmouseup={handleDragStop}
+  ontouchend={handleDragStop}
+  ontouchmove={handleTouchMove}
+  ontouchcancel={handleDragStop}
+/>
 
-<div class="flex w-fit max-w-2xl flex-col items-center">
+<div class="flex w-fit max-w-2xl touch-none flex-col items-center">
   <div class="flex w-full justify-center py-4 pl-20">
     {#if recording}
       <div class="flex gap-2">
@@ -273,8 +311,11 @@
                       ? 'border-t border-dotted border-zinc-600'
                       : '')
               )}
+              data-day-index={dayIndex}
+              data-time-index={timeIndex}
               onmousedown={(e) => handleDragStart(e, dayIndex, timeIndex)}
               onmouseover={() => handleDragOver(dayIndex, timeIndex)}
+              ontouchstart={(e) => handleTouchStart(e, dayIndex, timeIndex)}
             ></div>
           {:else}
             <div
