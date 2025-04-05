@@ -64,15 +64,17 @@
     return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
   }
 
+  const endTimeHour = `${endTime}:00`;
   // Generate time slots between start and end time
   function generateTimeSlots(start: number, end: number): string[] {
     const slots = [];
-    for (let hour = start; hour <= end; hour++) {
+    for (let hour = start; hour < end; hour++) {
       for (let quarter = 0; quarter < 4; quarter++) {
         const minutes = quarter * 15;
         slots.push(`${hour}:${minutes.toString().padStart(2, '0')}`);
       }
     }
+    // slots.push(`${end}:00`); // Add end time
     return slots;
   }
 
@@ -137,8 +139,8 @@
   }
 </script>
 
-<div class="flex flex-col items-center w-fit max-w-2xl">
-  <div class="mb-4 flex items-center justify-between">
+<div class="flex w-fit max-w-2xl flex-col items-center">
+  <div class="flex w-full justify-center py-4 pl-20">
     {#if recording}
       <div class="flex gap-2">
         <Button onClick={cancel} variant="neutral">Cancel</Button>
@@ -148,24 +150,33 @@
   </div>
 
   <!-- Day labels -->
-  <div class="flex w-full pl-20">
+  <div class="flex w-full justify-center pl-20">
     <!-- Empty cell for time labels -->
     {#each days as day, i}
-      <div class="text-center text-sm font-medium text-zinc-400 w-20">{day}</div>
+      <div class="w-20 text-center text-sm font-medium text-zinc-400">{day}</div>
     {/each}
   </div>
 
   <div class="flex">
     <!-- Time slots -->
-    <div class="flex w-20 flex-col justify-start">
+    <div class="-mt-1 flex w-20 flex-col">
       {#each timeSlots as time, i}
         {#if i % 4 === 0}
           <!-- 36px = 9px * 4 slots -->
-          <div class="h-[36px] text-center text-xs leading-none text-zinc-400">
+          <!-- we have to minus by 4 because we only display text based on the hour so we have to minus by the slots after the last hour i.e 7 oclock -->
+          <div
+            class={cn(
+              'h-[40px] text-center text-xs leading-none text-zinc-400',
+              timeSlots.length - 4 === i ? '!h-4' : ''
+            )}
+          >
             {formatTime(time)}
           </div>
         {/if}
       {/each}
+      <div class="-mb-[4px] mt-auto text-center text-xs leading-none text-zinc-400">
+        {formatTime(endTimeHour)}
+      </div>
     </div>
 
     <!-- Actual Grid -->
@@ -175,18 +186,33 @@
     >
       {#each timeSlots as time, timeIndex}
         {#each days as day, dayIndex}
-          <div
-            class={cn(
-              'w-20 h-[9px] text-xs',
-              timeIndex != 0 &&
-                (timeIndex % 4 == 0
-                  ? 'border-t border-zinc-600'
-                  : timeIndex % 2 == 0
-                    ? 'border-t border-dotted border-zinc-600'
-                    : '')
-            )}
-            style="background-color: {getShade(dayIndex, timeIndex)};"
-          ></div>
+          {#if recording}
+            <div
+              class={cn(
+                isSlotSelected(dayIndex, timeIndex) ? 'bg-peach-400' : 'bg-zinc-700/70',
+                'h-2.5 w-20 text-xs',
+                timeIndex != 0 &&
+                  (timeIndex % 4 == 0
+                    ? 'border-t border-zinc-600'
+                    : timeIndex % 2 == 0
+                      ? 'border-t border-dotted border-zinc-600'
+                      : '')
+              )}
+            ></div>
+          {:else}
+            <div
+              class={cn(
+                'h-2.5 w-20 text-xs',
+                timeIndex != 0 &&
+                  (timeIndex % 4 == 0
+                    ? 'border-t border-zinc-600'
+                    : timeIndex % 2 == 0
+                      ? 'border-t border-dotted border-zinc-600'
+                      : '')
+              )}
+              style="background-color: {getShade(dayIndex, timeIndex)};"
+            ></div>
+          {/if}
         {/each}
       {/each}
     </div>

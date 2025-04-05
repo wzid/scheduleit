@@ -135,14 +135,9 @@ export function shadeGradient(shades: number) {
   // calculate shade levels
   const levels = Array(shades + 1)
     .fill(0)
-    .map((v, i) => i / shades || 0);
+    .map((_, i) => i / shades || 0);
   // convert shade levels to colors
   return levels.map((x) => {
-    // this is the background color of the selector
-    if (x === 0) return '#333338'; // zinc-700/70
-    if (x < 0.33) return lerpColor('#ffe8d5', '#ffa872', progress(0, 0.33, x));
-    if (x < 0.69) return lerpColor('#ffa872', '#fd793a', progress(0.33, 0.69, x));
-    if (x < 0.82) return lerpColor('#fd793a', '#ea4c20', progress(0.69, 0.82, x));
-    return lerpColor('#ea4c20', '#c4290a', progress(0.82, 1, x));
+    return lerpColor('#333338', '#ffa872', x); // zinc-700/70 to red-900
   });
 }
