@@ -13,7 +13,7 @@
     startTime: number;
     endTime: number;
     activeUserId: string | null;
-    days: Array<Day>;
+    timeline: { type: 'days'; days: Array<Day> } | { type: 'dates'; dates: Array<string> };
   }
 
   let {
@@ -24,8 +24,11 @@
     startTime,
     endTime,
     activeUserId,
-    days
+    timeline
   }: Props = $props();
+
+  const isDaysTimeline = timeline.type === 'days';
+  const days = isDaysTimeline ? timeline.days : timeline.dates;
 
   const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
 
@@ -262,8 +265,12 @@
   <!-- Day labels -->
   <div class="flex w-full justify-center pl-20">
     <!-- Empty cell for time labels -->
-    {#each days as day, i}
-      <div class="w-20 text-center text-sm font-medium text-zinc-400">{day}</div>
+    {#each days as day}
+      <div class="w-20 text-center text-sm font-medium text-zinc-400">
+        {isDaysTimeline
+          ? day
+          : new Date(day).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+      </div>
     {/each}
   </div>
 

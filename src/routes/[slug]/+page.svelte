@@ -272,22 +272,18 @@
       <p class="ml-4">{users.length}/{users.length}</p>
     </div>
 
-    <!-- The actually stuff (yes, stuff) -->
-    {#if event.dateType == 'days'}
-      <DayTimeRange
-        {users}
-        {recording}
-        {saveAvailability}
-        {cancel}
-        startTime={event.startTime}
-        endTime={event.endTime}
-        {activeUserId}
-        days={event.days ?? []}
-      />
-    {:else}
-      <div>
-        <h1>dates</h1>
-      </div>
-    {/if}
+    <!-- The actual stuff (yes, stuff) -->
+    <DayTimeRange
+      {users}
+      {recording}
+      {saveAvailability}
+      {cancel}
+      startTime={event.startTime}
+      endTime={event.endTime}
+      {activeUserId}
+      timeline={event.dateType === 'days'
+        ? { type: 'days', days: event.days ?? [] }
+        : { type: 'dates', dates: event.dates ?? [] }}
+    />
   </div>
 </div>
