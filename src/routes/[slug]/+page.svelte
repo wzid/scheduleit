@@ -16,7 +16,6 @@
 
   let { data } = $props();
   const event = data.event;
-  
 
   const usersWritable = writable(data.users);
   let users: Array<User> = $state([]);

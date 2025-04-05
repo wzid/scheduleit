@@ -125,6 +125,76 @@
     return shades[userCount] || '#fff';
   }
 
+  // START DRAG LOGIC
+  let dragging = false;
+  let dragAction = false;
+  let dragStartDayIndex = -1;
+  let dragStartTimeIndex = -1;
+  let dragStartSnapshot: boolean[][] = [];
+
+  function handleDragStart(e: MouseEvent, dayIndex: number, timeIndex: number) {
+    if (!recording) {
+      return;
+    }
+
+    e.preventDefault();
+
+    dragging = true;
+    dragStartDayIndex = dayIndex;
+    dragStartTimeIndex = timeIndex;
+
+    // save snapshot of current grid state
+    dragStartSnapshot = get(selectedSlots).map((row) => [...row]);
+
+    // if starting on a selected slot, then remove (false). otherwise, add (true)
+    dragAction = $selectedSlots[dayIndex][timeIndex] ? false : true;
+
+    // Immediately update the starting cell
+    selectedSlots.update((slots) => {
+      const newSlots = [...slots];
+
+      newSlots[dayIndex] = [...newSlots[dayIndex]];
+      newSlots[dayIndex][timeIndex] = dragAction;
+
+      return newSlots;
+    });
+  }
+
+  function handleDragOver(dayIndex: number, timeIndex: number) {
+    if (!dragging || dragStartDayIndex === -1 || dragStartTimeIndex === -1) {
+      return;
+    }
+
+    const minDay = Math.min(dragStartDayIndex, dayIndex);
+    const maxDay = Math.max(dragStartDayIndex, dayIndex);
+
+    const minTime = Math.min(dragStartTimeIndex, timeIndex);
+    const maxTime = Math.max(dragStartTimeIndex, timeIndex);
+
+    selectedSlots.set(
+      dragStartSnapshot
+        .map((row) => [...row])
+        .map((row, day) => {
+          if (day >= minDay && day <= maxDay) {
+            for (let time = minTime; time <= maxTime; time++) {
+              row[time] = dragAction;
+            }
+          }
+          return row;
+        })
+    );
+  }
+
+  function handleDragStop() {
+    if (!dragging) {
+      return;
+    }
+    dragging = dragAction = false;
+    dragStartDayIndex = dragStartTimeIndex = -1;
+    dragStartSnapshot = [];
+  }
+  // END DRAG LOGIC
+
   // Function to handle save (to be passed to the parent component)
   function handleSave() {
     // Set the availability string in a way your API can access it
@@ -138,6 +208,8 @@
     saveAvailability(availabilityString);
   }
 </script>
+
+<svelte:window on:mouseup={handleDragStop} />
 
 <div class="flex w-fit max-w-2xl flex-col items-center">
   <div class="flex w-full justify-center py-4 pl-20">
@@ -189,6 +261,7 @@
           {#if recording}
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <!-- svelte-ignore a11y_mouse_events_have_key_events -->
             <div
               class={cn(
                 isSlotSelected(dayIndex, timeIndex) ? 'bg-peach-400' : 'bg-zinc-700/70',
@@ -200,7 +273,8 @@
                       ? 'border-t border-dotted border-zinc-600'
                       : '')
               )}
-              onclick={() => toggleTimeSlot(dayIndex, timeIndex)}
+              onmousedown={(e) => handleDragStart(e, dayIndex, timeIndex)}
+              onmouseover={() => handleDragOver(dayIndex, timeIndex)}
             ></div>
           {:else}
             <div
