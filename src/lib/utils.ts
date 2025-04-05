@@ -10,9 +10,11 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
   const newDates: string[] = [];
+
   if (!dates) {
     return newDates;
   }
+
   for (const date of dates) {
     newDates.push(
       date.year +
@@ -22,6 +24,8 @@ export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
         date.day.toString().padStart(2, '0')
     );
   }
+
+  newDates.sort();
   return newDates;
 };
 
