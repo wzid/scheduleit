@@ -1,7 +1,11 @@
 <footer class="mt-auto py-6">
-  <div class="text-center text-sm leading-none text-zinc-500">
-    built by <a class="shine" target="_blank" href="https://github.com/wzid">cameron</a> &
-    <a class="shine" target="_blank" href="https://github.com/aelew">andre</a>
+  <div class="text-center text-sm lowercase leading-none text-zinc-500">
+    <a class="shine" target="_blank" href="https://github.com/wzid/timeslot">GitHub</a>
+    <span>&bull;</span>
+    <span>
+      Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
+      <a class="shine" target="_blank" href="https://github.com/aelew">Andre</a>
+    </span>
   </div>
 </footer>
 

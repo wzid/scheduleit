@@ -10,9 +10,11 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
   const newDates: string[] = [];
+
   if (!dates) {
     return newDates;
   }
+
   for (const date of dates) {
     newDates.push(
       date.year +
@@ -22,6 +24,8 @@ export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
         date.day.toString().padStart(2, '0')
     );
   }
+
+  newDates.sort();
   return newDates;
 };
 
@@ -135,13 +139,9 @@ export function shadeGradient(shades: number) {
   // calculate shade levels
   const levels = Array(shades + 1)
     .fill(0)
-    .map((v, i) => i / shades || 0);
+    .map((_, i) => i / shades || 0);
   // convert shade levels to colors
   return levels.map((x) => {
-    if (x === 0) return '#E0E0E0';
-    if (x < 0.33) return lerpColor('#ffe8d5', '#ffa872', progress(0, 0.33, x));
-    if (x < 0.69) return lerpColor('#ffa872', '#fd793a', progress(0.33, 0.69, x));
-    if (x < 0.82) return lerpColor('#fd793a', '#ea4c20', progress(0.69, 0.82, x));
-    return lerpColor('#ea4c20', '#c4290a', progress(0.82, 1, x));
+    return lerpColor('#333338', '#fd793a', x); // zinc-700/70 to red-900
   });
 }

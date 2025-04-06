@@ -81,7 +81,7 @@
 
 <style lang="postcss">
   .check {
-    @apply absolute left-2 top-1/2 text-peach-500;
+    @apply absolute left-2 top-1/2 text-peach-700;
     translate: 0 calc(-50% + 1px);
   }
 </style>

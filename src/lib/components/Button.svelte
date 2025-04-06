@@ -40,8 +40,6 @@
 
 <button
   {type}
-  use:longpress={duration}
-  onlongpress={onClick}
   onmouseup={onClick}
   class={cn(
     'inline-flex items-center justify-center rounded-xl text-sm font-semibold shadow transition-colors',

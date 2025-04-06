@@ -1,7 +1,7 @@
 import { error, fail } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { events, users } from '$lib/db/schema';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, isNotNull, SQL } from 'drizzle-orm';
 import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -25,7 +25,8 @@ export async function load({ params }: { params: { slug: string } }) {
     .select({
       id: users.id,
       name: users.name,
-      availability: users.availability
+      availability: users.availability,
+      hasPassword: isNotNull(users.password) as SQL<0 | 1>
     })
     .from(users)
     .where(eq(users.eventId, params.slug));
@@ -56,6 +57,13 @@ export const actions = {
       .returning({ id: users.id })
       .execute();
 
-    return { form, user: { id: result[0].id, name } };
+    return {
+      form,
+      user: {
+        name,
+        id: result[0].id,
+        hasPassword: hashedPassword === null ? 0 : 1
+      }
+    };
   }
 };

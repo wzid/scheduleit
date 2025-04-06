@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
-import { fail } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
 import { DAYS_OF_THE_WEEK } from '$lib/constants';
 import { eq } from 'drizzle-orm';
+import { fail } from 'sveltekit-superforms/client';
 
 const schema = z
   .object({

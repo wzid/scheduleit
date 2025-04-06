@@ -10,8 +10,9 @@
   import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
   import { superForm } from 'sveltekit-superforms/client';
   import type { User } from '$lib/constants';
+  import { DayTimeRange } from '$lib';
 
-  import { DaySelector, DaySelectedViewer, AvailabilitySelector, Button, Meta, Input } from '$lib';
+  import { Button, Meta, Input } from '$lib';
 
   let { data } = $props();
   const event = data.event;
@@ -28,18 +29,23 @@
   } = superForm(data.addUserForm, {
     dataType: 'json',
     onResult: async ({ result }) => {
-      if (result.type !== 'success' || !result.data) return;
+      if (result.type !== 'success' || !result.data) {
+        return;
+      }
+
       usersWritable.update((prev) => {
-        prev.push({
-          id: result.data!.user.id,
-          name: result.data!.user.name,
-          availability: null
-        });
+        if (!result.data) {
+          throw new Error('Failed to add user');
+        }
+
+        prev.push({ ...result.data.user, availability: null });
         return prev;
       });
+
       activeUserId = result.data!.user.id;
       focusUserInput = false;
       recording = true;
+
       if (event.dateType == 'days') {
         recordedDays.set([]);
       }
@@ -57,7 +63,7 @@
 
   if (event.dateType == 'days') {
     // Iterate over the users array
-    users.forEach((user) => {
+    $usersWritable.forEach((user) => {
       if (!user.availability) return;
       // For each user, iterate over their availability bit string
       for (let i = 0; i < user.availability.length; i++) {
@@ -72,10 +78,10 @@
     });
   }
 
-  const shades = shadeGradient(users.length);
+  const shades = shadeGradient($usersWritable.length);
   const recordedDays = writable<Day[]>([]);
 
-  let activeUserId: string | null = null;
+  let activeUserId = $state<string | null>(null);
   let activeUserPassword: string | null = null;
 
   let recording = $state(false);
@@ -83,7 +89,7 @@
   let open = $state(false);
 
   async function copyLink() {
-    await navigator.clipboard.writeText(`https://timeslot.one/${event.id}`);
+    await navigator.clipboard.writeText(new URL(`/e/${event.id}`, window.location.href).toString());
     open = true;
     setTimeout(() => {
       open = false;
@@ -96,16 +102,14 @@
     }
   };
 
-  const saveAvailability = () => {
-    const days = get(recordedDays);
-    const bitString = DAYS_OF_THE_WEEK.map((day) => (days.includes(day) ? '1' : '0')).join('');
+  const saveAvailability = (availabilityString: string) => {
     fetch('/api/availability', {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       body: JSON.stringify({
         eventId: event.id,
         userId: activeUserId,
-        availability: bitString,
+        availability: availabilityString,
         password: activeUserPassword
       })
     }).then((res) => {
@@ -122,40 +126,55 @@
     activeUserId = null;
   };
 
-  const logIn = async (userId: string, password?: string) => {
-    const res = await fetch('/api/login', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-      body: JSON.stringify({
-        userId,
-        password
-      })
-    });
-    if (!res.ok) {
-      if (res.status === 401) {
-        const answer = prompt(
-          (password ? 'Invalid password. ' : '') + 'Enter your password to continue.'
-        );
-        if (answer) {
-          logIn(userId, answer);
-        }
-      } else {
-        alert('Uh oh! Something went wrong.');
-      }
-      return;
-    }
+  const handlePostLogIn = (user: User, password?: string) => {
     if (event.dateType == 'days') {
       recordedDays.set(
         (users
-          .find((user) => user.id == userId)
+          .find((u) => u.id == user.id)
           ?.availability?.split('')
           .map((bit, i) => (bit == '1' ? DAYS_OF_THE_WEEK[i] : null))
           .filter((day) => day != null) as Day[]) ?? []
       );
     }
-    activeUserId = userId;
+
+    activeUserId = user.id;
     activeUserPassword = password ?? null;
     recording = true;
+  };
+
+  const logIn = async (user: User, password?: string) => {
+    if (!user.hasPassword) {
+      handlePostLogIn(user, password);
+      return;
+    }
+
+    const response = await fetch('/api/login', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({
+        userId: user.id,
+        password
+      })
+    });
+
+    if (response.status === 401) {
+      const answer = prompt(
+        password
+          ? 'Invalid password. Enter your password to continue.'
+          : 'Enter your password to continue.'
+      );
+      if (answer) {
+        logIn(user, answer);
+      }
+      return;
+    }
+
+    if (!response.ok) {
+      alert('Uh oh! Something went wrong.');
+      return;
+    }
+
+    handlePostLogIn(user, password);
   };
 </script>
 
@@ -168,12 +187,12 @@
 <div class="mt-4 w-fit space-x-2">
   <Button onClick={() => (focusUserInput = true)} variant="secondary">
     <NotebookPenIcon class="mr-2 h-5 w-5" />
-    Record Time
+    Record availability
   </Button>
   <div class="relative inline">
     <Button onClick={copyLink} variant="neutral">
       <ClipboardCopyIcon class="mr-2 h-5 w-5" />
-      Copy Link
+      Copy link
     </Button>
     {#if open}
       <div
@@ -189,7 +208,7 @@
   </div>
 </div>
 
-<div class="mt-8 flex flex-col-reverse gap-6 sm:flex-row sm:gap-12">
+<div class="mt-8 flex flex-col-reverse gap-6 lg:flex-row lg:gap-12">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}
@@ -229,7 +248,7 @@
           {user.name}
           <div class="flex items-center gap-2">
             <div class="group relative">
-              <button onclick={() => logIn(user.id)}>
+              <button onclick={() => logIn(user)}>
                 <PencilIcon
                   class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80"
                 />
@@ -265,31 +284,26 @@
   </div>
   <div class="flex w-full flex-col items-center">
     <!-- Shades for users -->
-    <div class="flex items-center text-xl text-zinc-300">
+    <div class="flex items-center text-lg text-zinc-300 lg:pl-20">
       <p class="mr-4">0/{users.length}</p>
       {#each shades as shade}
-        <div style="background: {shade};" class="size-8"></div>
+        <div style="background: {shade};" class="size-6"></div>
       {/each}
       <p class="ml-4">{users.length}/{users.length}</p>
     </div>
 
-    <!-- The actually stuff (yes, stuff) -->
-    {#if event.dateType == 'days'}
-      <div class="mt-8 space-y-4">
-        {#if recording}
-          <DaySelector value={recordedDays} />
-          <div class="flex w-full gap-2">
-            <Button onClick={saveAvailability} className="w-3/4">Apply changes</Button>
-            <Button onClick={cancel} variant="red">Cancel</Button>
-          </div>
-        {:else}
-          <DaySelectedViewer daysSelected={dayUserCountMap} {shades} />
-        {/if}
-      </div>
-    {:else}
-      <div>
-        <h1>dates</h1>
-      </div>
-    {/if}
+    <!-- The actual stuff (yes, stuff) -->
+    <DayTimeRange
+      {users}
+      {recording}
+      {saveAvailability}
+      {cancel}
+      startTime={event.startTime}
+      endTime={event.endTime}
+      {activeUserId}
+      timeline={event.dateType === 'days'
+        ? { type: 'days', days: event.days ?? [] }
+        : { type: 'dates', dates: event.dates ?? [] }}
+    />
   </div>
 </div>
