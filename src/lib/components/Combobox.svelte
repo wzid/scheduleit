@@ -68,7 +68,7 @@
           use:melt={$option({ value: item })}
         >
           <div class="check {$isSelected(item) ? 'block' : 'hidden'}">
-            <CheckIcon class="h-4 w-4" strokeWidth={2} />
+            <CheckIcon class="h-4 w-4" />
           </div>
           {item}
         </li>
