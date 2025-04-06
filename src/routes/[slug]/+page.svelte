@@ -208,7 +208,7 @@
   </div>
 </div>
 
-<div class="mt-8 flex flex-col-reverse gap-6 sm:flex-row sm:gap-12">
+<div class="mt-8 flex flex-col-reverse gap-6 lg:flex-row lg:gap-12">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}
@@ -284,7 +284,7 @@
   </div>
   <div class="flex w-full flex-col items-center">
     <!-- Shades for users -->
-    <div class="flex items-center pl-20 text-lg text-zinc-300">
+    <div class="flex items-center text-lg text-zinc-300 lg:pl-20">
       <p class="mr-4">0/{users.length}</p>
       {#each shades as shade}
         <div style="background: {shade};" class="size-6"></div>

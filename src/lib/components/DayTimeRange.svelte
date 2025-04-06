@@ -253,7 +253,7 @@
 />
 
 <div class="flex w-fit max-w-2xl touch-none flex-col items-center">
-  <div class="flex w-full justify-center py-4 pl-20">
+  <div class="flex w-full justify-center py-4 lg:pl-20">
     {#if recording}
       <div class="flex gap-2">
         <Button onClick={cancel} variant="neutral">Cancel</Button>
@@ -345,7 +345,7 @@
 
   {#if recording}
     <div class="mt-4" transition:fly={{ y: 20, duration: 200 }}>
-      <p class="text-sm text-zinc-400">
+      <p class="text-balance text-center text-sm text-zinc-400">
         Click on individual time slots to toggle your availability. Blue cells indicate slots where
         others are available.
       </p>

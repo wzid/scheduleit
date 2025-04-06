@@ -1,11 +1,11 @@
 <script lang="ts">
   interface Props {
-    title?: string | undefined;
+    title?: string;
   }
 
-  let { title = undefined }: Props = $props();
+  let { title }: Props = $props();
 </script>
 
 <svelte:head>
-  <title>{title ? `${title} | timeslot.one` : 'timeslot.one'}</title>
+  <title>{title ? `${title} | timeslot` : 'timeslot'}</title>
 </svelte:head>

@@ -79,14 +79,14 @@
 
 <Meta title="Plan a Meeting" />
 
-<form use:enhance method="POST" class="space-y-4">
+<form use:enhance method="POST" class="space-y-6">
   <!-- Event name -->
   <div>
     <Input bind:value={$form.name} size="lg" placeholder="Your event name..." />
     {#if $errors.name}<p class="invalid">{$errors.name}</p>{/if}
   </div>
   <!-- Date type and time zone -->
-  <div class="grid gap-10 sm:grid-cols-2">
+  <div class="grid gap-6 sm:grid-cols-2">
     <div class="space-y-2">
       <h2>Date Type</h2>
       <Select options={{ 'Date Type': dateTypeOptions }} selected={selectedDateType} />
@@ -97,7 +97,7 @@
       {#if $errors.timeZone}<p class="invalid">{$errors.timeZone}</p>{/if}
     </div>
   </div>
-  <div class="grid gap-10 sm:grid-cols-2">
+  <div class="grid gap-6 sm:grid-cols-2">
     <!-- Dates available -->
     <div class="flex h-full flex-col gap-2">
       {#if dateTypeValue == 'dates'}
@@ -116,15 +116,15 @@
         <DaySelector value={days} />
         <img
           class="mt-auto hidden self-end invert-[100%] sm:block"
-          alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
+          alt="Stickman advertising timeslot.one with a text bubble saying `Let's find a time to meet using timeslot.one`"
           src="https://s6.imgcdn.dev/floSg.png"
           width="215"
         />
       {/if}
     </div>
-    <div class="space-y-2">
+    <div>
       <!-- Time range -->
-      <div class="mb-10 space-y-2">
+      <div class="mb-12 space-y-2 sm:mb-10">
         <div class="flex items-center justify-between">
           <div class="space-y-2">
             <h2>Time Range</h2>
@@ -134,19 +134,20 @@
         </div>
         <TimeRangeSlider value={timeRange} />
       </div>
-      <!-- Custom ID -->
+      <!-- Custom Slug -->
       <div class="space-y-2">
         <div>
-          <h2>Custom ID</h2>
-          <p class="text-sm text-zinc-500">Example: timeslot.one/event/[customId]</p>
+          <h2>Custom Slug</h2>
+          <p class="text-sm text-zinc-500">Example: timeslot.one/[slug]</p>
         </div>
-        <Input bind:value={$form.id} placeholder="Your custom ID (optional)" />
+        <Input bind:value={$form.id} placeholder="Your custom slug (optional)" />
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}
       </div>
       <img
         class="!mt-4 hidden invert-[100%] sm:block"
-        alt="Stickman advertising timeslot.one with the textbubble saying `Let's find a time to meet using timeslot.one`"
+        alt="Stickman advertising timeslot.one with a text bubble saying `Let's find a time to meet using timeslot.one`"
         src="https://s6.imgcdn.dev/flJin.png"
+        draggable="false"
         width="275"
       />
     </div>

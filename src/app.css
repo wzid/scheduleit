@@ -6,13 +6,16 @@
   body {
     @apply overflow-x-hidden bg-zinc-900 text-zinc-50;
   }
-  h1 {
+  h1,
+  .text-h1 {
     @apply text-4xl font-bold;
   }
-  h2 {
+  h2,
+  .text-h2 {
     @apply text-xl font-bold;
   }
-  h3 {
+  h3,
+  .text-h3 {
     @apply text-lg font-semibold;
   }
   .invalid {
