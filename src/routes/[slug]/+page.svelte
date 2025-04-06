@@ -89,7 +89,7 @@
   let open = $state(false);
 
   async function copyLink() {
-    await navigator.clipboard.writeText(`https://timeslot.one/${event.id}`);
+    await navigator.clipboard.writeText(new URL(`/${event.id}`, window.location.href).toString());
     open = true;
     setTimeout(() => {
       open = false;
