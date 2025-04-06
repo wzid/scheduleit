@@ -42,7 +42,7 @@
     onResult: ({ result }) => {
       if (result.type === 'success' && result.data) {
         const eventId = result.data.eventId;
-        window.location.pathname = `/${eventId}`;
+        window.location.pathname = `/e/${eventId}`;
       } else if (result.type === 'failure' && result.data?.error) {
         alert(result.data.error);
       } else if (result.type === 'error') {
@@ -139,7 +139,7 @@
       <div class="space-y-2">
         <div>
           <h2>Custom Slug</h2>
-          <p class="text-sm text-zinc-500">Example: timeslot.one/[slug]</p>
+          <p class="text-sm text-zinc-500">Example: timeslot.one/e/[slug]</p>
         </div>
         <Input bind:value={$form.id} placeholder="Your custom slug (optional)" />
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}
