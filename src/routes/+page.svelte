@@ -17,6 +17,7 @@
   import type { PageData } from './$types';
   import { convertDatesToISO } from '$lib/utils';
   import type { Day } from '$lib/constants';
+  import { dev } from '$app/environment';
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -159,4 +160,4 @@
 </form>
 
 <!-- For debugging in dev -->
-<SuperDebug data={$form} />
+<SuperDebug data={$form} display={dev} />
