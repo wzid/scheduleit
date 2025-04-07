@@ -78,12 +78,12 @@
   </button>
   {#if $open}
     <div
-      class="z-10 flex !max-h-[250px] flex-col overflow-hidden rounded-lg"
+      class="z-10 flex !max-h-[250px] flex-col overflow-hidden rounded-lg shadow-xl"
       transition:fly={{ duration: 150, y: -10 }}
       use:melt={$menu}
     >
       <div
-        class="fix-scrollbar flex max-h-full flex-col gap-0 overflow-y-auto bg-zinc-800 p-1 shadow focus:!ring-0"
+        class="fix-scrollbar flex max-h-full flex-col gap-0 overflow-y-auto bg-zinc-800 p-1 focus:!ring-0"
       >
         {#each Object.entries(options) as [key, arr]}
           <div use:melt={$group(key)}>
