@@ -59,7 +59,7 @@
       <button
         use:melt={thumb}
         type="button"
-        class="size-[1.125rem] rounded-full bg-peach-200 shadow focus:outline-none focus:ring-[3px] focus:ring-peach-700/75"
+        class="size-[1.125rem] rounded-full bg-peach-200 shadow focus:outline-none focus:ring-[3px] focus:ring-peach-200/20"
       ></button>
     {/each}
   </span>
