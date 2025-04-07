@@ -77,8 +77,9 @@
       }
     });
   }
-
-  const shades = shadeGradient($usersWritable.length);
+  
+  // derived helps it update the shades when the users change
+  const shades = $derived(shadeGradient($usersWritable.length));
   const recordedDays = writable<Day[]>([]);
 
   let activeUserId = $state<string | null>(null);
@@ -208,7 +209,7 @@
   </div>
 </div>
 
-<div class="mt-8 flex flex-col-reverse gap-6 lg:flex-row lg:gap-12">
+<div class="mt-8 flex flex-col-reverse gap-6 lg:flex-row lg:gap-12 w-full">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}
@@ -239,12 +240,12 @@
       <div
         transition:fade={{ duration: 100 }}
         onclick={() => (focusUserInput = false)}
-        class="absolute left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
+        class="fixed left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
       ></div>
     {/if}
     <ul>
       {#each users as user}
-        <li class="flex items-center gap-2">
+        <li class="flex items-center gap-2 overflow-auto">
           {user.name}
           <div class="flex items-center gap-2">
             <div class="group relative">

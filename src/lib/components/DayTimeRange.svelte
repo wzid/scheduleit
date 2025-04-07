@@ -83,18 +83,6 @@
 
   const timeSlots = generateTimeSlots(startTime, endTime);
 
-  // Toggle time slot selection
-  function toggleTimeSlot(dayIndex: number, timeIndex: number) {
-    if (!recording) return;
-
-    selectedSlots.update((slots) => {
-      const newSlots = [...slots];
-      newSlots[dayIndex] = [...newSlots[dayIndex]];
-      newSlots[dayIndex][timeIndex] = !newSlots[dayIndex][timeIndex];
-      return newSlots;
-    });
-  }
-
   // Check if a time slot is selected
   function isSlotSelected(dayIndex: number, timeIndex: number): boolean {
     return $selectedSlots[dayIndex][timeIndex];
@@ -236,10 +224,6 @@
     // Set the availability string in a way your API can access it
     const availabilityString = getAvailabilityString();
 
-    // You would set this somewhere your API call can access it
-    // For example, you might store it in a variable that's in scope for your API call
-    // console.log('Saving availability:', availabilityString);
-
     // Call the parent's saveAvailability function
     saveAvailability(availabilityString);
   }
@@ -261,7 +245,7 @@
       </div>
     {/if}
   </div>
-
+  
   <!-- Day labels -->
   <div class="flex w-full justify-center pl-20">
     <!-- Empty cell for time labels -->
@@ -298,7 +282,7 @@
 
     <!-- Actual Grid -->
     <div
-      class="grid gap-x-[1px]"
+      class="grid gap-x-1"
       style="grid-template-columns: repeat({days.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
     >
       {#each timeSlots as time, timeIndex}
