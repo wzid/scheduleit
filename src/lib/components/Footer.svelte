@@ -1,6 +1,6 @@
 <footer class="mt-auto py-6">
   <div class="text-center text-sm lowercase leading-none text-zinc-500">
-    <a class="shine" target="_blank" href="https://github.com/wzid/timeslot">GitHub</a>
+    <a class="shine" target="_blank" href="https://github.com/wzid/scheduleit">GitHub</a>
     <span>&bull;</span>
     <span>
       Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &

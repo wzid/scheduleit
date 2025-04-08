@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Header, Meta, Footer } from '$lib';
   import '../app.css';
+
   interface Props {
     children?: import('svelte').Snippet;
   }
