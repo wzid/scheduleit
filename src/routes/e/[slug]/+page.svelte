@@ -245,7 +245,7 @@
     {/if}
     <ul>
       {#each users as user}
-        <li class="flex items-center gap-2 overflow-auto">
+        <li class="flex items-center gap-2">
           {user.name}
           <div class="flex items-center gap-2">
             <div class="group relative">
