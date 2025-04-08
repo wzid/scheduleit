@@ -4,8 +4,8 @@
   import NotebookPenIcon from '@lucide/svelte/icons/notebook-pen';
   import PlusIcon from '@lucide/svelte/icons/plus';
   import PencilIcon from '@lucide/svelte/icons/pencil';
-  import { get, writable } from 'svelte/store';
-  import { fly, fade } from 'svelte/transition';
+  import { writable } from 'svelte/store';
+  import { fly, fade, slide } from 'svelte/transition';
   import { shadeGradient } from '$lib/utils';
   import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
   import { superForm } from 'sveltekit-superforms/client';
@@ -13,6 +13,7 @@
   import { DayTimeRange } from '$lib';
 
   import { Button, Meta, Input } from '$lib';
+  import { expoInOut } from 'svelte/easing';
 
   let { data } = $props();
   const event = data.event;
@@ -213,13 +214,16 @@
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}
-      <div class="relative z-10">
-        <form class="mt-1 flex items-start gap-4" method="POST" action="?/addUser" use:enhance>
+      <div
+        class="relative z-20 duration-500 ease-in-out animate-in fade-in-0"
+        transition:slide={{ duration: 100, easing: expoInOut }}
+      >
+        <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
           <div class="flex flex-col gap-2">
             <Input
+              bind:value={$addUserForm.name}
               className="border border-peach-300 rounded-lg"
               placeholder="Your name"
-              bind:value={$addUserForm.name}
             />
             <Input
               bind:value={$addUserForm.password}
@@ -240,7 +244,7 @@
       <div
         transition:fade={{ duration: 100 }}
         onclick={() => (focusUserInput = false)}
-        class="fixed left-0 top-0 z-0 h-screen w-screen bg-zinc-800/70"
+        class="fixed left-0 top-0 z-10 h-screen w-screen bg-zinc-800/70"
       ></div>
     {/if}
     <ul>
