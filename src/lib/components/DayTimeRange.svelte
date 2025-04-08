@@ -32,6 +32,8 @@
 
   const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
 
+  const hoveredSlot = writable<{ dayIndex: number; timeIndex: number } | null>(null);
+
   // Store for selected time slots
   // Format will be a 2D array: [dayIndex][timeIndex]
   const selectedSlots = writable<boolean[][]>(days.map(() => Array(numberOfTimeSlots).fill(false)));
@@ -227,6 +229,23 @@
     // Call the parent's saveAvailability function
     saveAvailability(availabilityString);
   }
+
+  function handleHoverSlot(dayIndex: number, timeIndex: number) {
+    if (recording) return;
+    hoveredSlot.set({ dayIndex, timeIndex });
+  }
+
+  function convertTo12HourFormat(time: string): string {
+    const [hour, minute] = time.split(':').map(Number);
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+    return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
+  }
+
+  function getDateAndTimeString(dayIndex: number, timeIndex: number): string {
+    const time = convertTo12HourFormat(timeSlots[timeIndex]);
+    return `${days[dayIndex]} ${time}`;
+  }
 </script>
 
 <svelte:window
@@ -237,14 +256,17 @@
 />
 
 <div class="flex w-fit max-w-2xl touch-none flex-col items-center">
-  <div class="flex w-full justify-center py-4 lg:pl-20">
+  <div class="flex w-full justify-center items-center h-16 lg:pl-20 gap-2">
     {#if recording}
-      <div class="flex gap-2">
-        <Button onClick={cancel} variant="neutral">Cancel</Button>
-        <Button onClick={handleSave} variant="primary">Save</Button>
-      </div>
+      <Button onClick={cancel} variant="neutral">Cancel</Button>
+      <Button onClick={handleSave} variant="primary">Save</Button>
+    {/if}
+    {#if $hoveredSlot !== null}
+      <p>{getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}</p>
+      <p class="text-lg">{getUsersForSlot($hoveredSlot.dayIndex,$hoveredSlot.timeIndex).length} available</p>
     {/if}
   </div>
+  
   
   <!-- Day labels -->
   <div class="flex w-full justify-center pl-20">
@@ -281,9 +303,11 @@
     </div>
 
     <!-- Actual Grid -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
       class="grid gap-x-1"
       style="grid-template-columns: repeat({days.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
+      onmouseleave={() => hoveredSlot.set(null)}
     >
       {#each timeSlots as time, timeIndex}
         {#each days as day, dayIndex}
@@ -309,6 +333,8 @@
               ontouchstart={(e) => handleTouchStart(e, dayIndex, timeIndex)}
             ></div>
           {:else}
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <!-- svelte-ignore a11y_mouse_events_have_key_events -->
             <div
               class={cn(
                 'h-2.5 w-20 text-xs',
@@ -320,6 +346,7 @@
                       : '')
               )}
               style="background-color: {getShade(dayIndex, timeIndex)};"
+              onmouseover={() => handleHoverSlot(dayIndex, timeIndex)}
             ></div>
           {/if}
         {/each}
