@@ -16,7 +16,7 @@
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import type { PageData } from './$types';
   import { convertDatesToISO } from '$lib/utils';
-  import type { Day } from '$lib/constants';
+  import type { DayAbbreviation } from '$lib/constants';
   import { dev } from '$app/environment';
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
@@ -26,7 +26,7 @@
   const selectedDateType = writable({ label: dateTypeOptions[0], value: dateTypeOptions[0] });
   const selectedTz = writable({ label: userTz, value: userTz });
   const dates = writable<CalendarValue<true>>([]);
-  const days = writable<Day[]>([]);
+  const days = writable<DayAbbreviation[]>([]);
   const timeRange = writable<number[]>([9, 17]);
 
   let timeRangeValue: string[] = $state([]);

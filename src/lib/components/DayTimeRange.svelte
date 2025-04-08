@@ -2,7 +2,7 @@
   import { writable, get } from 'svelte/store';
   import { fly } from 'svelte/transition';
   import { Button } from '$lib';
-  import type { Day, User } from '$lib/constants';
+  import { DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
   import { shadeGradient, cn } from '$lib/utils';
 
   interface Props {
@@ -13,7 +13,9 @@
     startTime: number;
     endTime: number;
     activeUserId: string | null;
-    timeline: { type: 'days'; days: Array<Day> } | { type: 'dates'; dates: Array<string> };
+    timeline:
+      | { type: 'days'; days: Array<DayAbbreviation> }
+      | { type: 'dates'; dates: Array<string> };
   }
 
   let {
@@ -244,7 +246,10 @@
 
   function getDateAndTimeString(dayIndex: number, timeIndex: number): string {
     const time = convertTo12HourFormat(timeSlots[timeIndex]);
-    return `${days[dayIndex]} ${time}`;
+    if (isDaysTimeline) {
+      return `${DAYS_OF_THE_WEEK[days[dayIndex] as DayAbbreviation]} ${time}`;
+    }
+    return `${new Date(days[dayIndex]).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} ${time}`;
   }
 </script>
 
@@ -256,18 +261,19 @@
 />
 
 <div class="flex w-fit max-w-2xl touch-none flex-col items-center">
-  <div class="flex w-full justify-center items-center h-16 lg:pl-20 gap-2">
+  <div class="flex h-16 w-full items-center justify-center gap-2 lg:pl-20">
     {#if recording}
       <Button onClick={cancel} variant="neutral">Cancel</Button>
       <Button onClick={handleSave} variant="primary">Save</Button>
     {/if}
     {#if $hoveredSlot !== null}
       <p>{getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}</p>
-      <p class="text-lg">{getUsersForSlot($hoveredSlot.dayIndex,$hoveredSlot.timeIndex).length} available</p>
+      <p class="text-lg">
+        {getUsersForSlot($hoveredSlot.dayIndex, $hoveredSlot.timeIndex).length} available
+      </p>
     {/if}
   </div>
-  
-  
+
   <!-- Day labels -->
   <div class="flex w-full justify-center pl-20">
     <!-- Empty cell for time labels -->

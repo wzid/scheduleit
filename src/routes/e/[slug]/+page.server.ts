@@ -9,7 +9,11 @@ import { hash } from 'argon2';
 
 const addUserSchema = z.object({
   eventId: z.string(),
-  name: z.string().trim().min(1, { message: 'Name cannot be empty' }).max(25, { message: 'Name cannot be longer than 32 characters' }),
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'Name cannot be empty' })
+    .max(25, { message: 'Name cannot be longer than 32 characters' }),
   password: z.string().trim()
 });
 

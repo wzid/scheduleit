@@ -143,7 +143,7 @@ export function shadeGradient(shades: number) {
   // convert shade levels to colors
   return levels.map((x) => {
     // this is the background color of the selector
-    if (x === 0) return '#33333a'; 
+    if (x === 0) return '#33333a';
     if (x < 0.33) return lerpColor('#ffe8d5', '#ffa872', progress(0, 0.33, x));
     if (x < 0.69) return lerpColor('#ffa872', '#fd793a', progress(0.33, 0.69, x));
     if (x < 0.82) return lerpColor('#fd793a', '#ea4c20', progress(0.69, 0.82, x));

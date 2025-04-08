@@ -7,7 +7,7 @@
   import { get, writable } from 'svelte/store';
   import { fly, fade } from 'svelte/transition';
   import { shadeGradient } from '$lib/utils';
-  import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
+  import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
   import { superForm } from 'sveltekit-superforms/client';
   import type { User } from '$lib/constants';
   import { DayTimeRange } from '$lib';
@@ -56,7 +56,7 @@
 
   // each users has a bit string of availability that corresponds to the days of the week or dates
   // we need to create a map of the days to the number of users that are available on that day
-  let dayUserCountMap: Map<Readonly<string>, Array<User>> = DAYS_OF_THE_WEEK.map((day) => [
+  let dayUserCountMap: Map<Readonly<string>, Array<User>> = DAY_ABBREVIATIONS.map((day) => [
     day,
     []
   ]).reduce((map, [key, value]) => map.set(key, value), new Map());
@@ -69,7 +69,7 @@
       for (let i = 0; i < user.availability.length; i++) {
         // if the user is available on that day, increment the count for that day
         if (user.availability[i] == '1') {
-          const day = DAYS_OF_THE_WEEK[i];
+          const day = DAY_ABBREVIATIONS[i];
           // if the day is not in the map, set it to 1, otherwise increment it
           const arr = dayUserCountMap.get(day) ?? [];
           dayUserCountMap.set(day, arr.concat([user]));
@@ -77,10 +77,10 @@
       }
     });
   }
-  
+
   // derived helps it update the shades when the users change
   const shades = $derived(shadeGradient($usersWritable.length));
-  const recordedDays = writable<Day[]>([]);
+  const recordedDays = writable<DayAbbreviation[]>([]);
 
   let activeUserId = $state<string | null>(null);
   let activeUserPassword: string | null = null;
@@ -133,8 +133,8 @@
         (users
           .find((u) => u.id == user.id)
           ?.availability?.split('')
-          .map((bit, i) => (bit == '1' ? DAYS_OF_THE_WEEK[i] : null))
-          .filter((day) => day != null) as Day[]) ?? []
+          .map((bit, i) => (bit == '1' ? DAY_ABBREVIATIONS[i] : null))
+          .filter((day) => day != null) as DayAbbreviation[]) ?? []
       );
     }
 
@@ -209,7 +209,7 @@
   </div>
 </div>
 
-<div class="mt-8 flex flex-col-reverse gap-6 lg:flex-row lg:gap-12 w-full">
+<div class="mt-8 flex w-full flex-col-reverse gap-6 lg:flex-row lg:gap-12">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}

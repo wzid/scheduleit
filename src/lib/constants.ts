@@ -1,6 +1,18 @@
-export const DAYS_OF_THE_WEEK = ['M', 'T', 'W', 'Th', 'F', 'Sa', 'Su'] as const;
+export const DAYS_OF_THE_WEEK = {
+  M: 'Monday',
+  T: 'Tuesday',
+  W: 'Wednesday',
+  Th: 'Thursday',
+  F: 'Friday',
+  Sa: 'Saturday',
+  Su: 'Sunday'
+} as const;
 
-export type Day = (typeof DAYS_OF_THE_WEEK)[number];
+export type DayAbbreviation = keyof typeof DAYS_OF_THE_WEEK;
+export const DAY_ABBREVIATIONS = Object.keys(DAYS_OF_THE_WEEK) as DayAbbreviation[];
+
+export type DayName = (typeof DAYS_OF_THE_WEEK)[DayAbbreviation];
+export const DAY_NAMES = Object.values(DAYS_OF_THE_WEEK) as DayName[];
 
 export const TIMES = [
   '12:00 AM',
