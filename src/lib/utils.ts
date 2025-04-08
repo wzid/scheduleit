@@ -150,3 +150,12 @@ export function shadeGradient(shades: number) {
     return lerpColor('#ea4c20', '#c4290a', progress(0.82, 1, x));
   });
 }
+// opacity is between 0 and 100
+export function applyOpacity(rgb: string, opacity : number): string {
+  const [r, g, b] = rgb
+    .slice(rgb.indexOf('(') + 1, rgb.indexOf(')'))
+    .split(',')
+    .map((x) => parseInt(x.trim()));
+  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
+  
+}

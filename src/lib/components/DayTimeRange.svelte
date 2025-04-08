@@ -3,7 +3,7 @@
   import { fly } from 'svelte/transition';
   import { Button } from '$lib';
   import { DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
-  import { shadeGradient, cn } from '$lib/utils';
+  import { shadeGradient, applyOpacity, cn } from '$lib/utils';
 
   interface Props {
     users: Array<User>;
@@ -251,6 +251,15 @@
     }
     return `${new Date(days[dayIndex]).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} ${time}`;
   }
+
+  function getSlotColor(dayIndex: number, timeIndex: number): string {
+    const shade = getShade(dayIndex, timeIndex);
+    if ($hoveredSlot?.dayIndex === dayIndex && $hoveredSlot?.timeIndex === timeIndex) {
+      return applyOpacity(shade, 75);
+    }
+
+    return shade;
+  }
 </script>
 
 <svelte:window
@@ -345,7 +354,7 @@
                       ? 'border-t border-dotted border-zinc-600'
                       : '')
               )}
-              style="background-color: {getShade(dayIndex, timeIndex)};"
+              style="background-color: {getSlotColor(dayIndex, timeIndex)};"
               onmouseover={() => handleHoverSlot(dayIndex, timeIndex)}
             >
               {#if $hoveredSlot !== null}
@@ -353,7 +362,7 @@
                   class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
                 >
                   <div
-                    class="select-none rounded-lg bg-zinc-700/75 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
+                    class="select-none rounded-lg bg-zinc-700/65 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
                   >
                     {getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}, {getUsersForSlot(
                       $hoveredSlot.dayIndex,
@@ -378,3 +387,9 @@
     </div>
   {/if}
 </div>
+
+<style lang="postcss">
+  .bg-peach-400 {
+    background-color: #ff7f50;
+  }
+</style>
