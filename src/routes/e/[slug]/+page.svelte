@@ -258,7 +258,7 @@
                 class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
               >
                 <div
-                  class="rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg animate-in fade-in slide-in-from-bottom-2"
+                  class="rounded-lg bg-zinc-700/75 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm animate-in fade-in slide-in-from-bottom-2"
                 >
                   Edit availability
                 </div>
@@ -271,7 +271,7 @@
                   class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
                 >
                   <div
-                    class="rounded-lg bg-zinc-700 px-2 py-1 text-sm text-zinc-300 shadow-lg animate-in fade-in slide-in-from-bottom-2"
+                    class="rounded-lg bg-zinc-700/75 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm animate-in fade-in slide-in-from-bottom-2"
                   >
                     Availability recorded
                   </div>
@@ -285,12 +285,19 @@
   </div>
   <div class="flex w-full flex-col items-center">
     <!-- Shades for users -->
-    <div class="flex items-center text-lg text-zinc-300 lg:pl-20">
-      <p class="mr-4">0/{users.length}</p>
-      {#each shades as shade}
-        <div style="background: {shade};" class="size-6"></div>
-      {/each}
-      <p class="ml-4">{users.length}/{users.length}</p>
+    <div
+      class="flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm lg:ml-20"
+    >
+      <span>0/{users.length}</span>
+      <div class="flex">
+        {#each shades as shade}
+          <div
+            class="size-6 border border-x-0 border-r-0 border-white/20 first:rounded-l-md first:border-l last:rounded-r-md last:border-l-0 last:border-r"
+            style="background: {shade};"
+          ></div>
+        {/each}
+      </div>
+      <span>{users.length}/{users.length}</span>
     </div>
 
     <!-- The actual stuff (yes, stuff) -->

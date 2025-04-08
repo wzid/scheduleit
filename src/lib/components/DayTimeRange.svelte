@@ -266,12 +266,6 @@
       <Button onClick={cancel} variant="neutral">Cancel</Button>
       <Button onClick={handleSave} variant="primary">Save</Button>
     {/if}
-    {#if $hoveredSlot !== null}
-      <p>{getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}</p>
-      <p class="text-lg">
-        {getUsersForSlot($hoveredSlot.dayIndex, $hoveredSlot.timeIndex).length} available
-      </p>
-    {/if}
   </div>
 
   <!-- Day labels -->
@@ -315,8 +309,8 @@
       style="grid-template-columns: repeat({days.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
       onmouseleave={() => hoveredSlot.set(null)}
     >
-      {#each timeSlots as time, timeIndex}
-        {#each days as day, dayIndex}
+      {#each timeSlots as _timeSlot, timeIndex}
+        {#each days as _day, dayIndex}
           {#if recording}
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -343,7 +337,7 @@
             <!-- svelte-ignore a11y_mouse_events_have_key_events -->
             <div
               class={cn(
-                'h-2.5 w-20 text-xs',
+                'group relative h-2.5 w-20 text-xs',
                 timeIndex != 0 &&
                   (timeIndex % 4 == 0
                     ? 'border-t border-zinc-600'
@@ -353,7 +347,22 @@
               )}
               style="background-color: {getShade(dayIndex, timeIndex)};"
               onmouseover={() => handleHoverSlot(dayIndex, timeIndex)}
-            ></div>
+            >
+              {#if $hoveredSlot !== null}
+                <div
+                  class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
+                >
+                  <div
+                    class="select-none rounded-lg bg-zinc-700/75 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
+                  >
+                    {getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}, {getUsersForSlot(
+                      $hoveredSlot.dayIndex,
+                      $hoveredSlot.timeIndex
+                    ).length} available
+                  </div>
+                </div>
+              {/if}
+            </div>
           {/if}
         {/each}
       {/each}
