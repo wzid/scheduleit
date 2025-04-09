@@ -1,8 +1,13 @@
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['InterVariable', 'Inter', ...fontFamily.sans]
+      },
       container: {
         center: true,
         padding: '2rem',

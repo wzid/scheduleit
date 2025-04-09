@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "timeslot",
+      "name": "scheduleit",
       "dependencies": {
         "@libsql/client": "^0.15.1",
         "@lucide/svelte": "^0.487.0",
