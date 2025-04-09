@@ -5,6 +5,11 @@
 @layer base {
   body {
     @apply overflow-x-hidden bg-zinc-900 text-zinc-50;
+    font-feature-settings:
+      'ss01' 1,
+      'cv01' 1,
+      'cv05' 1,
+      'cv11' 1;
   }
   h1,
   .text-h1 {

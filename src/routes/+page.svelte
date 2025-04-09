@@ -145,9 +145,9 @@
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}
       </div>
       <img
-        class="!mt-4 hidden invert-[100%] sm:block"
+        class="!mt-2 hidden invert-[100%] sm:block"
         alt="Stickman advertising timeslot.one with a text bubble saying `Let's find a time to meet using timeslot.one`"
-        src="https://s6.imgcdn.dev/flJin.png"
+        src="images/letsfindatimetomeet.png"
         draggable="false"
         width="275"
       />

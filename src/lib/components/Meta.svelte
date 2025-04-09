@@ -7,5 +7,5 @@
 </script>
 
 <svelte:head>
-  <title>{title ? `${title} | timeslot` : 'timeslot'}</title>
+  <title>{title ? `${title} | schedule it!` : 'schedule it!'}</title>
 </svelte:head>
