@@ -32,7 +32,7 @@
   const isDaysTimeline = timeline.type === 'days';
   const days = isDaysTimeline ? timeline.days : timeline.dates;
 
-  const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals) 
+  const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
 
   let windowWidth: number = $state(0);
 
@@ -292,22 +292,21 @@
   ontouchcancel={handleDragStop}
 />
 
-<div class="flex w-full md:w-fit max-w-2xl touch-none flex-col items-center">
-  <div class="flex w-full py-2 pt-3 items-center justify-center gap-2 lg:pl-20">
+<div class="flex w-full max-w-2xl touch-none flex-col items-center md:w-fit">
+  <div class="flex w-full items-center justify-center gap-2 py-2 pt-3 lg:pl-20">
     {#if recording}
       <Button onClick={cancel} variant="neutral">Cancel</Button>
       <Button onClick={handleSave} variant="primary">Save</Button>
     {/if}
   </div>
-  
+
   <!-- Main outer loop -->
-  <div class="flex flex-col gap-6 w-full">
+  <div class="flex w-full flex-col items-center gap-6 md:items-start">
     {#each chunkedDays as chunk, chunkIndex}
       <!-- Outer div -->
       <div class="w-fit">
-
         <!-- Day labels -->
-        <div class="flex w-full pl-16 md:pl-20 justify-center pb-1 gap-[1px]">
+        <div class="flex w-full justify-center gap-[1px] pb-1 pl-16 md:pl-20">
           <!-- Empty cell for time labels -->
           {#each chunk as day}
             <div class="w-20 text-center text-sm font-medium text-zinc-400">
@@ -320,14 +319,14 @@
 
         <div class="flex">
           <!-- Time slots -->
-          <div class="-mt-1 flex w-16 md:w-20 flex-col">
+          <div class="-mt-1 flex w-16 flex-col md:w-20">
             {#each timeSlots as time, i}
               {#if i % 4 === 0}
                 <!-- 36px = 9px * 4 slots -->
                 <!-- we have to minus by 4 because we only display text based on the hour so we have to minus by the slots after the last hour i.e 7 oclock -->
                 <div
                   class={cn(
-                    'h-[40px] md:text-center text-xs leading-none text-zinc-400',
+                    'h-[40px] text-xs leading-none text-zinc-400 md:text-center',
                     timeSlots.length - 4 === i ? '!h-4' : ''
                   )}
                 >
@@ -335,11 +334,11 @@
                 </div>
               {/if}
             {/each}
-            <div class="-mb-[4px] mt-auto md:text-center text-xs leading-none text-zinc-400">
+            <div class="-mb-[4px] mt-auto text-xs leading-none text-zinc-400 md:text-center">
               {formatTime(endTimeHour)}
             </div>
           </div>
-      
+
           <!-- Actual Grid -->
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div
@@ -355,7 +354,9 @@
                   <!-- svelte-ignore a11y_mouse_events_have_key_events -->
                   <div
                     class={cn(
-                      isSlotSelected(getDayIndex(chunkIndex, dayIndex), timeIndex) ? 'bg-peach-400' : 'bg-zinc-700/70',
+                      isSlotSelected(getDayIndex(chunkIndex, dayIndex), timeIndex)
+                        ? 'bg-peach-400'
+                        : 'bg-zinc-700/70',
                       'h-2.5 w-20 text-xs',
                       timeIndex != 0 &&
                         (timeIndex % 4 == 0
@@ -366,9 +367,11 @@
                     )}
                     data-day-index={getDayIndex(chunkIndex, dayIndex)}
                     data-time-index={timeIndex}
-                    onmousedown={(e) => handleDragStart(e, getDayIndex(chunkIndex, dayIndex), timeIndex)}
+                    onmousedown={(e) =>
+                      handleDragStart(e, getDayIndex(chunkIndex, dayIndex), timeIndex)}
                     onmouseover={() => handleDragOver(getDayIndex(chunkIndex, dayIndex), timeIndex)}
-                    ontouchstart={(e) => handleTouchStart(e, getDayIndex(chunkIndex, dayIndex), timeIndex)}
+                    ontouchstart={(e) =>
+                      handleTouchStart(e, getDayIndex(chunkIndex, dayIndex), timeIndex)}
                   ></div>
                 {:else}
                   <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -383,8 +386,12 @@
                             ? 'border-t border-dotted border-zinc-600'
                             : '')
                     )}
-                    style="background-color: {getSlotColor(getDayIndex(chunkIndex, dayIndex), timeIndex)};"
-                    onmouseover={() => handleHoverSlot(getDayIndex(chunkIndex, dayIndex), timeIndex)}
+                    style="background-color: {getSlotColor(
+                      getDayIndex(chunkIndex, dayIndex),
+                      timeIndex
+                    )};"
+                    onmouseover={() =>
+                      handleHoverSlot(getDayIndex(chunkIndex, dayIndex), timeIndex)}
                   >
                     {#if $hoveredSlot !== null}
                       <div
@@ -407,12 +414,8 @@
           </div>
         </div>
       </div>
-
-
     {/each}
   </div>
-
-
 
   {#if recording}
     <div class="mt-4" transition:fly={{ y: 20, duration: 200 }}>
