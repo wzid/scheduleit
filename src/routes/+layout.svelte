@@ -11,7 +11,7 @@
 
 <Meta />
 
-<div class="container flex min-h-screen flex-col">
+<div class="px-4 md:container flex min-h-screen flex-col">
   <Header />
   {@render children?.()}
   <Footer />

@@ -32,15 +32,20 @@
   const isDaysTimeline = timeline.type === 'days';
   const days = isDaysTimeline ? timeline.days : timeline.dates;
 
-  const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
-  let chunkSize = 7; // Number of days to display in a row
+  const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals) 
+
+  let windowWidth: number = $state(0);
+
+  // if the window width is less than 768px, we want to return 4
+  // otherwise, we want to return 7
+  let chunkSize = $derived(windowWidth < 768 ? 3 : 7);
 
   function getChunkedDays(): Array<Array<DayAbbreviation | string>> {
     // split the days into chunks of 7
     const chunks: Array<Array<DayAbbreviation | string>> = [];
-    for (let i = 0; i < days.length; i += 7) {
+    for (let i = 0; i < days.length; i += chunkSize) {
       // we can do out of bounds cause slice only extends to the end of the array
-      chunks.push(days.slice(i, i + 7));
+      chunks.push(days.slice(i, i + chunkSize));
     }
     return chunks;
   }
@@ -49,7 +54,7 @@
     return chunkIndex * chunkSize + dayIndex;
   }
 
-  const chunkedDays = getChunkedDays();
+  const chunkedDays = $derived(getChunkedDays());
 
   const hoveredSlot = writable<{ dayIndex: number; timeIndex: number } | null>(null);
 
@@ -280,13 +285,14 @@
 </script>
 
 <svelte:window
+  bind:innerWidth={windowWidth}
   onmouseup={handleDragStop}
   ontouchend={handleDragStop}
   ontouchmove={handleTouchMove}
   ontouchcancel={handleDragStop}
 />
 
-<div class="flex w-fit max-w-2xl touch-none flex-col items-center">
+<div class="flex w-full md:w-fit max-w-2xl touch-none flex-col items-center">
   <div class="flex w-full py-2 pt-3 items-center justify-center gap-2 lg:pl-20">
     {#if recording}
       <Button onClick={cancel} variant="neutral">Cancel</Button>
@@ -295,13 +301,13 @@
   </div>
   
   <!-- Main outer loop -->
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-6 w-full">
     {#each chunkedDays as chunk, chunkIndex}
       <!-- Outer div -->
       <div class="w-fit">
 
         <!-- Day labels -->
-        <div class="flex w-full pl-20 justify-center pb-1 gap-[1px]">
+        <div class="flex w-full pl-16 md:pl-20 justify-center pb-1 gap-[1px]">
           <!-- Empty cell for time labels -->
           {#each chunk as day}
             <div class="w-20 text-center text-sm font-medium text-zinc-400">
@@ -314,14 +320,14 @@
 
         <div class="flex">
           <!-- Time slots -->
-          <div class="-mt-1 flex w-20 flex-col">
+          <div class="-mt-1 flex w-16 md:w-20 flex-col">
             {#each timeSlots as time, i}
               {#if i % 4 === 0}
                 <!-- 36px = 9px * 4 slots -->
                 <!-- we have to minus by 4 because we only display text based on the hour so we have to minus by the slots after the last hour i.e 7 oclock -->
                 <div
                   class={cn(
-                    'h-[40px] text-center text-xs leading-none text-zinc-400',
+                    'h-[40px] md:text-center text-xs leading-none text-zinc-400',
                     timeSlots.length - 4 === i ? '!h-4' : ''
                   )}
                 >
@@ -329,7 +335,7 @@
                 </div>
               {/if}
             {/each}
-            <div class="-mb-[4px] mt-auto text-center text-xs leading-none text-zinc-400">
+            <div class="-mb-[4px] mt-auto md:text-center text-xs leading-none text-zinc-400">
               {formatTime(endTimeHour)}
             </div>
           </div>

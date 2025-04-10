@@ -186,7 +186,7 @@
 
 <h1>{event.name}</h1>
 
-<div class="mt-4 w-fit space-x-2">
+<div class="flex flex-col md:flex-row mt-4 w-fit gap-3">
   <Button onClick={() => (focusUserInput = true)} variant="secondary">
     <NotebookPenIcon class="mr-2 h-5 w-5" />
     Record availability
@@ -210,7 +210,7 @@
   </div>
 </div>
 
-<div class="mt-8 flex w-full flex-col-reverse gap-6 lg:flex-row lg:gap-12">
+<div class="mt-4 md:mt-8 flex w-full flex-col gap-12 md:flex-row">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}
@@ -287,21 +287,25 @@
       {/each}
     </ul>
   </div>
-  <div class="flex w-full flex-col items-center">
+  <div class="flex w-full flex-col">
     <!-- Shades for users -->
-    <div
-      class="flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm lg:ml-20 -mt-8"
-    >
-      <span>0/{users.length}</span>
-      <div class="flex">
-        {#each shades as shade}
-          <div
-            class="size-6 border border-x-0 border-r-0 border-white/20 first:rounded-l-md first:border-l last:rounded-r-md last:border-l-0 last:border-r"
-            style="background: {shade};"
-          ></div>
-        {/each}
+    <div class="flex md:w-full pl-16 md:pl-20 -mt-8">
+      <div class="flex w-60 md:w-[35rem] justify-center">
+        <div
+          class="flex w-fit items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm"
+        >
+          <span>0/{users.length}</span>
+          <div class="flex">
+            {#each shades as shade}
+              <div
+                class="size-6 border border-x-0 border-r-0 border-white/20 first:rounded-l-md first:border-l last:rounded-r-md last:border-l-0 last:border-r"
+                style="background: {shade};"
+              ></div>
+            {/each}
+          </div>
+          <span>{users.length}/{users.length}</span>
+        </div>
       </div>
-      <span>{users.length}/{users.length}</span>
     </div>
 
     <!-- The actual stuff (yes, stuff) -->
