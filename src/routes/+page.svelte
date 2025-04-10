@@ -119,6 +119,7 @@
           alt="Stickman with a text bubble: That sounds like a great idea"
           class="mt-auto hidden self-end invert-[100%] sm:block"
           src="/images/stickman/2.png"
+          draggable="false"
           width="215"
         />
       {/if}
