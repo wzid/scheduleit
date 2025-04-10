@@ -116,9 +116,9 @@
         {#if $errors._errors}<p class="invalid">{$errors._errors[0]}</p>{/if}
         <DaySelector value={days} />
         <img
+          alt="Stickman with a text bubble: That sounds like a great idea"
           class="mt-auto hidden self-end invert-[100%] sm:block"
-          alt="Stickman advertising timeslot.one with a text bubble saying `Let's find a time to meet using timeslot.one`"
-          src="https://s6.imgcdn.dev/floSg.png"
+          src="/images/stickman/2.png"
           width="215"
         />
       {/if}
@@ -139,15 +139,15 @@
       <div class="space-y-2">
         <div>
           <h2>Custom Slug</h2>
-          <p class="text-sm text-zinc-500">Example: timeslot.one/e/[slug]</p>
+          <p class="text-sm text-zinc-500">Example: scheduleit.now/e/[slug]</p>
         </div>
         <Input bind:value={$form.id} placeholder="Your custom slug (optional)" />
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}
       </div>
       <img
+        alt="Stickman with a text bubble: Let's find a time to meet using scheduleit.now"
         class="!mt-2 hidden invert-[100%] sm:block"
-        alt="Stickman advertising timeslot.one with a text bubble saying `Let's find a time to meet using timeslot.one`"
-        src="images/letsfindatimetomeet.png"
+        src="/images/stickman/1.png"
         draggable="false"
         width="275"
       />
