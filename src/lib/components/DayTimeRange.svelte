@@ -1,9 +1,10 @@
 <script lang="ts">
   import { writable, get } from 'svelte/store';
-  import { fly } from 'svelte/transition';
+  import { fly, slide } from 'svelte/transition';
   import { Button } from '$lib';
   import { DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
   import { shadeGradient, cn } from '$lib/utils';
+  import { expoInOut } from 'svelte/easing';
 
   interface Props {
     users: Array<User>;
@@ -281,15 +282,24 @@
 />
 
 <div class={cn('flex w-full max-w-2xl flex-col items-center md:w-fit', recording && 'touch-none')}>
-  <div class="flex w-full items-center justify-center gap-2 py-2 pt-3 lg:pl-20">
-    {#if recording}
-      <Button onClick={cancel} variant="neutral">Cancel</Button>
-      <Button onClick={handleSave} variant="primary">Save</Button>
-    {/if}
-  </div>
+  {#if recording}
+    <div
+      class="mt-4 flex flex-col gap-3 duration-500 ease-in-out animate-in fade-in-0 lg:ml-20"
+      transition:slide={{ duration: 100, easing: expoInOut }}
+    >
+      <p class="text-balance text-center text-sm text-zinc-400">
+        Click on individual time slots to toggle your availability. The darker the cell, the more
+        people available at that time.
+      </p>
+      <div class="flex items-center justify-center gap-2">
+        <Button onClick={cancel} variant="neutral">Cancel</Button>
+        <Button onClick={handleSave} variant="primary">Save</Button>
+      </div>
+    </div>
+  {/if}
 
   <!-- Main outer loop -->
-  <div class="flex w-full flex-col items-center gap-6 md:items-start">
+  <div class="mt-4 flex w-full flex-col items-center gap-6 md:items-start">
     {#each chunkedDays as chunk, chunkIndex}
       <!-- Outer div -->
       <div class="w-fit">
@@ -400,15 +410,6 @@
       </div>
     {/each}
   </div>
-
-  {#if recording}
-    <div class="mt-4" transition:fly={{ y: 20, duration: 200 }}>
-      <p class="text-balance text-center text-sm text-zinc-400">
-        Click on individual time slots to toggle your availability. Blue cells indicate slots where
-        others are available.
-      </p>
-    </div>
-  {/if}
 </div>
 
 <style lang="postcss">
