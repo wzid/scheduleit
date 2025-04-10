@@ -33,6 +33,23 @@
   const days = isDaysTimeline ? timeline.days : timeline.dates;
 
   const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
+  let chunkSize = 7; // Number of days to display in a row
+
+  function getChunkedDays(): Array<Array<DayAbbreviation | string>> {
+    // split the days into chunks of 7
+    const chunks: Array<Array<DayAbbreviation | string>> = [];
+    for (let i = 0; i < days.length; i += 7) {
+      // we can do out of bounds cause slice only extends to the end of the array
+      chunks.push(days.slice(i, i + 7));
+    }
+    return chunks;
+  }
+
+  function getDayIndex(chunkIndex: number, dayIndex: number): number {
+    return chunkIndex * chunkSize + dayIndex;
+  }
+
+  const chunkedDays = getChunkedDays();
 
   const hoveredSlot = writable<{ dayIndex: number; timeIndex: number } | null>(null);
 
@@ -270,113 +287,126 @@
 />
 
 <div class="flex w-fit max-w-2xl touch-none flex-col items-center">
-  <div class="flex h-16 w-full items-center justify-center gap-2 lg:pl-20">
+  <div class="flex w-full py-2 pt-3 items-center justify-center gap-2 lg:pl-20">
     {#if recording}
       <Button onClick={cancel} variant="neutral">Cancel</Button>
       <Button onClick={handleSave} variant="primary">Save</Button>
     {/if}
   </div>
+  
+  <!-- Main outer loop -->
+  <div class="flex flex-col gap-6">
+    {#each chunkedDays as chunk, chunkIndex}
+      <!-- Outer div -->
+      <div class="w-fit">
 
-  <!-- Day labels -->
-  <div class="flex w-full justify-center pl-20">
-    <!-- Empty cell for time labels -->
-    {#each days as day}
-      <div class="w-20 text-center text-sm font-medium text-zinc-400">
-        {isDaysTimeline
-          ? day
-          : new Date(day).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+        <!-- Day labels -->
+        <div class="flex w-full pl-20 justify-center pb-1 gap-[1px]">
+          <!-- Empty cell for time labels -->
+          {#each chunk as day}
+            <div class="w-20 text-center text-sm font-medium text-zinc-400">
+              {isDaysTimeline
+                ? day
+                : new Date(day).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+            </div>
+          {/each}
+        </div>
+
+        <div class="flex">
+          <!-- Time slots -->
+          <div class="-mt-1 flex w-20 flex-col">
+            {#each timeSlots as time, i}
+              {#if i % 4 === 0}
+                <!-- 36px = 9px * 4 slots -->
+                <!-- we have to minus by 4 because we only display text based on the hour so we have to minus by the slots after the last hour i.e 7 oclock -->
+                <div
+                  class={cn(
+                    'h-[40px] text-center text-xs leading-none text-zinc-400',
+                    timeSlots.length - 4 === i ? '!h-4' : ''
+                  )}
+                >
+                  {formatTime(time)}
+                </div>
+              {/if}
+            {/each}
+            <div class="-mb-[4px] mt-auto text-center text-xs leading-none text-zinc-400">
+              {formatTime(endTimeHour)}
+            </div>
+          </div>
+      
+          <!-- Actual Grid -->
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div
+            class="grid gap-x-[1px]"
+            style="grid-template-columns: repeat({chunk.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
+            onmouseleave={() => hoveredSlot.set(null)}
+          >
+            {#each timeSlots as _timeSlot, timeIndex}
+              {#each chunk as _day, dayIndex}
+                {#if recording}
+                  <!-- svelte-ignore a11y_click_events_have_key_events -->
+                  <!-- svelte-ignore a11y_no_static_element_interactions -->
+                  <!-- svelte-ignore a11y_mouse_events_have_key_events -->
+                  <div
+                    class={cn(
+                      isSlotSelected(getDayIndex(chunkIndex, dayIndex), timeIndex) ? 'bg-peach-400' : 'bg-zinc-700/70',
+                      'h-2.5 w-20 text-xs',
+                      timeIndex != 0 &&
+                        (timeIndex % 4 == 0
+                          ? 'border-t border-zinc-600'
+                          : timeIndex % 2 == 0
+                            ? 'border-t border-dotted border-zinc-600'
+                            : '')
+                    )}
+                    data-day-index={getDayIndex(chunkIndex, dayIndex)}
+                    data-time-index={timeIndex}
+                    onmousedown={(e) => handleDragStart(e, getDayIndex(chunkIndex, dayIndex), timeIndex)}
+                    onmouseover={() => handleDragOver(getDayIndex(chunkIndex, dayIndex), timeIndex)}
+                    ontouchstart={(e) => handleTouchStart(e, getDayIndex(chunkIndex, dayIndex), timeIndex)}
+                  ></div>
+                {:else}
+                  <!-- svelte-ignore a11y_no_static_element_interactions -->
+                  <!-- svelte-ignore a11y_mouse_events_have_key_events -->
+                  <div
+                    class={cn(
+                      'group relative h-2.5 w-20 text-xs',
+                      timeIndex != 0 &&
+                        (timeIndex % 4 == 0
+                          ? 'border-t border-zinc-600'
+                          : timeIndex % 2 == 0
+                            ? 'border-t border-dotted border-zinc-600'
+                            : '')
+                    )}
+                    style="background-color: {getSlotColor(getDayIndex(chunkIndex, dayIndex), timeIndex)};"
+                    onmouseover={() => handleHoverSlot(getDayIndex(chunkIndex, dayIndex), timeIndex)}
+                  >
+                    {#if $hoveredSlot !== null}
+                      <div
+                        class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
+                      >
+                        <div
+                          class="select-none rounded-lg bg-zinc-700/65 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
+                        >
+                          {getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}, {getUsersForSlot(
+                            $hoveredSlot.dayIndex,
+                            $hoveredSlot.timeIndex
+                          ).length} available
+                        </div>
+                      </div>
+                    {/if}
+                  </div>
+                {/if}
+              {/each}
+            {/each}
+          </div>
+        </div>
       </div>
+
+
     {/each}
   </div>
 
-  <div class="flex">
-    <!-- Time slots -->
-    <div class="-mt-1 flex w-20 flex-col">
-      {#each timeSlots as time, i}
-        {#if i % 4 === 0}
-          <!-- 36px = 9px * 4 slots -->
-          <!-- we have to minus by 4 because we only display text based on the hour so we have to minus by the slots after the last hour i.e 7 oclock -->
-          <div
-            class={cn(
-              'h-[40px] text-center text-xs leading-none text-zinc-400',
-              timeSlots.length - 4 === i ? '!h-4' : ''
-            )}
-          >
-            {formatTime(time)}
-          </div>
-        {/if}
-      {/each}
-      <div class="-mb-[4px] mt-auto text-center text-xs leading-none text-zinc-400">
-        {formatTime(endTimeHour)}
-      </div>
-    </div>
 
-    <!-- Actual Grid -->
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div
-      class="grid gap-x-1"
-      style="grid-template-columns: repeat({days.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
-      onmouseleave={() => hoveredSlot.set(null)}
-    >
-      {#each timeSlots as _timeSlot, timeIndex}
-        {#each days as _day, dayIndex}
-          {#if recording}
-            <!-- svelte-ignore a11y_click_events_have_key_events -->
-            <!-- svelte-ignore a11y_no_static_element_interactions -->
-            <!-- svelte-ignore a11y_mouse_events_have_key_events -->
-            <div
-              class={cn(
-                isSlotSelected(dayIndex, timeIndex) ? 'bg-peach-400' : 'bg-zinc-700/70',
-                'h-2.5 w-20 text-xs',
-                timeIndex != 0 &&
-                  (timeIndex % 4 == 0
-                    ? 'border-t border-zinc-600'
-                    : timeIndex % 2 == 0
-                      ? 'border-t border-dotted border-zinc-600'
-                      : '')
-              )}
-              data-day-index={dayIndex}
-              data-time-index={timeIndex}
-              onmousedown={(e) => handleDragStart(e, dayIndex, timeIndex)}
-              onmouseover={() => handleDragOver(dayIndex, timeIndex)}
-              ontouchstart={(e) => handleTouchStart(e, dayIndex, timeIndex)}
-            ></div>
-          {:else}
-            <!-- svelte-ignore a11y_no_static_element_interactions -->
-            <!-- svelte-ignore a11y_mouse_events_have_key_events -->
-            <div
-              class={cn(
-                'group relative h-2.5 w-20 text-xs',
-                timeIndex != 0 &&
-                  (timeIndex % 4 == 0
-                    ? 'border-t border-zinc-600'
-                    : timeIndex % 2 == 0
-                      ? 'border-t border-dotted border-zinc-600'
-                      : '')
-              )}
-              style="background-color: {getSlotColor(dayIndex, timeIndex)};"
-              onmouseover={() => handleHoverSlot(dayIndex, timeIndex)}
-            >
-              {#if $hoveredSlot !== null}
-                <div
-                  class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
-                >
-                  <div
-                    class="select-none rounded-lg bg-zinc-700/65 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
-                  >
-                    {getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}, {getUsersForSlot(
-                      $hoveredSlot.dayIndex,
-                      $hoveredSlot.timeIndex
-                    ).length} available
-                  </div>
-                </div>
-              {/if}
-            </div>
-          {/if}
-        {/each}
-      {/each}
-    </div>
-  </div>
 
   {#if recording}
     <div class="mt-4" transition:fly={{ y: 20, duration: 200 }}>
