@@ -292,7 +292,7 @@
   ontouchcancel={handleDragStop}
 />
 
-<div class="flex w-full max-w-2xl touch-none flex-col items-center md:w-fit">
+<div class={cn('flex w-full max-w-2xl flex-col items-center md:w-fit', recording && 'touch-none')}>
   <div class="flex w-full items-center justify-center gap-2 py-2 pt-3 lg:pl-20">
     {#if recording}
       <Button onClick={cancel} variant="neutral">Cancel</Button>
