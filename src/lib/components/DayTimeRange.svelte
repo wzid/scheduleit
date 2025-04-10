@@ -5,6 +5,7 @@
   import { DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
   import { shadeGradient, cn } from '$lib/utils';
   import { expoInOut } from 'svelte/easing';
+  import { innerWidth } from 'svelte/reactivity/window';
 
   interface Props {
     users: Array<User>;
@@ -35,11 +36,9 @@
 
   const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
 
-  let windowWidth: number = $state(0);
-
   // if the window width is less than 768px, we want to return 4
   // otherwise, we want to return 7
-  let chunkSize = $derived(windowWidth < 768 ? 3 : 7);
+  let chunkSize = $derived((innerWidth.current ?? 1080) < 768 ? 3 : 7);
 
   function getChunkedDays(): Array<Array<DayAbbreviation | string>> {
     // split the days into chunks of 7
@@ -274,7 +273,6 @@
 </script>
 
 <svelte:window
-  bind:innerWidth={windowWidth}
   onmouseup={handleDragStop}
   ontouchend={handleDragStop}
   ontouchmove={handleTouchMove}
