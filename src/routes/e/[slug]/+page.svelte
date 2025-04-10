@@ -211,7 +211,7 @@
 </div>
 
 <div class="mt-4 flex w-full flex-col gap-12 md:mt-8 md:flex-row">
-  <div>
+  <div class="md:mt-6">
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}
       <div
