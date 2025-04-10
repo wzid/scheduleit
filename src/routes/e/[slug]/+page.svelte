@@ -186,7 +186,7 @@
 
 <h1>{event.name}</h1>
 
-<div class="flex flex-col md:flex-row mt-4 w-fit gap-3">
+<div class="mt-4 flex w-fit gap-3">
   <Button onClick={() => (focusUserInput = true)} variant="secondary">
     <NotebookPenIcon class="mr-2 h-5 w-5" />
     Record availability
@@ -210,7 +210,7 @@
   </div>
 </div>
 
-<div class="mt-4 md:mt-8 flex w-full flex-col gap-12 md:flex-row">
+<div class="mt-4 flex w-full flex-col gap-12 md:mt-8 md:flex-row">
   <div>
     <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
     {#if focusUserInput}
@@ -289,8 +289,8 @@
   </div>
   <div class="flex w-full flex-col">
     <!-- Shades for users -->
-    <div class="flex md:w-full pl-16 md:pl-20 -mt-8">
-      <div class="flex w-60 md:w-[35rem] justify-center">
+    <div class="-mt-8 flex pl-16 md:w-full md:pl-20">
+      <div class="flex w-60 justify-center md:w-[35rem]">
         <div
           class="flex w-fit items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm"
         >
