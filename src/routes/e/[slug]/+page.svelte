@@ -290,7 +290,7 @@
   <div class="flex w-full flex-col items-center">
     <!-- Shades for users -->
     <div
-      class="flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm lg:ml-20"
+      class="flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm lg:ml-20 -mt-8"
     >
       <span>0/{users.length}</span>
       <div class="flex">
