@@ -3,7 +3,7 @@
   import { fly } from 'svelte/transition';
   import { Button } from '$lib';
   import { DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
-  import { shadeGradient, applyOpacity, cn } from '$lib/utils';
+  import { shadeGradient, cn } from '$lib/utils';
 
   interface Props {
     users: Array<User>;
@@ -55,8 +55,6 @@
   }
 
   const chunkedDays = $derived(getChunkedDays());
-
-  const hoveredSlot = writable<{ dayIndex: number; timeIndex: number } | null>(null);
 
   // Store for selected time slots
   // Format will be a 2D array: [dayIndex][timeIndex]
@@ -254,11 +252,6 @@
     saveAvailability(availabilityString);
   }
 
-  function handleHoverSlot(dayIndex: number, timeIndex: number) {
-    if (recording) return;
-    hoveredSlot.set({ dayIndex, timeIndex });
-  }
-
   function convertTo12HourFormat(time: string): string {
     const [hour, minute] = time.split(':').map(Number);
     const period = hour >= 12 ? 'PM' : 'AM';
@@ -275,12 +268,7 @@
   }
 
   function getSlotColor(dayIndex: number, timeIndex: number): string {
-    const shade = getShade(dayIndex, timeIndex);
-    if ($hoveredSlot?.dayIndex === dayIndex && $hoveredSlot?.timeIndex === timeIndex) {
-      return applyOpacity(shade, 75);
-    }
-
-    return shade;
+    return getShade(dayIndex, timeIndex);
   }
 </script>
 
@@ -344,7 +332,6 @@
           <div
             class="grid gap-x-[1px]"
             style="grid-template-columns: repeat({chunk.length}, minmax(0, 1fr)); grid-template-rows: repeat({timeSlots.length}, minmax(0, 1fr));"
-            onmouseleave={() => hoveredSlot.set(null)}
           >
             {#each timeSlots as _timeSlot, timeIndex}
               {#each chunk as _day, dayIndex}
@@ -378,7 +365,7 @@
                   <!-- svelte-ignore a11y_mouse_events_have_key_events -->
                   <div
                     class={cn(
-                      'group relative h-2.5 w-20 text-xs',
+                      'group relative h-2.5 w-20 text-xs hover:bg-opacity-75',
                       timeIndex != 0 &&
                         (timeIndex % 4 == 0
                           ? 'border-t border-zinc-600'
@@ -390,23 +377,20 @@
                       getDayIndex(chunkIndex, dayIndex),
                       timeIndex
                     )};"
-                    onmouseover={() =>
-                      handleHoverSlot(getDayIndex(chunkIndex, dayIndex), timeIndex)}
                   >
-                    {#if $hoveredSlot !== null}
+                    <div class="absolute hidden size-full bg-black/20 group-hover:block"></div>
+                    <div
+                      class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
+                    >
                       <div
-                        class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
+                        class="select-none rounded-lg bg-zinc-700/65 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
                       >
-                        <div
-                          class="select-none rounded-lg bg-zinc-700/65 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
-                        >
-                          {getDateAndTimeString($hoveredSlot.dayIndex, $hoveredSlot.timeIndex)}, {getUsersForSlot(
-                            $hoveredSlot.dayIndex,
-                            $hoveredSlot.timeIndex
-                          ).length} available
-                        </div>
+                        {getDateAndTimeString(dayIndex, timeIndex)}, {getUsersForSlot(
+                          dayIndex,
+                          timeIndex
+                        ).length} available
                       </div>
-                    {/if}
+                    </div>
                   </div>
                 {/if}
               {/each}
