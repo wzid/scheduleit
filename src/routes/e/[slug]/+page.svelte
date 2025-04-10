@@ -289,7 +289,7 @@
   </div>
   <div class="flex w-full flex-col">
     <!-- Shades for users -->
-    <div class="-mt-8 flex pl-16 md:w-full md:pl-20">
+    <div class="-mt-8 flex justify-center pl-16 md:w-full md:pl-20">
       <div class="flex w-60 justify-center md:w-[35rem]">
         <div
           class="flex w-fit items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm"
