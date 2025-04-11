@@ -276,9 +276,8 @@
 />
 
 <div class={cn('flex w-full max-w-2xl flex-col items-center md:w-fit', recording && 'touch-none')}>
-
   <!-- Main outer loop -->
-  <div class="flex flex-col gap-6 w-full">
+  <div class="flex w-full flex-col gap-6">
     {#each chunkedDays as chunk, chunkIndex}
       <!-- Outer div -->
       <div class="w-fit">

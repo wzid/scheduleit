@@ -236,7 +236,7 @@
     {/if}
 
     <div>
-      <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
+      <h2 class="font-semibold text-zinc-500">Respondents</h2>
       {#if focusUserInput}
         <div
           class="relative z-20 duration-500 ease-in-out animate-in fade-in-0"
