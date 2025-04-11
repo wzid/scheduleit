@@ -18,6 +18,7 @@
   import { convertDatesToISO } from '$lib/utils';
   import type { DayAbbreviation } from '$lib/constants';
   import { dev } from '$app/environment';
+  import { goto } from '$app/navigation';
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -41,8 +42,7 @@
     dataType: 'json',
     onResult: ({ result }) => {
       if (result.type === 'success' && result.data) {
-        const eventId = result.data.eventId;
-        window.location.pathname = `/e/${eventId}`;
+        setTimeout(() => goto(`/e/${result.data!.eventId}`));
       } else if (result.type === 'failure' && result.data?.error) {
         alert(result.data.error);
       } else if (result.type === 'error') {
