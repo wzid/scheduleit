@@ -245,7 +245,7 @@
     {/if}
 
     <div>
-      <h2 class="font-semibold text-zinc-500">Respondents</h2>
+      <h2 class="font-semibold text-zinc-500 leading-none">Respondents</h2>
       {#if focusUserInput}
         <div
           class="relative z-20 duration-500 ease-in-out animate-in fade-in-0"
@@ -323,6 +323,11 @@
   </div>
 
   <div class="flex w-fit flex-col items-center">
+    {#if isLocalTimezoneDifferent}
+      <div class="mb-2 text-sm text-zinc-400 italic">
+        Times shown in your local timezone ({localTimeZone})
+      </div>
+    {/if}
     <div
       class="mb-2 ml-16 flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 md:ml-20"
     >
@@ -338,11 +343,7 @@
       <span>{users.length}/{users.length}</span>
     </div>
 
-    {#if isLocalTimezoneDifferent}
-      <div class="mb-2 text-sm text-zinc-400 italic">
-        Times shown in your local timezone ({localTimeZone})
-      </div>
-    {/if}
+    
 
     <!-- The actual stuff (yes, stuff) -->
     <DayTimeRange
