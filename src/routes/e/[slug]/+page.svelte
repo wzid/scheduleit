@@ -214,7 +214,7 @@
     {#if open}
       <div
         transition:fly={{ duration: 200, y: -15 }}
-        class="absolute left-[.9rem] top-10 -z-10 mx-auto inline w-fit rounded-lg bg-zinc-700/70 shadow-lg"
+        class="absolute left-[.9rem] top-10 mx-auto inline w-fit rounded-lg bg-zinc-700/50 shadow-lg backdrop-blur-sm"
       >
         <div class="flex items-center px-3 py-1 text-zinc-300">
           <span>Copied</span>
