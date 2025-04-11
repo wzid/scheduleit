@@ -71,7 +71,7 @@
     if (rangeStart === 0) rangeStart = 12;
     let end = rangeEnd >= 12 ? rangeEnd - 12 + ' PM' : rangeEnd + ' AM';
     let start = rangeStart > 12 ? rangeStart - 12 + ' PM' : rangeStart + ' AM';
-    
+
     if (rangeStart === 12) {
       start = '12 PM';
     }
@@ -82,7 +82,6 @@
     if (rangeEnd === 24) {
       end = '11:59 PM';
     }
-    
 
     timeRangeValue = [start, end];
   });

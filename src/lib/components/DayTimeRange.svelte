@@ -1,13 +1,10 @@
 <script lang="ts">
   import { writable, get } from 'svelte/store';
-  import { fly, slide } from 'svelte/transition';
-  import { Button } from '$lib';
   import { DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
   import { shadeGradient, cn } from '$lib/utils';
-  import { expoInOut } from 'svelte/easing';
   import { innerWidth } from 'svelte/reactivity/window';
-  import { differenceInHours } from 'date-fns';
   import { formatInTimeZone } from 'date-fns-tz';
+  import CheckIcon from '@lucide/svelte/icons/check';
 
   interface Props {
     users: Array<User>;
@@ -210,8 +207,7 @@
 
   function getShade(dayIndex: number, timeIndex: number): string {
     const usersForSlot = getUsersForSlot(dayIndex, timeIndex);
-    const userCount = usersForSlot.length;
-    return shades[userCount] || '#fff';
+    return shades[usersForSlot.length] || '#fff';
   }
 
   // START DRAG LOGIC
@@ -423,9 +419,17 @@
                       handleTouchStart(e, getDayIndex(chunkIndex, dayIndex), timeIndex)}
                   ></div>
                 {:else}
+                  {@const slotBackgroundColor = getShade(
+                    getDayIndex(chunkIndex, dayIndex),
+                    timeIndex
+                  )}
+                  {@const slotDateTimeString = getDateAndTimeString(dayIndex, timeIndex)}
+                  {@const slotAvailableUsers = getUsersForSlot(dayIndex, timeIndex).length}
+
                   <!-- svelte-ignore a11y_no_static_element_interactions -->
                   <!-- svelte-ignore a11y_mouse_events_have_key_events -->
                   <div
+                    style="background-color: {slotBackgroundColor}"
                     class={cn(
                       'group relative h-2.5 w-20 text-xs hover:bg-opacity-75',
                       timeIndex != 0 &&
@@ -435,22 +439,26 @@
                             ? 'border-t border-dotted border-zinc-600'
                             : '')
                     )}
-                    style="background-color: {getShade(
-                      getDayIndex(chunkIndex, dayIndex),
-                      timeIndex
-                    )};"
                   >
                     <div class="absolute hidden size-full bg-black/20 group-hover:block"></div>
                     <div
                       class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
                     >
                       <div
-                        class="select-none rounded-lg bg-zinc-700/65 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
+                        class="grid select-none gap-0.5 rounded-lg bg-zinc-700/65 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm"
                       >
-                        {getDateAndTimeString(dayIndex, timeIndex)}, {getUsersForSlot(
-                          dayIndex,
-                          timeIndex
-                        ).length} available
+                        <div>
+                          <p class="font-semibold text-white">{slotDateTimeString}</p>
+                          <p>{slotAvailableUsers}/{users.length} available</p>
+                        </div>
+                        <ul>
+                          {#each getUsersForSlot(dayIndex, timeIndex) as user}
+                            <li class="flex items-center gap-1">
+                              <CheckIcon class="-mb-0.5 size-4 text-green-400" />
+                              {user.name}
+                            </li>
+                          {/each}
+                        </ul>
                       </div>
                     </div>
                   </div>
