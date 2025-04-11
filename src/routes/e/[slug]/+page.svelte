@@ -227,7 +227,7 @@
 
 <div class="mt-4 flex w-full flex-col gap-12 md:mt-4 md:flex-row">
   <!-- Div that holds the edit controls and Respondents -->
-  <div class="w-36">
+  <div class="w-[7.5rem]">
     <!-- Edit Controls -->
     {#if recording}
       <div
@@ -282,7 +282,7 @@
       {/if}
       <ul>
         {#each users as user}
-          <li class="flex items-center gap-2">
+          <li class="flex items-center gap-2 text-nowrap">
             {user.name}
             <div class="flex items-center gap-2">
               <div class="group relative">

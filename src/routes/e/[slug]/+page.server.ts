@@ -13,7 +13,7 @@ const addUserSchema = z.object({
     .string()
     .trim()
     .min(1, { message: 'Name cannot be empty' })
-    .max(25, { message: 'Name cannot be longer than 32 characters' }),
+    .max(15, { message: 'Name cannot be longer than 15 characters' }),
   password: z.string().trim()
 });
 
