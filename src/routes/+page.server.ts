@@ -13,7 +13,7 @@ const schema = z
     name: z.string().trim().min(1, 'Please enter an event name.'),
     dateType: z.enum(['dates', 'days']),
     timeZone: z.string(),
-    startTime: z.number().int().positive(),
+    startTime: z.number().int().nonnegative(),
     endTime: z.number().int().positive(),
     dates: z.array(z.string()),
     days: z.array(z.enum(DAY_ABBREVIATIONS as [DayAbbreviation]))

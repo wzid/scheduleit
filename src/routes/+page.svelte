@@ -69,10 +69,13 @@
     $form.endTime = rangeEnd;
 
     if (rangeStart === 0) rangeStart = 12;
-    if (rangeEnd === 24) rangeEnd = 12;
-
+    let end = rangeEnd > 12 ? rangeEnd - 12 + ' PM' : rangeEnd + ' AM';
+    
+    if (rangeEnd === 24) {
+      end = '11:59 PM';
+    }
+    
     const start = rangeStart > 12 ? rangeStart - 12 + ' PM' : rangeStart + ' AM';
-    const end = rangeEnd > 12 ? rangeEnd - 12 + ' PM' : rangeEnd + ' AM';
 
     timeRangeValue = [start, end];
   });
@@ -161,4 +164,4 @@
 </form>
 
 <!-- For debugging in dev -->
-<!-- <SuperDebug data={$form} display={dev} /> -->
+<SuperDebug data={$form} display={dev} />
