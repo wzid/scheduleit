@@ -424,7 +424,7 @@
                     timeIndex
                   )}
                   {@const slotDateTimeString = getDateAndTimeString(dayIndex, timeIndex)}
-                  {@const slotAvailableUsers = getUsersForSlot(dayIndex, timeIndex).length}
+                  {@const slotAvailableUsers = getUsersForSlot(dayIndex, timeIndex)}
 
                   <!-- svelte-ignore a11y_no_static_element_interactions -->
                   <!-- svelte-ignore a11y_mouse_events_have_key_events -->
@@ -449,13 +449,13 @@
                       >
                         <div>
                           <p class="font-semibold text-white">{slotDateTimeString}</p>
-                          <p>{slotAvailableUsers}/{users.length} available</p>
+                          <p>{slotAvailableUsers.length}/{users.length} available</p>
                         </div>
                         <ul>
-                          {#each getUsersForSlot(dayIndex, timeIndex) as user}
+                          {#each slotAvailableUsers as availableUser}
                             <li class="flex items-center gap-1">
                               <CheckIcon class="-mb-0.5 size-4 text-green-400" />
-                              {user.name}
+                              {availableUser.name}
                             </li>
                           {/each}
                         </ul>
