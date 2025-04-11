@@ -85,6 +85,9 @@
 
   // Convert 24h time to display format (12h with am/pm)
   function formatTime(time: string): string {
+    if (time === '24:00') {
+      time = '23:59';
+    }
     const [hour, minute] = time.split(':').map(Number);
     const period = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour % 12 === 0 ? 12 : hour % 12;
