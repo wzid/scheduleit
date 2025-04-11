@@ -6,6 +6,8 @@
   import { shadeGradient, cn } from '$lib/utils';
   import { expoInOut } from 'svelte/easing';
   import { innerWidth } from 'svelte/reactivity/window';
+  import { differenceInHours } from 'date-fns';
+  import { formatInTimeZone } from 'date-fns-tz';
 
   interface Props {
     users: Array<User>;
@@ -18,6 +20,7 @@
     timeline:
       | { type: 'days'; days: Array<DayAbbreviation> }
       | { type: 'dates'; dates: Array<string> };
+    timeZone: string;
   }
 
   let {
@@ -28,13 +31,77 @@
     startTime,
     endTime,
     activeUserId,
-    timeline
+    timeline,
+    timeZone
   }: Props = $props();
 
-  const isDaysTimeline = timeline.type === 'days';
-  const days = isDaysTimeline ? timeline.days : timeline.dates;
+  // Get the user's local timezone
+  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  const numberOfTimeSlots = (endTime - startTime + 1) * 4; // 4 slots per hour (15 min intervals)
+  // Calculate timezone offset in hours
+  function calculateTimezoneOffset(sourceTimezone: string, targetTimezone: string): number {
+    // Create a reference date at noon to avoid DST issues
+    const now = new Date();
+    const referenceDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+
+    // Format the date in both timezones and extract the hour
+    const sourceHour = parseInt(formatInTimeZone(referenceDate, sourceTimezone, 'H'));
+    const targetHour = parseInt(formatInTimeZone(referenceDate, targetTimezone, 'H'));
+
+    // Calculate difference
+    return targetHour - sourceHour;
+  }
+
+  // Get timezone offset between event timezone and local timezone
+  const timezoneOffset = calculateTimezoneOffset(timeZone, localTimeZone);
+
+  // Adjust start and end times based on timezone difference
+  const adjustedStartTime = (startTime + timezoneOffset + 24) % 24;
+  const adjustedEndTime = (endTime + timezoneOffset + 24) % 24;
+
+  // Handle day shift for timezone differences
+  // If going east (positive offset) AND crossing midnight, add a day
+  // If going west (negative offset) AND crossing midnight, subtract a day
+  const dayShift = (() => {
+    // No day shift needed within the same timezone
+    if (timezoneOffset === 0) return 0;
+
+    // Check start time crossing day boundary
+    if (timezoneOffset > 0) {
+      // Moving east (e.g., NY to London)
+      return startTime + timezoneOffset >= 24 ? 1 : 0;
+    } else {
+      // Moving west (e.g., London to NY)
+      return startTime + timezoneOffset < 0 ? -1 : 0;
+    }
+  })();
+
+  const isDaysTimeline = timeline.type === 'days';
+  let days = isDaysTimeline ? timeline.days : timeline.dates;
+
+  // Shift days if needed for timezone adjustment (only for day-based events)
+  if (isDaysTimeline && dayShift !== 0) {
+    const dayAbbreviations = ['M', 'T', 'W', 'Th', 'F', 'Sa', 'Su'] as DayAbbreviation[];
+
+    // Adjust each day based on the day shift
+    days = days.map((day) => {
+      const currentIndex = dayAbbreviations.indexOf(day as DayAbbreviation);
+      const newIndex = (currentIndex + dayShift + 7) % 7; // Add 7 to handle negative shifts
+      return dayAbbreviations[newIndex];
+    });
+  } else if (!isDaysTimeline && dayShift !== 0) {
+    // For date-based timelines, adjust the actual dates
+    days = days.map((dateStr) => {
+      const date = new Date(dateStr);
+      date.setDate(date.getDate() + dayShift);
+      return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    });
+  }
+
+  const numberOfTimeSlots =
+    (adjustedEndTime > adjustedStartTime
+      ? adjustedEndTime - adjustedStartTime
+      : adjustedEndTime + 24 - adjustedStartTime) * 4; // 4 slots per hour (15 min intervals)
 
   // if the window width is less than 768px, we want to return 4
   // otherwise, we want to return 7
@@ -94,21 +161,25 @@
     return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
   }
 
-  const endTimeHour = `${endTime}:00`;
+  const endTimeHour = adjustedEndTime === 0 ? '24:00' : `${adjustedEndTime}:00`;
+
   // Generate time slots between start and end time
   function generateTimeSlots(start: number, end: number): string[] {
     const slots = [];
-    for (let hour = start; hour < end; hour++) {
+    // Ensure we handle the case where end time is before start time (crossing midnight)
+    const hours = end > start ? end - start : end + 24 - start;
+
+    for (let i = 0; i < hours; i++) {
+      const hour = (start + i) % 24;
       for (let quarter = 0; quarter < 4; quarter++) {
         const minutes = quarter * 15;
         slots.push(`${hour}:${minutes.toString().padStart(2, '0')}`);
       }
     }
-    // slots.push(`${end}:00`); // Add end time
     return slots;
   }
 
-  const timeSlots = generateTimeSlots(startTime, endTime);
+  const timeSlots = generateTimeSlots(adjustedStartTime, adjustedEndTime);
 
   // Check if a time slot is selected
   function isSlotSelected(dayIndex: number, timeIndex: number): boolean {

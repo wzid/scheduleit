@@ -18,6 +18,10 @@
   let { data } = $props();
   const event = data.event;
 
+  // Get the user's local timezone
+  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const isLocalTimezoneDifferent = localTimeZone !== event.timeZone;
+
   const usersWritable = writable(data.users);
   let users: Array<User> = $state([]);
 
@@ -334,6 +338,12 @@
       <span>{users.length}/{users.length}</span>
     </div>
 
+    {#if isLocalTimezoneDifferent}
+      <div class="mb-2 text-sm text-zinc-400 italic">
+        Times shown in your local timezone ({localTimeZone})
+      </div>
+    {/if}
+
     <!-- The actual stuff (yes, stuff) -->
     <DayTimeRange
       bind:this={dayTimeRange}
@@ -347,6 +357,7 @@
       timeline={event.dateType === 'days'
         ? { type: 'days', days: event.days ?? [] }
         : { type: 'dates', dates: event.dates ?? [] }}
+      timeZone={event.timeZone}
     />
   </div>
 </div>
