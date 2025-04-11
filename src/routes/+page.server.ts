@@ -3,7 +3,7 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
-import { DAY_ABBREVIATIONS } from '$lib/constants';
+import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
 import { eq } from 'drizzle-orm';
 import { fail } from 'sveltekit-superforms/client';
 
@@ -16,7 +16,7 @@ const schema = z
     startTime: z.number().int().positive(),
     endTime: z.number().int().positive(),
     dates: z.array(z.string()),
-    days: z.array(z.enum(DAY_ABBREVIATIONS))
+    days: z.array(z.enum(DAY_ABBREVIATIONS as [DayAbbreviation]))
   })
   .refine((data) => data.dateType === 'days' || data.dates.length > 0, {
     message: 'Please select at least one date.'
