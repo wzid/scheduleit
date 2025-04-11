@@ -126,7 +126,7 @@
   const shades = shadeGradient(users.length);
 
   // Prepare availability string based on selected slots
-  function getAvailabilityString(): string {
+  export function getAvailabilityString(): string {
     const availabilityArray = get(selectedSlots).map((daySlots) => {
       return daySlots.map((selected) => (selected ? '1' : '0')).join('');
     });
@@ -266,10 +266,6 @@
     }
     return `${new Date(days[dayIndex]).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} ${time}`;
   }
-
-  function getSlotColor(dayIndex: number, timeIndex: number): string {
-    return getShade(dayIndex, timeIndex);
-  }
 </script>
 
 <svelte:window
@@ -280,24 +276,9 @@
 />
 
 <div class={cn('flex w-full max-w-2xl flex-col items-center md:w-fit', recording && 'touch-none')}>
-  {#if recording}
-    <div
-      class="mt-4 flex flex-col gap-3 duration-500 ease-in-out animate-in fade-in-0 lg:ml-20"
-      transition:slide={{ duration: 100, easing: expoInOut }}
-    >
-      <p class="text-balance text-center text-sm text-zinc-400">
-        Click on individual time slots to toggle your availability. The darker the cell, the more
-        people available at that time.
-      </p>
-      <div class="flex items-center justify-center gap-2">
-        <Button onClick={cancel} variant="neutral">Cancel</Button>
-        <Button onClick={handleSave} variant="primary">Save</Button>
-      </div>
-    </div>
-  {/if}
 
   <!-- Main outer loop -->
-  <div class="mt-4 flex w-full flex-col items-center gap-6 md:items-start">
+  <div class="flex flex-col gap-6 w-full">
     {#each chunkedDays as chunk, chunkIndex}
       <!-- Outer div -->
       <div class="w-fit">
@@ -381,7 +362,7 @@
                             ? 'border-t border-dotted border-zinc-600'
                             : '')
                     )}
-                    style="background-color: {getSlotColor(
+                    style="background-color: {getShade(
                       getDayIndex(chunkIndex, dayIndex),
                       timeIndex
                     )};"

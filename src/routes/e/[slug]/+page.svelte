@@ -104,7 +104,13 @@
     }
   };
 
-  const saveAvailability = (availabilityString: string) => {
+  // https://svelte.dev/tutorial/svelte/component-this
+  // https://svelte.dev/docs/svelte/bind#bind:this
+  let dayTimeRange : DayTimeRange;
+
+  const saveAvailability = () => {
+    const availabilityString = dayTimeRange.getAvailabilityString();
+
     fetch('/api/availability', {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -178,6 +184,7 @@
 
     handlePostLogIn(user, password);
   };
+
 </script>
 
 <Meta title={event.name} />
@@ -210,106 +217,123 @@
   </div>
 </div>
 
-<div class="mt-4 flex w-full flex-col gap-12 md:mt-8 md:flex-row">
-  <div class="md:mt-6">
-    <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
-    {#if focusUserInput}
+
+<div class="mt-4 flex w-full flex-col gap-12 md:mt-4 md:flex-row">
+  <!-- Div that holds the edit controls and Respondents -->
+  <div class="w-40">
+    <!-- Edit Controls -->
+    {#if recording}
       <div
-        class="relative z-20 duration-500 ease-in-out animate-in fade-in-0"
-        transition:slide={{ duration: 100, easing: expoInOut }}
+        class="pb-3"
+        transition:slide={{ duration: 100 }}
       >
-        <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
-          <div class="flex flex-col gap-2">
-            <Input
-              bind:value={$addUserForm.name}
-              className="border border-peach-300 rounded-lg"
-              placeholder="Your name"
-            />
-            <Input
-              bind:value={$addUserForm.password}
-              className="border border-peach-300 rounded-lg"
-              placeholder="Password (optional)"
-            />
-            <div class="invalid !mt-0 text-xs">
-              {#if $errors.name}<p>{$errors.name}</p>{/if}
-              {#if $errors.password}<p>{$errors.password}</p>{/if}
-            </div>
-          </div>
-          <Button variant="secondary" contentType="icon" type="submit">
-            <PlusIcon class="h-5 w-5" strokeWidth={3} />
-          </Button>
-        </form>
+        <p class="text-sm text-balance text-zinc-400 pb-2 w-[12rem]">
+          Click on individual time slots to toggle your availability. 
+        </p>
+        <div class="flex gap-2">
+          <Button onClick={cancel} variant="neutral">Cancel</Button>
+          <Button onClick={saveAvailability} variant="primary">Save</Button>
+        </div>
       </div>
-      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-      <div
-        transition:fade={{ duration: 100 }}
-        onclick={() => (focusUserInput = false)}
-        class="fixed left-0 top-0 z-10 h-screen w-screen bg-zinc-800/70"
-      ></div>
     {/if}
-    <ul>
-      {#each users as user}
-        <li class="flex items-center gap-2">
-          {user.name}
-          <div class="flex items-center gap-2">
-            <div class="group relative">
-              <button onclick={() => logIn(user)}>
-                <PencilIcon
-                  class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80"
-                />
-              </button>
-              <div
-                class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
-              >
-                <div
-                  class="rounded-lg bg-zinc-700/75 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm animate-in fade-in slide-in-from-bottom-2"
-                >
-                  Edit availability
-                </div>
+    
+    <div>
+      <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
+      {#if focusUserInput}
+        <div
+          class="relative z-20 duration-500 ease-in-out animate-in fade-in-0"
+          transition:slide={{ duration: 100, easing: expoInOut }}
+        >
+          <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
+            <div class="flex flex-col gap-2">
+              <Input
+                bind:value={$addUserForm.name}
+                className="border border-peach-300 rounded-lg"
+                placeholder="Your name"
+              />
+              <Input
+                bind:value={$addUserForm.password}
+                className="border border-peach-300 rounded-lg"
+                placeholder="Password (optional)"
+              />
+              <div class="invalid !mt-0 text-xs">
+                {#if $errors.name}<p>{$errors.name}</p>{/if}
+                {#if $errors.password}<p>{$errors.password}</p>{/if}
               </div>
             </div>
-            {#if user.availability}
+            <Button variant="secondary" contentType="icon" type="submit">
+              <PlusIcon class="h-5 w-5" strokeWidth={3} />
+            </Button>
+          </form>
+        </div>
+        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+        <div
+          transition:fade={{ duration: 100 }}
+          onclick={() => (focusUserInput = false)}
+          class="fixed left-0 top-0 z-10 h-screen w-screen bg-zinc-800/70"
+        ></div>
+      {/if}
+      <ul>
+        {#each users as user}
+          <li class="flex items-center gap-2">
+            {user.name}
+            <div class="flex items-center gap-2">
               <div class="group relative">
-                <CheckIcon class="h-4 w-4 text-green-500" strokeWidth={3} />
+                <button onclick={() => logIn(user)}>
+                  <PencilIcon
+                    class="h-3.5 w-3.5 text-zinc-400 transition-colors hover:text-zinc-400/80"
+                  />
+                </button>
                 <div
                   class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
                 >
                   <div
                     class="rounded-lg bg-zinc-700/75 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm animate-in fade-in slide-in-from-bottom-2"
                   >
-                    Availability recorded
+                    Edit availability
                   </div>
                 </div>
               </div>
-            {/if}
-          </div>
-        </li>
-      {/each}
-    </ul>
+              {#if user.availability}
+                <div class="group relative">
+                  <CheckIcon class="h-4 w-4 text-green-500" strokeWidth={3} />
+                  <div
+                    class="pointer-events-none absolute left-1/2 top-6 z-10 hidden -translate-x-1/2 whitespace-nowrap group-hover:block"
+                  >
+                    <div
+                      class="rounded-lg bg-zinc-700/75 px-2 py-1 text-sm text-zinc-300 shadow-lg backdrop-blur-sm animate-in fade-in slide-in-from-bottom-2"
+                    >
+                      Availability recorded
+                    </div>
+                  </div>
+                </div>
+              {/if}
+            </div>
+          </li>
+        {/each}
+      </ul>
+    </div>
   </div>
-  <div class="flex w-full flex-col">
-    <!-- Shades for users -->
-    <div class="-mt-8 flex justify-center pl-16 md:w-full md:pl-20">
-      <div class="flex w-60 justify-center md:w-[35rem]">
-        <div
-          class="flex w-fit items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 shadow-lg backdrop-blur-sm"
-        >
-          <span>0/{users.length}</span>
-          <div class="flex">
-            {#each shades as shade}
-              <div
-                class="size-6 border border-x-0 border-r-0 border-white/20 first:rounded-l-md first:border-l last:rounded-r-md last:border-l-0 last:border-r"
-                style="background: {shade};"
-              ></div>
-            {/each}
-          </div>
-          <span>{users.length}/{users.length}</span>
-        </div>
+
+  <div class="flex w-fit flex-col items-center">
+    <div
+      class="flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 ml-16 md:ml-20 mb-2"
+    >
+      <span>0/{users.length}</span>
+      <div class="flex">
+        {#each shades as shade}
+          <div
+            class="size-6 border border-x-0 border-r-0 border-white/20 first:rounded-l-md first:border-l last:rounded-r-md last:border-l-0 last:border-r"
+            style="background: {shade};"
+          ></div>
+        {/each}
       </div>
+      <span>{users.length}/{users.length}</span>
     </div>
 
     <!-- The actual stuff (yes, stuff) -->
     <DayTimeRange
+      bind:this={dayTimeRange}
       {users}
       {recording}
       {saveAvailability}

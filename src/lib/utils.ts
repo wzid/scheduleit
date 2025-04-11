@@ -8,6 +8,10 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
+export const min = (a: number, b: number) => {
+  return a > b ? b : a;
+};
+
 export const convertDatesToISO = (dates: CalendarValue<true> | undefined) => {
   const newDates: string[] = [];
 
