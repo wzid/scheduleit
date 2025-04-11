@@ -100,7 +100,12 @@
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key == 'Escape') {
-      focusUserInput = false;
+      if (recording) {
+        cancel();
+        (document.activeElement as HTMLElement)?.blur();
+      } else {
+        focusUserInput = false;
+      }
     }
   };
 
