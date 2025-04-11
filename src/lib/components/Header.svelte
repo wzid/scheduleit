@@ -5,7 +5,7 @@
 <header class="flex flex-col items-center gap-1 py-8 text-center lowercase">
   {#if page.url.pathname === '/'}
     <h1
-      class="from-peach-350 to-peach-350 bg-gradient-to-r via-peach-300 bg-clip-text leading-none text-transparent transition-opacity hover:opacity-80"
+      class="from-peach-350 to-peach-350 bg-gradient-to-r via-peach-300 bg-clip-text leading-none text-transparent"
     >
       <a href="/">Schedule It!</a>
     </h1>
