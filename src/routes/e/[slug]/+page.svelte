@@ -205,7 +205,7 @@
     {#if open}
       <div
         transition:fly={{ duration: 200, y: -15 }}
-        class="absolute left-[.9rem] top-7 -z-10 mx-auto inline w-fit rounded-lg bg-zinc-700/70 shadow-lg"
+        class="absolute left-[.9rem] top-10 -z-10 mx-auto inline w-fit rounded-lg bg-zinc-700/70 shadow-lg"
       >
         <div class="flex items-center px-3 py-1 text-zinc-300">
           <span>Copied</span>
@@ -218,7 +218,7 @@
 
 <div class="mt-4 flex w-full flex-col gap-12 md:mt-4 md:flex-row">
   <!-- Div that holds the edit controls and Respondents -->
-  <div class="w-40">
+  <div class="w-36">
     <!-- Edit Controls -->
     {#if recording}
       <div
