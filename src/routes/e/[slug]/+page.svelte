@@ -106,7 +106,7 @@
 
   // https://svelte.dev/tutorial/svelte/component-this
   // https://svelte.dev/docs/svelte/bind#bind:this
-  let dayTimeRange : DayTimeRange;
+  let dayTimeRange: DayTimeRange;
 
   const saveAvailability = () => {
     const availabilityString = dayTimeRange.getAvailabilityString();
@@ -184,7 +184,6 @@
 
     handlePostLogIn(user, password);
   };
-
 </script>
 
 <Meta title={event.name} />
@@ -217,18 +216,17 @@
   </div>
 </div>
 
-
 <div class="mt-4 flex w-full flex-col gap-12 md:mt-4 md:flex-row">
   <!-- Div that holds the edit controls and Respondents -->
   <div class="w-40">
     <!-- Edit Controls -->
     {#if recording}
       <div
-        class="pb-3"
+        class="!overflow-visible pb-3 duration-300 ease-in-out animate-in fade-in-0"
         transition:slide={{ duration: 100 }}
       >
-        <p class="text-sm text-balance text-zinc-400 pb-2 w-[12rem]">
-          Click on individual time slots to toggle your availability. 
+        <p class="w-[12rem] text-balance pb-2 text-sm text-zinc-400">
+          Click on individual time slots to toggle your availability.
         </p>
         <div class="flex gap-2">
           <Button onClick={cancel} variant="neutral">Cancel</Button>
@@ -236,7 +234,7 @@
         </div>
       </div>
     {/if}
-    
+
     <div>
       <span class="text-2xl font-semibold text-zinc-500">Respondents</span>
       {#if focusUserInput}
@@ -317,7 +315,7 @@
 
   <div class="flex w-fit flex-col items-center">
     <div
-      class="flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 ml-16 md:ml-20 mb-2"
+      class="mb-2 ml-16 flex items-center gap-2 rounded-lg bg-white/10 px-2 py-1 text-sm tabular-nums tracking-widest text-zinc-300 md:ml-20"
     >
       <span>0/{users.length}</span>
       <div class="flex">
