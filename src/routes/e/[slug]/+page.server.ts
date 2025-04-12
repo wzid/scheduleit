@@ -61,8 +61,6 @@ export const actions = {
 
     const hashedPassword = password.length ? await hash(password) : null;
 
-    console.log({ eventId, name, password: hashedPassword });
-
     const result = await db
       .insert(users)
       .values({ eventId, name, password: hashedPassword })
