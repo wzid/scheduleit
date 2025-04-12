@@ -268,7 +268,12 @@
                 {#if $errors.password}<p>{$errors.password}</p>{/if}
               </div>
             </div>
-            <Button className="shadow-xl shadow-black/20" variant="secondary" contentType="icon" type="submit">
+            <Button
+              className="shadow-xl shadow-black/20"
+              variant="secondary"
+              contentType="icon"
+              type="submit"
+            >
               <PlusIcon class="h-5 w-5" strokeWidth={3} />
             </Button>
           </form>
