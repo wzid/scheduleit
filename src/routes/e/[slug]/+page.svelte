@@ -71,30 +71,33 @@
 
   // each users has a bit string of availability that corresponds to the days of the week or dates
   // we need to create a map of the days to the number of users that are available on that day
-  let dayUserCountMap: Map<Readonly<string>, Array<User>> = DAY_ABBREVIATIONS.map((day) => [
-    day,
-    []
-  ]).reduce((map, [key, value]) => map.set(key, value), new Map());
+  const dayUserCountMap = $derived(() => {
+    const map = DAY_ABBREVIATIONS.map((day) => [day, []]).reduce(
+      (map, [key, value]) => map.set(key, value),
+      new Map()
+    );
 
-  if (event.dateType == 'days') {
-    // Iterate over the users array
-    $usersWritable.forEach((user) => {
-      if (!user.availability) return;
-      // For each user, iterate over their availability bit string
-      for (let i = 0; i < user.availability.length; i++) {
-        // if the user is available on that day, increment the count for that day
-        if (user.availability[i] == '1') {
-          const day = DAY_ABBREVIATIONS[i];
-          // if the day is not in the map, set it to 1, otherwise increment it
-          const arr = dayUserCountMap.get(day) ?? [];
-          dayUserCountMap.set(day, arr.concat([user]));
+    if (event.dateType == 'days') {
+      // Iterate over the users array
+      users.forEach((user) => {
+        if (!user.availability) return;
+        // For each user, iterate over their availability bit string
+        for (let i = 0; i < user.availability.length; i++) {
+          // if the user is available on that day, increment the count for that day
+          if (user.availability[i] == '1') {
+            const day = DAY_ABBREVIATIONS[i];
+            // if the day is not in the map, set it to 1, otherwise increment it
+            const arr = map.get(day) ?? [];
+            map.set(day, arr.concat([user]));
+          }
         }
-      }
-    });
-  }
+      });
+    }
+    return map;
+  });
 
   // derived helps it update the shades when the users change
-  const shades = $derived(shadeGradient($usersWritable.length));
+  const shades = $derived(shadeGradient(users.length));
   const recordedDays = writable<DayAbbreviation[]>([]);
 
   let activeUserId = $state<string | null>(null);

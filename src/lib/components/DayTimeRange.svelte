@@ -194,7 +194,7 @@
     });
   }
 
-  const shades = shadeGradient(users.length);
+  const shades = $derived(shadeGradient(users.length));
 
   // Prepare availability string based on selected slots
   export function getAvailabilityString(): string {
@@ -207,7 +207,9 @@
 
   function getShade(dayIndex: number, timeIndex: number): string {
     const usersForSlot = getUsersForSlot(dayIndex, timeIndex);
-    return shades[usersForSlot.length] || '#fff';
+    // Ensure we don't exceed the shades array length
+    const index = Math.min(usersForSlot.length, shades.length - 1);
+    return shades[index];
   }
 
   // START DRAG LOGIC
