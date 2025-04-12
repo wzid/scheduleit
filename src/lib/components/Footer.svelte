@@ -1,4 +1,4 @@
-<footer class="mt-auto py-6">
+<footer class="mt-auto py-6 pt-12">
   <div class="text-center text-sm lowercase leading-none text-zinc-500">
     <a class="shine" target="_blank" href="https://github.com/wzid/scheduleit">GitHub</a>
     <span>&bull;</span>

@@ -42,7 +42,7 @@
   {type}
   onmouseup={onClick}
   class={cn(
-    'inline-flex items-center justify-center rounded-xl text-sm font-semibold shadow transition-colors',
+    'inline-flex items-center justify-center rounded-xl text-sm font-semibold shadow transition-all active:scale-90',
     contentClasses[contentType],
     variantClasses[variant],
     className

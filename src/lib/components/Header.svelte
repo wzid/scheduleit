@@ -4,12 +4,14 @@
 
 <header class="flex flex-col items-center gap-1 py-8 text-center lowercase">
   {#if page.url.pathname === '/'}
-    <h1 class="leading-none text-peach-300">
+    <h1
+      class="bg-gradient-to-r from-peach-350 via-peach-300 to-peach-350 bg-clip-text leading-none text-transparent"
+    >
       <a href="/">Schedule It!</a>
     </h1>
   {:else}
     <a
-      class="text-h1 w-fit leading-none text-peach-300 transition-colors hover:text-peach-300/80"
+      class="text-h1 w-fit bg-gradient-to-r from-peach-350 via-peach-300 to-peach-350 bg-clip-text leading-none text-transparent transition-opacity hover:opacity-80"
       href="/">Schedule It!</a
     >
   {/if}

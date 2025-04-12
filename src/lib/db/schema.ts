@@ -1,4 +1,4 @@
-import type { Day } from '$lib/constants';
+import type { DayAbbreviation } from '$lib/constants';
 import { relations, sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { nanoid } from 'nanoid';
@@ -15,7 +15,7 @@ export const events = sqliteTable('events', {
   startTime: integer('start_time').notNull(),
   endTime: integer('end_time').notNull(),
   dates: text('dates', { mode: 'json' }).$type<string[]>(),
-  days: text('days', { mode: 'json' }).$type<Day[]>(),
+  days: text('days', { mode: 'json' }).$type<DayAbbreviation[]>(),
   createdAt: integer('created_at')
     .notNull()
     .default(sql`(cast (unixepoch() as int))`)

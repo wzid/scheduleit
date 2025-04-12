@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { DAYS_OF_THE_WEEK, type Day } from '$lib/constants';
+  import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
   import { cn } from '$lib/utils';
   import { get, type Writable } from 'svelte/store';
 
   // create a map from the day to the selected state
   const daysSelected: Map<Readonly<string>, boolean> = new Map(
-    DAYS_OF_THE_WEEK.map((day) => [day, false])
+    DAY_ABBREVIATIONS.map((day) => [day, false])
   );
 
   interface Props {
-    value: Writable<Day[]>;
+    value: Writable<DayAbbreviation[]>;
   }
 
   let { value }: Props = $props();
@@ -22,7 +22,7 @@
   let touching = $state(false);
   let count = $state(0);
 
-  const updateDays = (days: Day[]) => {
+  const updateDays = (days: DayAbbreviation[]) => {
     daysSelected.forEach((_, key) => daysSelected.set(key, false));
     days.forEach((day) => daysSelected.set(day, true));
     count++;
@@ -39,13 +39,13 @@
         if (inDragRange) {
           return false;
         } else {
-          return daysSelected.get(DAYS_OF_THE_WEEK[i]);
+          return daysSelected.get(DAY_ABBREVIATIONS[i]);
         }
       } else {
-        return inDragRange || daysSelected.get(DAYS_OF_THE_WEEK[i]);
+        return inDragRange || daysSelected.get(DAY_ABBREVIATIONS[i]);
       }
     } else {
-      return daysSelected.get(DAYS_OF_THE_WEEK[i]);
+      return daysSelected.get(DAY_ABBREVIATIONS[i]);
     }
   };
 
@@ -60,7 +60,7 @@
   const handleDragStart = (i: number) => {
     dragging = true;
     dragStartIdx = i;
-    removing = daysSelected.get(DAYS_OF_THE_WEEK[i]) ?? false;
+    removing = daysSelected.get(DAY_ABBREVIATIONS[i]) ?? false;
     count++;
   };
 
@@ -77,12 +77,12 @@
     dragging = false;
     lastDragOverIdx = -1;
     for (let i = dragStartIdx; i <= dragEndIdx; i++) {
-      daysSelected.set(DAYS_OF_THE_WEEK[i], !removing);
+      daysSelected.set(DAY_ABBREVIATIONS[i], !removing);
     }
 
-    const days: Day[] = [];
+    const days: DayAbbreviation[] = [];
     for (let i = 0; i < daysSelected.size; i++) {
-      const day = DAYS_OF_THE_WEEK[i];
+      const day = DAY_ABBREVIATIONS[i];
       if (daysSelected.get(day)) {
         days.push(day);
       }
@@ -103,7 +103,7 @@
 <div class="overflow-hidden rounded-lg bg-zinc-800">
   {#key count}
     <div class="flex flex-wrap">
-      {#each DAYS_OF_THE_WEEK as day, i}
+      {#each DAY_ABBREVIATIONS as day, i}
         <!-- svelte-ignore a11y_no_static_element_interactions, a11y_mouse_events_have_key_events -->
         <button
           type="button"

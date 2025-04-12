@@ -3,7 +3,7 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '$lib/db';
 import { events } from '$lib/db/schema';
-import { DAYS_OF_THE_WEEK } from '$lib/constants';
+import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
 import { eq } from 'drizzle-orm';
 import { fail } from 'sveltekit-superforms/client';
 
@@ -13,10 +13,10 @@ const schema = z
     name: z.string().trim().min(1, 'Please enter an event name.'),
     dateType: z.enum(['dates', 'days']),
     timeZone: z.string(),
-    startTime: z.number().int().positive(),
+    startTime: z.number().int().nonnegative(),
     endTime: z.number().int().positive(),
     dates: z.array(z.string()),
-    days: z.array(z.enum(DAYS_OF_THE_WEEK))
+    days: z.array(z.enum(DAY_ABBREVIATIONS as [DayAbbreviation]))
   })
   .refine((data) => data.dateType === 'days' || data.dates.length > 0, {
     message: 'Please select at least one date.'

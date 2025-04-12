@@ -16,8 +16,9 @@
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import type { PageData } from './$types';
   import { convertDatesToISO } from '$lib/utils';
-  import type { Day } from '$lib/constants';
+  import type { DayAbbreviation } from '$lib/constants';
   import { dev } from '$app/environment';
+  import { goto } from '$app/navigation';
 
   const tzOptions = Intl.supportedValuesOf('timeZone');
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -26,7 +27,7 @@
   const selectedDateType = writable({ label: dateTypeOptions[0], value: dateTypeOptions[0] });
   const selectedTz = writable({ label: userTz, value: userTz });
   const dates = writable<CalendarValue<true>>([]);
-  const days = writable<Day[]>([]);
+  const days = writable<DayAbbreviation[]>([]);
   const timeRange = writable<number[]>([9, 17]);
 
   let timeRangeValue: string[] = $state([]);
@@ -41,8 +42,7 @@
     dataType: 'json',
     onResult: ({ result }) => {
       if (result.type === 'success' && result.data) {
-        const eventId = result.data.eventId;
-        window.location.pathname = `/e/${eventId}`;
+        setTimeout(() => goto(`/e/${result.data!.eventId}`));
       } else if (result.type === 'failure' && result.data?.error) {
         alert(result.data.error);
       } else if (result.type === 'error') {
@@ -69,10 +69,19 @@
     $form.endTime = rangeEnd;
 
     if (rangeStart === 0) rangeStart = 12;
-    if (rangeEnd === 24) rangeEnd = 12;
+    let end = rangeEnd >= 12 ? rangeEnd - 12 + ' PM' : rangeEnd + ' AM';
+    let start = rangeStart > 12 ? rangeStart - 12 + ' PM' : rangeStart + ' AM';
 
-    const start = rangeStart > 12 ? rangeStart - 12 + ' PM' : rangeStart + ' AM';
-    const end = rangeEnd > 12 ? rangeEnd - 12 + ' PM' : rangeEnd + ' AM';
+    if (rangeStart === 12) {
+      start = '12 PM';
+    }
+    if (rangeEnd === 12) {
+      end = '12 PM';
+    }
+
+    if (rangeEnd === 24) {
+      end = '11:59 PM';
+    }
 
     timeRangeValue = [start, end];
   });
@@ -116,9 +125,10 @@
         {#if $errors._errors}<p class="invalid">{$errors._errors[0]}</p>{/if}
         <DaySelector value={days} />
         <img
+          alt="Stickman with a text bubble: That sounds like a great idea"
           class="mt-auto hidden self-end invert-[100%] sm:block"
-          alt="Stickman advertising timeslot.one with a text bubble saying `Let's find a time to meet using timeslot.one`"
-          src="https://s6.imgcdn.dev/floSg.png"
+          src="/images/stickman/2.png"
+          draggable="false"
           width="215"
         />
       {/if}
@@ -139,15 +149,15 @@
       <div class="space-y-2">
         <div>
           <h2>Custom Slug</h2>
-          <p class="text-sm text-zinc-500">Example: timeslot.one/e/[slug]</p>
+          <p class="text-sm text-zinc-500">Example: scheduleit.now/e/[slug]</p>
         </div>
         <Input bind:value={$form.id} placeholder="Your custom slug (optional)" />
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}
       </div>
       <img
+        alt="Stickman with a text bubble: Let's find a time to meet using scheduleit.now"
         class="!mt-2 hidden invert-[100%] sm:block"
-        alt="Stickman advertising timeslot.one with a text bubble saying `Let's find a time to meet using timeslot.one`"
-        src="images/letsfindatimetomeet.png"
+        src="/images/stickman/1.png"
         draggable="false"
         width="275"
       />
