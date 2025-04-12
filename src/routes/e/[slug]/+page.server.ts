@@ -20,9 +20,9 @@ const addUserSchema = z.object({
 
 export async function load({ params }: { params: { slug: string } }) {
   const addUserForm = await superValidate(zod(addUserSchema));
-  const result = await db.select().from(events).where(eq(events.id, params.slug));
 
-  if (!result || result.length === 0 || !result[0]) {
+  const event = await db.query.events.findFirst({ where: eq(events.id, params.slug) });
+  if (!event) {
     throw error(404, `Could not find event with id ${params.slug}`);
   }
 
@@ -36,7 +36,7 @@ export async function load({ params }: { params: { slug: string } }) {
     .from(users)
     .where(eq(users.eventId, params.slug));
 
-  return { addUserForm, event: result[0], users: eventUsers };
+  return { addUserForm, event, users: eventUsers };
 }
 
 export const actions = {
