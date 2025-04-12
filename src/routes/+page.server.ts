@@ -6,6 +6,7 @@ import { events } from '$lib/db/schema';
 import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
 import { eq } from 'drizzle-orm';
 import { fail } from 'sveltekit-superforms/client';
+import { isRateLimited, limiters, RATE_LIMIT_ERROR } from '$lib/ratelimit.js';
 
 const schema = z
   .object({
@@ -24,6 +25,7 @@ const schema = z
   .refine((data) => data.dateType === 'dates' || data.days.length > 0, {
     message: 'Please select at least one day.'
   });
+
 export const load = async () => {
   const form = await superValidate(zod(schema));
   return { form };
@@ -36,8 +38,13 @@ export const actions = {
       return fail(400, { form });
     }
 
+    if (await isRateLimited(limiters.createEvent, request, 'create_event')) {
+      return fail(429, { form, error: RATE_LIMIT_ERROR });
+    }
+
     const { id: rawId, ...data } = form.data;
     const id = rawId === '' ? undefined : rawId;
+
     if (id) {
       const existingEvent = await db.query.events.findFirst({ where: eq(events.id, id) });
       if (existingEvent) {

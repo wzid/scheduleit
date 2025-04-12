@@ -34,6 +34,11 @@
   } = superForm(data.addUserForm, {
     dataType: 'json',
     onResult: async ({ result }) => {
+      if (result.type === 'failure' && result.data?.error) {
+        alert(result.data.error);
+        return;
+      }
+
       if (result.type !== 'success' || !result.data) {
         return;
       }
