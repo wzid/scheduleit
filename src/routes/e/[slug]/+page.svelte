@@ -6,7 +6,7 @@
   import PencilIcon from '@lucide/svelte/icons/pencil';
   import { writable } from 'svelte/store';
   import { fly, fade, slide } from 'svelte/transition';
-  import { shadeGradient } from '$lib/utils';
+  import { cn, shadeGradient } from '$lib/utils';
   import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
   import { superForm } from 'sveltekit-superforms/client';
   import type { User } from '$lib/constants';
@@ -354,7 +354,12 @@
       <div class="flex">
         {#each shades as shade}
           <div
-            class="size-6 border border-x-0 border-r-0 border-white/20 first:rounded-l-md first:border-l last:rounded-r-md last:border-l-0 last:border-r"
+            class={cn(
+              'size-6 border border-white/20',
+              shades.length == 1
+                ? 'rounded-md'
+                : 'border-x-0 border-r-0 first:rounded-l-md first:border-l last:rounded-r-md last:border-l-0 last:border-r'
+            )}
             style="background: {shade}"
           ></div>
         {/each}
