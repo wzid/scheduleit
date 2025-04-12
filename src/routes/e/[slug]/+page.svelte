@@ -14,6 +14,7 @@
 
   import { Button, Meta, Input } from '$lib';
   import { expoInOut } from 'svelte/easing';
+  import { invalidateAll } from '$app/navigation';
 
   let { data } = $props();
   const event = data.event;
@@ -26,6 +27,10 @@
   let users: Array<User> = $state([]);
 
   usersWritable.subscribe((value) => (users = value));
+
+  $effect(() => {
+    usersWritable.set(data.users);
+  });
 
   const {
     form: addUserForm,
@@ -136,9 +141,9 @@
       })
     }).then((res) => {
       if (res.ok) {
+        invalidateAll();
         recording = false;
         activeUserId = null;
-        location.reload();
       }
     });
   };

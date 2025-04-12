@@ -431,7 +431,7 @@
                   <div
                     style="background-color: {slotBackgroundColor}"
                     class={cn(
-                      'group relative h-2.5 w-20 text-xs hover:bg-opacity-75',
+                      'group relative h-2.5 w-20 text-xs transition-colors hover:bg-opacity-75',
                       timeIndex != 0 &&
                         (timeIndex % 4 == 0
                           ? 'border-t border-zinc-600'
