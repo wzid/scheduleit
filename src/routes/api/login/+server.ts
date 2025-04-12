@@ -1,9 +1,9 @@
-import { json } from '@sveltejs/kit';
+import { json, type RequestHandler } from '@sveltejs/kit';
 import { isAuthenticated } from '../utils';
 import { isRateLimited, RATE_LIMIT_ERROR } from '$lib/ratelimit';
 import { limiters } from '$lib/ratelimit';
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
   const { userId, password } = await request.json();
 
   if (!userId) {
@@ -37,4 +37,4 @@ export async function POST({ request }) {
   }
 
   return json({ success: true });
-}
+};

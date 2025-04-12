@@ -1,11 +1,11 @@
 import { db } from '$lib/db';
 import { users } from '$lib/db/schema';
-import { json } from '@sveltejs/kit';
+import { json, type RequestHandler } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { isAuthenticated } from '../utils';
 import { isRateLimited, limiters, RATE_LIMIT_ERROR } from '$lib/ratelimit';
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
   const { eventId, userId, availability, password } = await request.json();
 
   if (!eventId || !userId || !availability) {
@@ -44,4 +44,4 @@ export async function POST({ request }) {
     .where(and(eq(users.eventId, eventId), eq(users.id, userId)));
 
   return json({ success: true });
-}
+};
