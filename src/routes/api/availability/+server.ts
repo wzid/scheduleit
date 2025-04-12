@@ -1,10 +1,10 @@
 import { db } from '$lib/db';
 import { users } from '$lib/db/schema';
-import { json } from '@sveltejs/kit';
+import { json, type RequestHandler } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { isAuthenticated } from '../utils';
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
   const { eventId, userId, availability, password } = await request.json();
   if (!eventId || !userId || !availability) {
     return json({ success: false, error: 'Invalid parameters' }, { status: 400 });
@@ -17,4 +17,4 @@ export async function POST({ request }) {
     .set({ availability })
     .where(and(eq(users.eventId, eventId), eq(users.id, userId)));
   return json({ success: true });
-}
+};

@@ -1,7 +1,7 @@
-import { json } from '@sveltejs/kit';
+import { json, type RequestHandler } from '@sveltejs/kit';
 import { isAuthenticated } from '../utils';
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
   const { userId, password } = await request.json();
   if (!userId) {
     return json({ success: false, error: 'Invalid parameters' }, { status: 400 });
@@ -10,4 +10,4 @@ export async function POST({ request }) {
     return json({ success: false, error: 'Invalid user ID or password' }, { status: 401 });
   }
   return json({ success: true });
-}
+};
