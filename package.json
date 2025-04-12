@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "db:push": "drizzle-kit push:sqlite",
+    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
