@@ -6,9 +6,10 @@ import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
 import { hash } from 'argon2';
+import { isRateLimited, limiters, RATE_LIMIT_ERROR } from '$lib/ratelimit';
 
 const addUserSchema = z.object({
-  eventId: z.string(),
+  eventId: z.string().length(8),
   name: z
     .string()
     .trim()
@@ -19,9 +20,9 @@ const addUserSchema = z.object({
 
 export async function load({ params }: { params: { slug: string } }) {
   const addUserForm = await superValidate(zod(addUserSchema));
-  const result = await db.select().from(events).where(eq(events.id, params.slug));
 
-  if (!result || result.length === 0 || !result[0]) {
+  const event = await db.query.events.findFirst({ where: eq(events.id, params.slug) });
+  if (!event) {
     throw error(404, `Could not find event with id ${params.slug}`);
   }
 
@@ -35,7 +36,7 @@ export async function load({ params }: { params: { slug: string } }) {
     .from(users)
     .where(eq(users.eventId, params.slug));
 
-  return { addUserForm, event: result[0], users: eventUsers };
+  return { addUserForm, event, users: eventUsers };
 }
 
 export const actions = {
@@ -46,7 +47,10 @@ export const actions = {
     }
 
     const { eventId, name, password } = form.data;
-    const hashedPassword = password.length ? await hash(password) : null;
+
+    if (await isRateLimited(limiters.addUser, request, 'add_user')) {
+      return fail(429, { form, error: RATE_LIMIT_ERROR });
+    }
 
     const existingUser = await db.query.users.findFirst({
       where: and(eq(users.eventId, eventId), eq(users.name, name))
@@ -54,6 +58,8 @@ export const actions = {
     if (existingUser) {
       return setError(form, 'name', 'This user already exists!');
     }
+
+    const hashedPassword = password.length ? await hash(password) : null;
 
     const result = await db
       .insert(users)
