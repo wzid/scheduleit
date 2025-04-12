@@ -255,12 +255,12 @@
             <div class="flex flex-col gap-2">
               <Input
                 bind:value={$addUserForm.name}
-                className="border border-peach-300 rounded-lg"
+                className="border border-peach-300 rounded-lg shadow-xl shadow-black/20"
                 placeholder="Your name"
               />
               <Input
                 bind:value={$addUserForm.password}
-                className="border border-peach-300 rounded-lg"
+                className="border border-peach-300 rounded-lg shadow-xl shadow-black/20"
                 placeholder="Password (optional)"
               />
               <div class="invalid !mt-0 text-xs">
@@ -268,7 +268,7 @@
                 {#if $errors.password}<p>{$errors.password}</p>{/if}
               </div>
             </div>
-            <Button variant="secondary" contentType="icon" type="submit">
+            <Button className="shadow-xl shadow-black/20" variant="secondary" contentType="icon" type="submit">
               <PlusIcon class="h-5 w-5" strokeWidth={3} />
             </Button>
           </form>
@@ -277,7 +277,7 @@
         <div
           transition:fade={{ duration: 100 }}
           onclick={() => (focusUserInput = false)}
-          class="fixed left-0 top-0 z-10 h-screen w-screen bg-zinc-800/70"
+          class="fixed left-0 top-0 z-10 h-screen w-screen bg-zinc-800/80"
         ></div>
       {/if}
       <ul>
