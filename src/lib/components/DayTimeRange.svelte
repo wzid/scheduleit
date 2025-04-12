@@ -347,12 +347,12 @@
   ontouchcancel={handleDragStop}
 />
 
-<div class={cn('flex w-full max-w-2xl flex-col items-center md:w-fit', recording && 'touch-none')}>
+<div class="flex w-full max-w-2xl flex-col items-center md:w-fit">
   <!-- Main outer loop -->
   <div class="flex w-full flex-col gap-6">
     {#each chunkedDays as chunk, chunkIndex}
       <!-- Outer div -->
-      <div class="w-fit">
+      <div class={cn('w-fit', recording && 'touch-none')}>
         <!-- Day labels -->
         <div class="flex w-full justify-center gap-[1px] pb-1 pl-16 md:pl-20">
           <!-- Empty cell for time labels -->

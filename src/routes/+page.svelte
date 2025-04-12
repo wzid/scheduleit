@@ -149,7 +149,9 @@
       <div class="space-y-2">
         <div>
           <h2>Custom Slug</h2>
-          <p class="text-sm text-zinc-500">Example: scheduleit.now/e/[slug]</p>
+          <p class="text-sm text-zinc-500">
+            Example: scheduleit.now/e/{$form.id.trim() || '[slug]'}
+          </p>
         </div>
         <Input bind:value={$form.id} placeholder="Your custom slug (optional)" />
         {#if $errors.id}<p class="invalid">{$errors.id}</p>{/if}

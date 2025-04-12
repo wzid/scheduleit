@@ -10,7 +10,10 @@ import { isRateLimited, limiters, RATE_LIMIT_ERROR } from '$lib/ratelimit';
 
 const schema = z
   .object({
-    id: z.string().trim(),
+    id: z
+      .string()
+      .trim()
+      .regex(/^[a-zA-Z0-9_]*$/, 'Only letters, numbers, and underscores are allowed'),
     name: z.string().trim().min(1, 'Please enter an event name.'),
     dateType: z.enum(['dates', 'days']),
     timeZone: z.string(),
