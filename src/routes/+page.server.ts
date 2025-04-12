@@ -6,7 +6,7 @@ import { events } from '$lib/db/schema';
 import { DAY_ABBREVIATIONS, type DayAbbreviation } from '$lib/constants';
 import { eq } from 'drizzle-orm';
 import { fail } from 'sveltekit-superforms/client';
-import { isRateLimited, limiters, RATE_LIMIT_ERROR } from '$lib/ratelimit.js';
+import { isRateLimited, limiters, RATE_LIMIT_ERROR } from '$lib/ratelimit';
 
 const schema = z
   .object({
