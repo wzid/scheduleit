@@ -1,19 +1,22 @@
+<script lang="ts">
+  import { ArrowUpRight } from '@lucide/svelte';
+</script>
+
 <footer
-  class="mt-auto grid gap-1.5 py-6 pt-12 text-center text-sm lowercase leading-none text-zinc-500"
+  class="mt-auto flex w-full justify-center gap-1 py-6 pb-8 pt-12 text-sm lowercase leading-none text-zinc-500"
 >
-  <div>
-    <a class="shine" target="_blank" href="https://github.com/wzid/scheduleit">GitHub</a>
-    <span>&bull;</span>
-    <span>
-      Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
-      <a class="shine" target="_blank" href="https://github.com/aelew">Andre</a>
-    </span>
-  </div>
-  <div>
-    <a class="shine" target="_blank" href="https://buymeacoffee.com/cameronkffn">
-      Support us to help keep this site running!
-    </a>
-  </div>
+  <span>
+    Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
+    <a class="shine" target="_blank" href="https://github.com/aelew">Andre</a>
+  </span>
+  <span>&bull;</span>
+  <a
+    class="flex text-white transition-colors hover:text-white/70"
+    target="_blank"
+    href="https://buymeacoffee.com/cameronkffn"
+  >
+    support us to help keep this site running <ArrowUpRight class="ml-1 h-4 w-4" />
+  </a>
 </footer>
 
 <style lang="postcss">
