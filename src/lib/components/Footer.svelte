@@ -10,9 +10,11 @@
       Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
       <a class="shine" target="_blank" href="https://github.com/aelew">Andre</a>
     </span>
+    <span>&bull;</span>
+    <a class="shine" href="https://github.com/wzid/scheduleit">GitHub</a>
   </div>
   <a
-    class="flex w-fit gap-1 text-green-500 transition-colors hover:text-green-400/80"
+    class="flex w-fit gap-1 text-peach-300 transition-colors hover:text-peach-300/80"
     href="https://buymeacoffee.com/cameronkffn"
     target="_blank"
   >
