@@ -1,21 +1,22 @@
 <script lang="ts">
-  import { ArrowUpRight } from '@lucide/svelte';
+  import ArrowUpRightIcon from '@lucide/svelte/icons/arrow-up-right';
 </script>
 
 <footer
-  class="mt-auto flex w-full justify-center gap-1 py-6 pb-8 pt-12 text-sm lowercase leading-none text-zinc-500"
+  class="mt-auto flex flex-col items-center gap-1.5 py-6 pb-8 pt-12 text-center text-sm lowercase leading-none text-zinc-500"
 >
-  <span>
-    Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
-    <a class="shine" target="_blank" href="https://github.com/aelew">Andre</a>
-  </span>
-  <span>&bull;</span>
+  <div>
+    <span>
+      Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
+      <a class="shine" target="_blank" href="https://github.com/aelew">Andre</a>
+    </span>
+  </div>
   <a
-    class="flex text-white transition-colors hover:text-white/70"
-    target="_blank"
+    class="flex w-fit gap-1 text-green-500 transition-colors hover:text-green-400/80"
     href="https://buymeacoffee.com/cameronkffn"
+    target="_blank"
   >
-    support us to help keep this site running <ArrowUpRight class="ml-1 h-4 w-4" />
+    If you found this useful, consider supporting us! <ArrowUpRightIcon class="size-4" />
   </a>
 </footer>
 
