@@ -14,7 +14,7 @@
     <a class="shine" href="https://github.com/wzid/scheduleit">GitHub</a>
   </div>
   <a
-    class="flex w-fit gap-1 text-peach-300 transition-colors hover:text-peach-300/80"
+    class="flex w-fit gap-1 text-peach-300/80 transition-colors hover:text-peach-300/60"
     href="https://buymeacoffee.com/cameronkffn"
     target="_blank"
   >
