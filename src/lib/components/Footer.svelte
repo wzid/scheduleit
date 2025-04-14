@@ -5,6 +5,14 @@
 <footer
   class="mt-auto flex flex-col items-center gap-1.5 py-6 pb-8 pt-12 text-center text-sm lowercase leading-none text-zinc-500"
 >
+  <a
+    class="github-button"
+    href="https://github.com/wzid/scheduleit"
+    data-color-scheme="no-preference: light; light: light; dark: dark;"
+    data-icon="octicon-star"
+    data-show-count="true"
+    aria-label="Star on GitHub">Star</a
+  >
   <div>
     <span>
       Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
