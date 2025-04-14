@@ -1,19 +1,23 @@
+<script lang="ts">
+  import ArrowUpRightIcon from '@lucide/svelte/icons/arrow-up-right';
+</script>
+
 <footer
-  class="mt-auto grid gap-1.5 py-6 pt-12 text-center text-sm lowercase leading-none text-zinc-500"
+  class="mt-auto flex flex-col items-center gap-1.5 py-6 pb-8 pt-12 text-center text-sm lowercase leading-none text-zinc-500"
 >
   <div>
-    <a class="shine" target="_blank" href="https://github.com/wzid/scheduleit">GitHub</a>
-    <span>&bull;</span>
     <span>
       Built by <a class="shine" target="_blank" href="https://github.com/wzid">Cameron</a> &
       <a class="shine" target="_blank" href="https://github.com/aelew">Andre</a>
     </span>
   </div>
-  <div>
-    <a class="shine" target="_blank" href="https://buymeacoffee.com/cameronkffn">
-      Support us to help keep this site running!
-    </a>
-  </div>
+  <a
+    class="flex w-fit gap-1 text-green-500 transition-colors hover:text-green-400/80"
+    href="https://buymeacoffee.com/cameronkffn"
+    target="_blank"
+  >
+    If you found this useful, consider supporting us! <ArrowUpRightIcon class="size-4" />
+  </a>
 </footer>
 
 <style lang="postcss">

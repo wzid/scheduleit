@@ -17,7 +17,7 @@
     className?: string | undefined;
     // Must be one of the keys in variantClasses
     variant?: keyof typeof variantClasses;
-    contentType?: 'text' | 'icon';
+    contentType?: keyof typeof contentClasses;
     children?: import('svelte').Snippet;
   }
 
