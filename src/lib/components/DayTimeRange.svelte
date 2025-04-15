@@ -28,7 +28,6 @@
   let {
     users,
     recording,
-    saveAvailability,
     startTime,
     endTime,
     activeUserId,
@@ -372,7 +371,7 @@
               class="flex w-20 flex-col items-center justify-center text-center text-sm font-medium text-zinc-400"
             >
               <p class="text-xs leading-none">
-                {!isDaysTimeline && DAY_ABBREVIATIONS[parseDayAsDate(day).getDay()]}
+                {!isDaysTimeline ? DAY_ABBREVIATIONS[parseDayAsDate(day).getDay()] : ''}
               </p>
               <p>
                 {isDaysTimeline ? day : parseDay(day as string)}
