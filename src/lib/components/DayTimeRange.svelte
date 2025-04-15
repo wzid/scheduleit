@@ -25,15 +25,7 @@
     timeZone: string;
   }
 
-  let {
-    users,
-    recording,
-    startTime,
-    endTime,
-    activeUserId,
-    timeline,
-    timeZone
-  }: Props = $props();
+  let { users, recording, startTime, endTime, activeUserId, timeline, timeZone }: Props = $props();
 
   // Get the user's local timezone
   const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -488,4 +480,3 @@
     {/each}
   </div>
 </div>
-
