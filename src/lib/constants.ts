@@ -10,6 +10,7 @@ export const DAYS_OF_THE_WEEK = {
 
 export type DayAbbreviation = keyof typeof DAYS_OF_THE_WEEK;
 export const DAY_ABBREVIATIONS = Object.keys(DAYS_OF_THE_WEEK) as DayAbbreviation[];
+export const DAY_ABBREVIATION_SUN_START = ['Su', 'M', 'T', 'W', 'Th', 'F', 'Sa'] as const;
 
 export type DayName = (typeof DAYS_OF_THE_WEEK)[DayAbbreviation];
 export const DAY_NAMES = Object.values(DAYS_OF_THE_WEEK) as DayName[];

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { writable, get } from 'svelte/store';
   import {
-    DAY_ABBREVIATIONS,
+    DAY_ABBREVIATION_SUN_START,
     DAYS_OF_THE_WEEK,
     type DayAbbreviation,
     type User
@@ -363,7 +363,7 @@
               class="flex w-20 flex-col items-center justify-center text-center text-sm font-medium text-zinc-400"
             >
               <p class="text-xs leading-none">
-                {!isDaysTimeline ? DAY_ABBREVIATIONS[parseDayAsDate(day).getDay()] : ''}
+                {!isDaysTimeline ? DAY_ABBREVIATION_SUN_START[parseDayAsDate(day).getDay()] : ''}
               </p>
               <p>
                 {isDaysTimeline ? day : parseDay(day as string)}
