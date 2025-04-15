@@ -1,6 +1,11 @@
 <script lang="ts">
   import { writable, get } from 'svelte/store';
-  import { DAY_ABBREVIATIONS, DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
+  import {
+    DAY_ABBREVIATIONS,
+    DAYS_OF_THE_WEEK,
+    type DayAbbreviation,
+    type User
+  } from '$lib/constants';
   import { shadeGradient, cn } from '$lib/utils';
   import { innerWidth } from 'svelte/reactivity/window';
   import { formatInTimeZone } from 'date-fns-tz';
@@ -24,7 +29,6 @@
     users,
     recording,
     saveAvailability,
-    cancel,
     startTime,
     endTime,
     activeUserId,
@@ -318,15 +322,6 @@
   }
   // END DRAG LOGIC
 
-  // Function to handle save (to be passed to the parent component)
-  function handleSave() {
-    // Set the availability string in a way your API can access it
-    const availabilityString = getAvailabilityString();
-
-    // Call the parent's saveAvailability function
-    saveAvailability(availabilityString);
-  }
-
   function convertTo12HourFormat(time: string): string {
     const [hour, minute] = time.split(':').map(Number);
     const period = hour >= 12 ? 'PM' : 'AM';
@@ -351,7 +346,7 @@
     if (isDaysTimeline) {
       return `${DAYS_OF_THE_WEEK[days[dayIndex] as DayAbbreviation]} ${time}`;
     }
-    
+
     return `${parseDay(days[dayIndex])} ${time}`;
   }
 </script>
@@ -373,7 +368,9 @@
         <div class="flex w-full justify-center gap-[1px] pb-1 pl-16 md:pl-20">
           <!-- Empty cell for time labels -->
           {#each chunk as day}
-            <div class="flex items-center flex-col justify-center w-20 text-center text-sm font-medium text-zinc-400">
+            <div
+              class="flex w-20 flex-col items-center justify-center text-center text-sm font-medium text-zinc-400"
+            >
               <p class="text-xs leading-none">
                 {!isDaysTimeline && DAY_ABBREVIATIONS[parseDayAsDate(day).getDay()]}
               </p>
@@ -493,8 +490,3 @@
   </div>
 </div>
 
-<style lang="postcss">
-  .bg-peach-400 {
-    background-color: #ff7f50;
-  }
-</style>
