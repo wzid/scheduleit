@@ -1,11 +1,11 @@
 export const DAYS_OF_THE_WEEK = {
+  Su: 'Sunday',
   M: 'Monday',
   T: 'Tuesday',
   W: 'Wednesday',
   Th: 'Thursday',
   F: 'Friday',
-  Sa: 'Saturday',
-  Su: 'Sunday'
+  Sa: 'Saturday'
 } as const;
 
 export type DayAbbreviation = keyof typeof DAYS_OF_THE_WEEK;
