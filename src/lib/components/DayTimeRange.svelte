@@ -1,6 +1,11 @@
 <script lang="ts">
   import { writable, get } from 'svelte/store';
-  import { DAYS_OF_THE_WEEK, type DayAbbreviation, type User } from '$lib/constants';
+  import {
+    DAY_ABBREVIATIONS,
+    DAYS_OF_THE_WEEK,
+    type DayAbbreviation,
+    type User
+  } from '$lib/constants';
   import { shadeGradient, cn } from '$lib/utils';
   import { innerWidth } from 'svelte/reactivity/window';
   import { formatInTimeZone } from 'date-fns-tz';
@@ -20,23 +25,16 @@
     timeZone: string;
   }
 
-  let {
-    users,
-    recording,
-    saveAvailability,
-    cancel,
-    startTime,
-    endTime,
-    activeUserId,
-    timeline,
-    timeZone
-  }: Props = $props();
+  let { users, recording, startTime, endTime, activeUserId, timeline, timeZone }: Props = $props();
 
   // Get the user's local timezone
   const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // Calculate timezone offset in hours
   function calculateTimezoneOffset(sourceTimezone: string, targetTimezone: string): number {
+    if (sourceTimezone === targetTimezone) {
+      return 0;
+    }
     // Create a reference date at noon to avoid DST issues
     const now = new Date();
     const referenceDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
@@ -315,15 +313,6 @@
   }
   // END DRAG LOGIC
 
-  // Function to handle save (to be passed to the parent component)
-  function handleSave() {
-    // Set the availability string in a way your API can access it
-    const availabilityString = getAvailabilityString();
-
-    // Call the parent's saveAvailability function
-    saveAvailability(availabilityString);
-  }
-
   function convertTo12HourFormat(time: string): string {
     const [hour, minute] = time.split(':').map(Number);
     const period = hour >= 12 ? 'PM' : 'AM';
@@ -331,12 +320,25 @@
     return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
   }
 
+  function parseDay(dateString: string): string {
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // month is 0-indexed
+    const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return formatted;
+  }
+
+  function parseDayAsDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day); // month is 0-indexed
+  }
+
   function getDateAndTimeString(dayIndex: number, timeIndex: number): string {
     const time = convertTo12HourFormat(timeSlots[timeIndex]);
     if (isDaysTimeline) {
       return `${DAYS_OF_THE_WEEK[days[dayIndex] as DayAbbreviation]} ${time}`;
     }
-    return `${new Date(days[dayIndex]).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} ${time}`;
+
+    return `${parseDay(days[dayIndex])} ${time}`;
   }
 </script>
 
@@ -357,10 +359,15 @@
         <div class="flex w-full justify-center gap-[1px] pb-1 pl-16 md:pl-20">
           <!-- Empty cell for time labels -->
           {#each chunk as day}
-            <div class="w-20 text-center text-sm font-medium text-zinc-400">
-              {isDaysTimeline
-                ? day
-                : new Date(day).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+            <div
+              class="flex w-20 flex-col items-center justify-center text-center text-sm font-medium text-zinc-400"
+            >
+              <p class="text-xs leading-none">
+                {!isDaysTimeline ? DAY_ABBREVIATIONS[parseDayAsDate(day).getDay()] : ''}
+              </p>
+              <p>
+                {isDaysTimeline ? day : parseDay(day as string)}
+              </p>
             </div>
           {/each}
         </div>
@@ -473,9 +480,3 @@
     {/each}
   </div>
 </div>
-
-<style lang="postcss">
-  .bg-peach-400 {
-    background-color: #ff7f50;
-  }
-</style>
