@@ -9,7 +9,7 @@ import { hash } from 'argon2';
 import { isRateLimited, limiters, RATE_LIMIT_ERROR } from '$lib/ratelimit';
 
 const addUserSchema = z.object({
-  eventId: z.string(),
+  eventId: z.string().nonempty(),
   name: z
     .string()
     .trim()

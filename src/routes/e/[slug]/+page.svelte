@@ -11,6 +11,8 @@
   import { superForm } from 'sveltekit-superforms/client';
   import type { User } from '$lib/constants';
   import { DayTimeRange } from '$lib';
+  import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+  import { dev } from '$app/environment';
 
   import { Button, Meta, Input } from '$lib';
   import { expoInOut } from 'svelte/easing';
@@ -67,7 +69,6 @@
     }
   });
 
-  $addUserForm.eventId = event.id;
 
   // derived helps it update the shades when the users change
   const shades = $derived(shadeGradient(users.length));
@@ -188,7 +189,13 @@
 <h1>{event.name}</h1>
 
 <div class="mt-4 flex w-fit gap-3">
-  <Button onClick={() => (focusUserInput = true)} variant="secondary">
+  <Button
+    onClick={() => {
+      focusUserInput = true;
+      $addUserForm.eventId = event.id;
+    }}
+    variant="secondary"
+  >
     <NotebookPenIcon class="mr-2 h-5 w-5" />
     Record availability
   </Button>
@@ -357,3 +364,4 @@
     />
   </div>
 </div>
+<!-- <SuperDebug data={$addUserForm} display={dev} /> -->
