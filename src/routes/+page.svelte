@@ -117,7 +117,7 @@
           <h2>Dates Available</h2>
           <p class="text-sm text-zinc-500">What dates might work?</p>
         </div>
-        {#if $errors._errors}<p class="invalid">{$errors._errors[0]}</p>{/if}
+        {#if $errors.dates?._errors}<p class="invalid !-mt-2">{$errors.dates?._errors[0]}</p>{/if}
         <Calendar className="w-full" value={dates} />
       {:else}
         <div>

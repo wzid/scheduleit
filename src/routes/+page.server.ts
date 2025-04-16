@@ -13,13 +13,14 @@ const schema = z
     id: z
       .string()
       .trim()
-      .regex(/^[a-zA-Z0-9_]*$/, 'Only letters, numbers, and underscores are allowed'),
+      .regex(/^[a-zA-Z0-9_]*$/, 'Only letters, numbers, and underscores are allowed')
+      .max(30, 'ID must be 30 characters or less'),
     name: z.string().trim().min(1, 'Please enter an event name.'),
     dateType: z.enum(['dates', 'days']),
     timeZone: z.string(),
     startTime: z.number().int().nonnegative(),
     endTime: z.number().int().positive(),
-    dates: z.array(z.string()),
+    dates: z.array(z.string()).max(20, 'You can only select up to 20 dates.'),
     days: z.array(z.enum(DAY_ABBREVIATIONS as [DayAbbreviation]))
   })
   .refine((data) => data.dateType === 'days' || data.dates.length > 0, {
