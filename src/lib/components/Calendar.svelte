@@ -18,15 +18,30 @@
   } = createCalendar({
     value,
     multiple: true,
-    // disable days before the current day
+    // disables days before the current day - written in a verbose way for clarity
     isDateDisabled: (date) => {
       const currentDate = new Date();
-      return (
-        date.year < currentDate.getFullYear() ||
-        (date.year === currentDate.getFullYear() &&
-          (date.month - 1 < currentDate.getMonth() ||
-            (date.month - 1 === currentDate.getMonth() && date.day < currentDate.getDate())))
-      );
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth();
+      const currentDay = currentDate.getDate();
+
+      // disable if year is in the past
+      if (date.year < currentYear) {
+        return true;
+      }
+
+      // disable if year is current but month is in the past
+      if (date.year === currentYear && date.month - 1 < currentMonth) {
+        return true;
+      }
+
+      // disable if year and month are current but day is in the past
+      if (date.year === currentYear && date.month - 1 === currentMonth && date.day < currentDay) {
+        return true;
+      }
+
+      // date is good
+      return false;
     }
   });
 </script>
