@@ -59,6 +59,7 @@
         return prev;
       });
 
+      activeUserPassword = result.data.form.data.password;
       activeUserId = result.data!.user.id;
       focusUserInput = false;
       recording = true;
@@ -75,7 +76,7 @@
   const recordedDays = writable<DayAbbreviation[]>([]);
 
   let activeUserId = $state<string | null>(null);
-  let activeUserPassword: string | null = null;
+  let activeUserPassword = $state<string | null>(null); 
 
   let recording = $state(false);
   let focusUserInput = $state(false);
