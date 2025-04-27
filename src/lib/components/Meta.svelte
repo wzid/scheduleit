@@ -15,17 +15,17 @@
     }
   };
 
-  title = title ? `${title} | ${app.name}` : app.name;
+  const pageTitle = title ? `${title} | ${app.name}` : app.name;
 </script>
 
 <svelte:head>
-  <title>{title}</title>
+  <title>{pageTitle}</title>
   <meta name="description" content={app.description} />
   <meta name="application-name" content={app.name} />
 
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_US" />
-  <meta property="og:title" content={title} />
+  <meta property="og:title" content={pageTitle} />
   <meta property="og:site_name" content={app.name} />
   <meta property="og:description" content={app.description} />
 
@@ -35,7 +35,7 @@
   <meta property="og:image:height" content={app.ogImage.height} />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={app.name} />
+  <meta name="twitter:title" content={pageTitle} />
   <meta name="twitter:image" content={app.ogImage.url} />
   <meta name="twitter:description" content={app.description} />
 </svelte:head>
