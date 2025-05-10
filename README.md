@@ -1,10 +1,10 @@
 # ⏰ schedule it!
 
-A web app built to make finding the best time to meet with your friends or team members easier. Developed by [cameron](https://github.com/wzid) and [andre](https://github.com/aelew).
+A web app built to make finding the best time to meet with your friends or team members easier. Made by [cameron](https://github.com/wzid) and [andre](https://github.com/aelew).
 
 Try it yourself at [scheduleit.now](https://scheduleit.now)!
 
-![Preview](./static/images/preview.png)
+<img src="./static/images/preview.png" alt="Preview" width="500" />
 
 ## Built with
 
