@@ -4,7 +4,7 @@ A web app built to make finding the best time to meet with your friends or team 
 
 Try it yourself at [scheduleit.now](https://scheduleit.now)!
 
-<img src="./static/images/preview.png" alt="Preview" width="500" />
+<img src="./static/images/preview.png" alt="Preview" width="600" />
 
 ## Built with
 
