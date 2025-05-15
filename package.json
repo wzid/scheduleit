@@ -39,7 +39,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@libsql/client": "^0.15.3",
+    "@libsql/client": "^0.15.6",
     "@lucide/svelte": "^0.487.0",
     "@sveltejs/adapter-vercel": "^5.7.0",
     "@upstash/ratelimit": "^2.0.5",
