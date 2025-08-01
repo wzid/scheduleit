@@ -5,7 +5,7 @@
       "name": "scheduleit",
       "dependencies": {
         "@libsql/client": "^0.15.3",
-        "@lucide/svelte": "^0.487.0",
+        "@lucide/svelte": "^0.535.0",
         "@sveltejs/adapter-vercel": "^5.7.0",
         "@upstash/ratelimit": "^2.0.5",
         "@upstash/redis": "^1.34.7",
@@ -164,7 +164,7 @@
 
     "@libsql/win32-x64-msvc": ["@libsql/win32-x64-msvc@0.5.5", "", { "os": "win32", "cpu": "x64" }, "sha512-w6G7aONV7gVPAtAs7jUxMJBHYURyYx0FNNG+G/oPgGxTrgYJ7cPW1gOp+7SjzPUBCJJrKVf7VJkRjmJLr6RORw=="],
 
-    "@lucide/svelte": ["@lucide/svelte@0.487.0", "", { "peerDependencies": { "svelte": "^5" } }, "sha512-27b/wUzWrqDJu97+1iSV2X8L2JGRWH/mAWAjHgazWxhGxVu/kS0p3SbNu6w3skNmQNEku33EKU1v44IVwULzbw=="],
+    "@lucide/svelte": ["@lucide/svelte@0.535.0", "", { "peerDependencies": { "svelte": "^5" } }, "sha512-LSVs0G+IXSHHxMl/U6bHTnDP/pbmwpS7/mkCDXmWD9Wi0oQlZihKFoFLjDFhC+6mdfRE6ZgBasXTusvrOYv0lA=="],
 
     "@mapbox/node-pre-gyp": ["@mapbox/node-pre-gyp@2.0.0", "", { "dependencies": { "consola": "^3.2.3", "detect-libc": "^2.0.0", "https-proxy-agent": "^7.0.5", "node-fetch": "^2.6.7", "nopt": "^8.0.0", "semver": "^7.5.3", "tar": "^7.4.0" }, "bin": { "node-pre-gyp": "bin/node-pre-gyp" } }, "sha512-llMXd39jtP0HpQLVI37Bf1m2ADlEb35GYSh1SDSLsBhR+5iCxiNGlT31yqbNtVHygHAtMy6dWFERpU2JgufhPg=="],
 
