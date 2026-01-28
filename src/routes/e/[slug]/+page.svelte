@@ -242,9 +242,10 @@
       <h2 class="pb-1 font-semibold leading-none text-zinc-500">Respondents</h2>
       {#if focusUserInput}
         <div
-          class="relative z-20 duration-500 ease-in-out animate-in fade-in"
+          class="relative z-20"
           transition:slide={{ duration: 100, easing: expoInOut }}
         >
+        <div in:fade={{ duration: 500, easing: expoInOut }}>
           <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
             <div class="flex flex-col gap-2">
               <Input
@@ -272,6 +273,7 @@
             </Button>
           </form>
         </div>
+      </div>
         <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
         <!-- <div
           transition:fade={{ duration: 100 }}
