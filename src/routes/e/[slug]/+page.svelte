@@ -242,7 +242,7 @@
       <h2 class="pb-1 font-semibold leading-none text-zinc-500">Respondents</h2>
       {#if focusUserInput}
         <div
-          class="relative z-50 isolate !overflow-visible rounded-lg bg-peach-400 p-2 shadow-xl shadow-black/30 duration-500 ease-in-out animate-in fade-in-0"
+          class="relative z-20 !overflow-visible duration-500 ease-in-out animate-in fade-in-0"
           transition:slide={{ duration: 100, easing: expoInOut }}
         >
           <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
@@ -273,11 +273,11 @@
           </form>
         </div>
         <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-        <div
+        <!-- <div
           transition:fade={{ duration: 100 }}
           onclick={() => (focusUserInput = false)}
-          class="fixed left-0 top-0 z-40 h-screen w-screen bg-zinc-800/80"
-        ></div>
+          class="fixed left-0 top-0 z-10 h-screen w-screen bg-zinc-800/80"
+        ></div> -->
       {/if}
       <ul>
         {#each users as user}
