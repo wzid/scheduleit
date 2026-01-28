@@ -228,7 +228,7 @@
         class="!overflow-visible pb-3"
         transition:slide={{ duration: 100 }}
       >
-        <div in:fade={{ duration: 500, easing: expoInOut }}>
+        <div transition:fade={{ duration: 500, easing: expoInOut }}>
           <p class="w-[12rem] text-balance pb-2 text-sm text-zinc-400">
             Click on individual time slots to toggle your availability.
           </p>
