@@ -225,15 +225,17 @@
     <!-- Edit Controls -->
     {#if recording}
       <div
-        class="!overflow-visible pb-3 duration-300 ease-in-out animate-in fade-in-0"
+        class="!overflow-visible pb-3"
         transition:slide={{ duration: 100 }}
       >
-        <p class="w-[12rem] text-balance pb-2 text-sm text-zinc-400">
-          Click on individual time slots to toggle your availability.
-        </p>
-        <div class="flex gap-2">
-          <Button onClick={cancel} variant="neutral">Cancel</Button>
-          <Button onClick={saveAvailability} variant="primary">Save</Button>
+        <div in:fade={{ duration: 500, easing: expoInOut }}>
+          <p class="w-[12rem] text-balance pb-2 text-sm text-zinc-400">
+            Click on individual time slots to toggle your availability.
+          </p>
+          <div class="flex gap-2">
+            <Button onClick={cancel} variant="neutral">Cancel</Button>
+            <Button onClick={saveAvailability} variant="primary">Save</Button>
+          </div>
         </div>
       </div>
     {/if}
@@ -241,45 +243,45 @@
     <div>
       <h2 class="pb-1 font-semibold leading-none text-zinc-500">Respondents</h2>
       {#if focusUserInput}
+        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+        <div
+          class="fixed inset-0 z-10 bg-zinc-800/80"
+          in:fade={{ duration: 500, easing: expoInOut }}
+          onclick={() => (focusUserInput = false)}
+        ></div>
         <div
           class="relative z-20"
           transition:slide={{ duration: 100, easing: expoInOut }}
         >
-        <div in:fade={{ duration: 500, easing: expoInOut }}>
-          <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
-            <div class="flex flex-col gap-2">
-              <Input
-                bind:value={$addUserForm.name}
-                className="border border-peach-300 rounded-lg shadow-xl shadow-black/20"
-                placeholder="Your name"
-              />
-              <Input
-                bind:value={$addUserForm.password}
-                className="border border-peach-300 rounded-lg shadow-xl shadow-black/20"
-                placeholder="Password (optional)"
-              />
-              <div class="invalid !mt-0 text-xs">
-                {#if $errors.name}<p>{$errors.name}</p>{/if}
-                {#if $errors.password}<p>{$errors.password}</p>{/if}
+          <div in:fade={{ duration: 500, easing: expoInOut }}>
+            <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
+              <div class="flex flex-col gap-2">
+                <Input
+                  bind:value={$addUserForm.name}
+                  className="border border-peach-300 rounded-lg shadow-xl shadow-black/20"
+                  placeholder="Your name"
+                />
+                <Input
+                  bind:value={$addUserForm.password}
+                  className="border border-peach-300 rounded-lg shadow-xl shadow-black/20"
+                  placeholder="Password (optional)"
+                />
+                <div class="invalid !mt-0 text-xs">
+                  {#if $errors.name}<p>{$errors.name}</p>{/if}
+                  {#if $errors.password}<p>{$errors.password}</p>{/if}
+                </div>
               </div>
-            </div>
-            <Button
-              className="shadow-xl shadow-black/20"
-              variant="secondary"
-              contentType="icon"
-              type="submit"
-            >
-              <PlusIcon class="h-5 w-5" strokeWidth={3} />
-            </Button>
-          </form>
+              <Button
+                className="shadow-xl shadow-black/20"
+                variant="secondary"
+                contentType="icon"
+                type="submit"
+              >
+                <PlusIcon class="h-5 w-5" strokeWidth={3} />
+              </Button>
+            </form>
+          </div>
         </div>
-      </div>
-        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-        <!-- <div
-          transition:fade={{ duration: 100 }}
-          onclick={() => (focusUserInput = false)}
-          class="fixed left-0 top-0 z-10 h-screen w-screen bg-zinc-800/80"
-        ></div> -->
       {/if}
       <ul>
         {#each users as user}
