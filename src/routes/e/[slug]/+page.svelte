@@ -246,14 +246,14 @@
         <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
         <div
           class="fixed inset-0 z-10 bg-zinc-800/80"
-          in:fade={{ duration: 500, easing: expoInOut }}
+          transition:fade={{ duration: 500, easing: expoInOut }}
           onclick={() => (focusUserInput = false)}
         ></div>
         <div
-          class="relative z-20"
+          class="relative z-20 w-72 !overflow-hidden"
           transition:slide={{ duration: 100, easing: expoInOut }}
         >
-          <div in:fade={{ duration: 500, easing: expoInOut }}>
+          <div transition:fade={{ duration: 500, easing: expoInOut }}>
             <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
               <div class="flex flex-col gap-2">
                 <Input
