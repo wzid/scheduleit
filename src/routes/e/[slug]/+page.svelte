@@ -242,7 +242,7 @@
       <h2 class="pb-1 font-semibold leading-none text-zinc-500">Respondents</h2>
       {#if focusUserInput}
         <div
-          class="relative z-20 !overflow-visible duration-500 ease-in-out animate-in fade-in-0"
+          class="relative z-20 duration-500 ease-in-out animate-in fade-in"
           transition:slide={{ duration: 100, easing: expoInOut }}
         >
           <form class="mt-1 flex items-start gap-2" method="POST" action="?/addUser" use:enhance>
